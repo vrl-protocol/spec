@@ -1,0 +1,19 @@
+{
+  "input": {
+    "country_of_origin": "CN",
+    "customs_value": "1200.00",
+    "freight": "150.00",
+    "hs_code": "8507600000",
+    "insurance": "25.00",
+    "quantity": 2,
+    "shipping_mode": "ocean"
+  },
+  "expected": {
+    "input_hash": "ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7",
+    "output_hash": "0c866369e1ab87b0d0b624c0fdeb490aa05fa2524e9368a023308a1437ec5b5b",
+    "trace_hash": "e14d0cb8d4a11cf1db1def3942fa7246b72cb6989463e8d379ade6e90a0405e6",
+    "circuit_hash": "3fa24c7763608b01b4c7e411655ebc75ff7a906c38bd79a4cc3be0f4479cdf23",
+    "verification_key_hash": "bee79d0002e5b52433fdcba895bf0bf4aa6d8945352e599964c510efec0f1d87",
+    "final_proof": "64b9d238b789d74c03d5e397d7bf5ab8edf8feecabfafde9d60d7e440c15d4d6"
+  }
+}

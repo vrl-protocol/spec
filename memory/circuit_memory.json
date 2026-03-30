@@ -1,0 +1,156 @@
+[
+  {
+    "entry_id": "c_1774763195264_0",
+    "circuit_name": "import_landed_cost_stub_v1",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 1,
+    "timestamp": 1774763195.264706
+  },
+  {
+    "entry_id": "c_1774763287996_1",
+    "circuit_name": "import_landed_cost_stub_v1",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 1,
+    "timestamp": 1774763287.9968445
+  },
+  {
+    "entry_id": "c_1774790415293_2",
+    "circuit_name": "import_landed_cost_stub_v1_refined",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine. Refined for artifact-driven DAG execution.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 1,
+    "timestamp": 1774790415.2936535
+  },
+  {
+    "entry_id": "c_1774790415369_3",
+    "circuit_name": "import_landed_cost_stub_v1_refined",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine. Refined for artifact-driven DAG execution.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 2,
+    "timestamp": 1774790415.3693995
+  },
+  {
+    "entry_id": "c_1774790415448_4",
+    "circuit_name": "import_landed_cost_stub_v1_refined",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine. Refined for artifact-driven DAG execution.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 3,
+    "timestamp": 1774790415.4488297
+  },
+  {
+    "entry_id": "c_1774791684332_5",
+    "circuit_name": "import_landed_cost_stub_v1_refined",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine. Refined for artifact-driven DAG execution.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 1,
+    "timestamp": 1774791684.332673
+  },
+  {
+    "entry_id": "c_1774791684410_6",
+    "circuit_name": "import_landed_cost_stub_v1_refined",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine. Refined for artifact-driven DAG execution.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 2,
+    "timestamp": 1774791684.4103823
+  },
+  {
+    "entry_id": "c_1774791684484_7",
+    "circuit_name": "import_landed_cost_stub_v1_refined",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine. Refined for artifact-driven DAG execution.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 3,
+    "timestamp": 1774791684.4848263
+  },
+  {
+    "entry_id": "c_1774793166934_8",
+    "circuit_name": "import_landed_cost_stub_v1_refined",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine. Refined for artifact-driven DAG execution.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 1,
+    "timestamp": 1774793166.93459
+  },
+  {
+    "entry_id": "c_1774793166992_9",
+    "circuit_name": "import_landed_cost_stub_v1_refined",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine. Refined for artifact-driven DAG execution.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 2,
+    "timestamp": 1774793166.9921463
+  },
+  {
+    "entry_id": "c_1774793167049_10",
+    "circuit_name": "import_landed_cost_stub_v1_refined",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine. Refined for artifact-driven DAG execution.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 3,
+    "timestamp": 1774793167.049078
+  },
+  {
+    "entry_id": "c_1774836446070_11",
+    "circuit_name": "import_landed_cost_stub_v1_refined",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine. Refined for artifact-driven DAG execution.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 1,
+    "timestamp": 1774836446.0704827
+  },
+  {
+    "entry_id": "c_1774836446194_12",
+    "circuit_name": "import_landed_cost_stub_v1_refined",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine. Refined for artifact-driven DAG execution.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 2,
+    "timestamp": 1774836446.1942663
+  },
+  {
+    "entry_id": "c_1774836446288_13",
+    "circuit_name": "import_landed_cost_stub_v1_refined",
+    "constraint_count": 8,
+    "proving_system": "Plonk",
+    "proving_time_ms": 0.0,
+    "description": "Circuit-oriented decomposition of the deterministic U.S. import landed-cost engine. Refined for artifact-driven DAG execution.",
+    "code_snippet": "canonical_input_hash\ntariff_lookup_commitment\nextended_value\nbase_duty\nsection_301\nmpf_clamp\nhmf_rule\nlanded_cost_sum",
+    "cycle": 3,
+    "timestamp": 1774836446.2880106
+  }
+]

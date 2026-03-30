@@ -1,0 +1,14 @@
+[package]
+name = "vrl_halo2_backend"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ff = "0.13"
+halo2_proofs = "0.3.2"
+rand_chacha = "0.3"
+rand_core = "0.6"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+hex = "0.4"

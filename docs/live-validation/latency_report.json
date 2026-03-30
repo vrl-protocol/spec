@@ -1,0 +1,35 @@
+{
+  "runs": [
+    {
+      "label": "in-memory",
+      "concurrency": 100,
+      "unique_inputs": 71,
+      "duplicate_inputs": 29,
+      "total_wall_ms": 888.54,
+      "throughput_rps": 112.5,
+      "latency_ms": {
+        "p50": 9.4,
+        "p95": 13.8,
+        "p99": 25.71,
+        "min": 1.07,
+        "max": 26.16,
+        "mean": 8.87,
+        "stdev": 4.82
+      },
+      "status_counts": {
+        "ok": 71,
+        "DuplicateInputHashError": 29
+      },
+      "audit_chain": {
+        "status": "VALID",
+        "checked_rows": 100,
+        "reason": "All 39 audit chain partition(s) verified successfully"
+      },
+      "targets": {
+        "p95_lt_100ms": true,
+        "p95_lt_50ms": true,
+        "audit_chain_valid": true
+      }
+    }
+  ]
+}

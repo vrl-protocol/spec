@@ -1,0 +1,384 @@
+{
+  "generated_at": "2026-03-29T04:23:33Z",
+  "step_3": {
+    "step": "live_api_duplicate",
+    "status": "PASS",
+    "first_request": {
+      "status": 200,
+      "body": {
+        "result": {
+          "dataset_version": "2026.03.28",
+          "dataset_hash": "f88d8bbbcbf0435ff27177a3405ee1473d51751b1adfd732df5cfaf57b1075a1",
+          "hs_code": "8507600000",
+          "country_of_origin": "CN",
+          "quantity": 2,
+          "tariff_rule_ref": "HTS-8507600000",
+          "tariff_description": "Lithium-ion accumulators",
+          "unit_customs_value": "1200.00",
+          "extended_customs_value": "2400.00",
+          "freight": "150.00",
+          "insurance": "25.00",
+          "duty_rate": "0.034000",
+          "section_301_rate": "0.250000",
+          "duty_amount": "81.60",
+          "section_301_amount": "600.00",
+          "mpf_amount": "32.71",
+          "hmf_amount": "3.00",
+          "landed_cost": "3292.31"
+        },
+        "trace": [
+          {
+            "step": "canonical_input",
+            "rule_ref": "INPUT-CANON",
+            "inputs": {
+              "hs_code": "8507600000",
+              "country_of_origin": "CN",
+              "customs_value": "1200.00",
+              "freight": "150.00",
+              "insurance": "25.00",
+              "quantity": "2",
+              "shipping_mode": "ocean"
+            },
+            "outputs": {
+              "input_hash": "ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7",
+              "dataset_version": "2026.03.28",
+              "dataset_hash": "f88d8bbbcbf0435ff27177a3405ee1473d51751b1adfd732df5cfaf57b1075a1"
+            }
+          },
+          {
+            "step": "tariff_lookup",
+            "rule_ref": "HTS-8507600000",
+            "inputs": {
+              "hs_code": "8507600000",
+              "country_of_origin": "CN"
+            },
+            "outputs": {
+              "rule_ref": "HTS-8507600000",
+              "description": "Lithium-ion accumulators",
+              "duty_rate": "0.0340",
+              "section_301_rate": "0.2500"
+            }
+          },
+          {
+            "step": "extended_customs_value",
+            "rule_ref": "HTS-8507600000",
+            "inputs": {
+              "unit_customs_value": "1200.00",
+              "quantity": "2"
+            },
+            "outputs": {
+              "extended_customs_value": "2400.00"
+            }
+          },
+          {
+            "step": "base_duty",
+            "rule_ref": "HTS-8507600000",
+            "inputs": {
+              "extended_customs_value": "2400.00",
+              "duty_rate": "0.0340"
+            },
+            "outputs": {
+              "duty_amount": "81.60"
+            }
+          },
+          {
+            "step": "section_301",
+            "rule_ref": "HTS-8507600000",
+            "inputs": {
+              "extended_customs_value": "2400.00",
+              "country_of_origin": "CN"
+            },
+            "outputs": {
+              "section_301_amount": "600.00"
+            }
+          },
+          {
+            "step": "mpf",
+            "rule_ref": "MPF-2026",
+            "inputs": {
+              "extended_customs_value": "2400.00",
+              "mpf_rate": "0.003464",
+              "minimum": "32.71",
+              "maximum": "634.62"
+            },
+            "outputs": {
+              "mpf_amount": "32.71"
+            }
+          },
+          {
+            "step": "hmf",
+            "rule_ref": "HMF-2026",
+            "inputs": {
+              "extended_customs_value": "2400.00",
+              "shipping_mode": "ocean"
+            },
+            "outputs": {
+              "hmf_amount": "3.00"
+            }
+          },
+          {
+            "step": "landed_cost",
+            "rule_ref": "LC-2026",
+            "inputs": {
+              "extended_customs_value": "2400.00",
+              "freight": "150.00",
+              "insurance": "25.00",
+              "duty_amount": "81.60",
+              "section_301_amount": "600.00",
+              "mpf_amount": "32.71",
+              "hmf_amount": "3.00"
+            },
+            "outputs": {
+              "landed_cost": "3292.31"
+            }
+          }
+        ],
+        "proof": {
+          "input_hash": "ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7",
+          "output_hash": "0c866369e1ab87b0d0b624c0fdeb490aa05fa2524e9368a023308a1437ec5b5b",
+          "trace_hash": "e14d0cb8d4a11cf1db1def3942fa7246b72cb6989463e8d379ade6e90a0405e6",
+          "final_proof": "7b58cd2c0b85716175e90136d025d8d282abb1b56cb98ffaa33d4cbde3db70a1"
+        },
+        "evidence": {
+          "request": {
+            "id": "bc7b369d-d4f6-5dcc-a8ea-77c71745b196",
+            "input_hash": "ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7",
+            "raw_input": {
+              "freight": "150.00",
+              "hs_code": "8507600000",
+              "quantity": 2,
+              "insurance": "25.00",
+              "customs_value": "1200.00",
+              "shipping_mode": "ocean",
+              "country_of_origin": "CN"
+            },
+            "created_at": "2026-03-29T04:23:12Z"
+          },
+          "result": {
+            "id": "14b8968b-17dc-53b4-a89e-4f76a8f66988",
+            "request_id": "bc7b369d-d4f6-5dcc-a8ea-77c71745b196",
+            "output_hash": "0c866369e1ab87b0d0b624c0fdeb490aa05fa2524e9368a023308a1437ec5b5b",
+            "raw_output": {
+              "proof": {
+                "input_hash": "ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7",
+                "trace_hash": "e14d0cb8d4a11cf1db1def3942fa7246b72cb6989463e8d379ade6e90a0405e6",
+                "final_proof": "7b58cd2c0b85716175e90136d025d8d282abb1b56cb98ffaa33d4cbde3db70a1",
+                "output_hash": "0c866369e1ab87b0d0b624c0fdeb490aa05fa2524e9368a023308a1437ec5b5b"
+              },
+              "trace": [
+                {
+                  "step": "canonical_input",
+                  "inputs": {
+                    "freight": "150.00",
+                    "hs_code": "8507600000",
+                    "quantity": "2",
+                    "insurance": "25.00",
+                    "customs_value": "1200.00",
+                    "shipping_mode": "ocean",
+                    "country_of_origin": "CN"
+                  },
+                  "outputs": {
+                    "input_hash": "ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7",
+                    "dataset_hash": "f88d8bbbcbf0435ff27177a3405ee1473d51751b1adfd732df5cfaf57b1075a1",
+                    "dataset_version": "2026.03.28"
+                  },
+                  "rule_ref": "INPUT-CANON"
+                },
+                {
+                  "step": "tariff_lookup",
+                  "inputs": {
+                    "hs_code": "8507600000",
+                    "country_of_origin": "CN"
+                  },
+                  "outputs": {
+                    "rule_ref": "HTS-8507600000",
+                    "duty_rate": "0.0340",
+                    "description": "Lithium-ion accumulators",
+                    "section_301_rate": "0.2500"
+                  },
+                  "rule_ref": "HTS-8507600000"
+                },
+                {
+                  "step": "extended_customs_value",
+                  "inputs": {
+                    "quantity": "2",
+                    "unit_customs_value": "1200.00"
+                  },
+                  "outputs": {
+                    "extended_customs_value": "2400.00"
+                  },
+                  "rule_ref": "HTS-8507600000"
+                },
+                {
+                  "step": "base_duty",
+                  "inputs": {
+                    "duty_rate": "0.0340",
+                    "extended_customs_value": "2400.00"
+                  },
+                  "outputs": {
+                    "duty_amount": "81.60"
+                  },
+                  "rule_ref": "HTS-8507600000"
+                },
+                {
+                  "step": "section_301",
+                  "inputs": {
+                    "country_of_origin": "CN",
+                    "extended_customs_value": "2400.00"
+                  },
+                  "outputs": {
+                    "section_301_amount": "600.00"
+                  },
+                  "rule_ref": "HTS-8507600000"
+                },
+                {
+                  "step": "mpf",
+                  "inputs": {
+                    "maximum": "634.62",
+                    "minimum": "32.71",
+                    "mpf_rate": "0.003464",
+                    "extended_customs_value": "2400.00"
+                  },
+                  "outputs": {
+                    "mpf_amount": "32.71"
+                  },
+                  "rule_ref": "MPF-2026"
+                },
+                {
+                  "step": "hmf",
+                  "inputs": {
+                    "shipping_mode": "ocean",
+                    "extended_customs_value": "2400.00"
+                  },
+                  "outputs": {
+                    "hmf_amount": "3.00"
+                  },
+                  "rule_ref": "HMF-2026"
+                },
+                {
+                  "step": "landed_cost",
+                  "inputs": {
+                    "freight": "150.00",
+                    "insurance": "25.00",
+                    "hmf_amount": "3.00",
+                    "mpf_amount": "32.71",
+                    "duty_amount": "81.60",
+                    "section_301_amount": "600.00",
+                    "extended_customs_value": "2400.00"
+                  },
+                  "outputs": {
+                    "landed_cost": "3292.31"
+                  },
+                  "rule_ref": "LC-2026"
+                }
+              ],
+              "result": {
+                "freight": "150.00",
+                "hs_code": "8507600000",
+                "quantity": 2,
+                "duty_rate": "0.034000",
+                "insurance": "25.00",
+                "hmf_amount": "3.00",
+                "mpf_amount": "32.71",
+                "duty_amount": "81.60",
+                "landed_cost": "3292.31",
+                "dataset_hash": "f88d8bbbcbf0435ff27177a3405ee1473d51751b1adfd732df5cfaf57b1075a1",
+                "dataset_version": "2026.03.28",
+                "tariff_rule_ref": "HTS-8507600000",
+                "section_301_rate": "0.250000",
+                "country_of_origin": "CN",
+                "section_301_amount": "600.00",
+                "tariff_description": "Lithium-ion accumulators",
+                "unit_customs_value": "1200.00",
+                "extended_customs_value": "2400.00"
+              }
+            },
+            "created_at": "2026-03-29T04:23:12Z"
+          },
+          "proof": {
+            "id": "3ede1db4-0b28-5703-a613-466b54b3255d",
+            "request_id": "bc7b369d-d4f6-5dcc-a8ea-77c71745b196",
+            "trace_hash": "e14d0cb8d4a11cf1db1def3942fa7246b72cb6989463e8d379ade6e90a0405e6",
+            "final_proof": "7b58cd2c0b85716175e90136d025d8d282abb1b56cb98ffaa33d4cbde3db70a1",
+            "created_at": "2026-03-29T04:23:12Z"
+          },
+          "audit_log": {
+            "id": 1,
+            "event_type": "calculation_persisted",
+            "reference_id": "bc7b369d-d4f6-5dcc-a8ea-77c71745b196",
+            "event_payload": {
+              "request_id": "bc7b369d-d4f6-5dcc-a8ea-77c71745b196",
+              "result_id": "14b8968b-17dc-53b4-a89e-4f76a8f66988",
+              "proof_id": "3ede1db4-0b28-5703-a613-466b54b3255d",
+              "input_hash": "ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7",
+              "output_hash": "0c866369e1ab87b0d0b624c0fdeb490aa05fa2524e9368a023308a1437ec5b5b",
+              "trace_hash": "e14d0cb8d4a11cf1db1def3942fa7246b72cb6989463e8d379ade6e90a0405e6",
+              "final_proof": "7b58cd2c0b85716175e90136d025d8d282abb1b56cb98ffaa33d4cbde3db70a1"
+            },
+            "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+            "current_hash": "787f1ee615de1d71b87f12d646426c6697de1b2a4081790d74d33e41d7d45261",
+            "created_at": "2026-03-29T04:23:12Z"
+          }
+        }
+      },
+      "latency_ms": 51.77
+    },
+    "second_request": {
+      "status": 409,
+      "body": {
+        "detail": "Duplicate input hash detected: ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7"
+      },
+      "latency_ms": 14.04
+    },
+    "audit_rows": [
+      {
+        "id": 1,
+        "event_type": "calculation_persisted",
+        "reference_id": "bc7b369d-d4f6-5dcc-a8ea-77c71745b196",
+        "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "current_hash": "787f1ee615de1d71b87f12d646426c6697de1b2a4081790d74d33e41d7d45261",
+        "event_payload": {
+          "proof_id": "3ede1db4-0b28-5703-a613-466b54b3255d",
+          "result_id": "14b8968b-17dc-53b4-a89e-4f76a8f66988",
+          "input_hash": "ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7",
+          "request_id": "bc7b369d-d4f6-5dcc-a8ea-77c71745b196",
+          "trace_hash": "e14d0cb8d4a11cf1db1def3942fa7246b72cb6989463e8d379ade6e90a0405e6",
+          "final_proof": "7b58cd2c0b85716175e90136d025d8d282abb1b56cb98ffaa33d4cbde3db70a1",
+          "output_hash": "0c866369e1ab87b0d0b624c0fdeb490aa05fa2524e9368a023308a1437ec5b5b"
+        }
+      },
+      {
+        "id": 2,
+        "event_type": "calculation_rejected_duplicate",
+        "reference_id": "bc7b369d-d4f6-5dcc-a8ea-77c71745b196",
+        "prev_hash": "787f1ee615de1d71b87f12d646426c6697de1b2a4081790d74d33e41d7d45261",
+        "current_hash": "64c2c98dcfaeb2c47cd0d199710e64bbe01e66141793f5ae6a6cdb80ceca6c14",
+        "event_payload": {
+          "reason": "duplicate_input_hash",
+          "input_hash": "ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7"
+        }
+      }
+    ]
+  },
+  "step_4": {
+    "step": "audit_chain_validation",
+    "status": "PASS",
+    "pre_tamper": {
+      "status": "VALID",
+      "reason": "Audit chain verified successfully",
+      "checked_rows": 2,
+      "last_hash": "64c2c98dcfaeb2c47cd0d199710e64bbe01e66141793f5ae6a6cdb80ceca6c14",
+      "broken_record_id": null,
+      "exit_code": 0
+    },
+    "normal_tamper_error": "Append-only table audit_log does not allow UPDATE operations",
+    "post_tamper": {
+      "status": "INVALID",
+      "reason": "Current hash mismatch detected in audit chain",
+      "checked_rows": 0,
+      "last_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "broken_record_id": 1,
+      "exit_code": 1
+    }
+  }
+}

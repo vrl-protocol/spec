@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-03-29T04:23:33Z",
+  "step_6": {
+    "step": "latency_measurement",
+    "status": "WARN",
+    "total_request_latency_ms": {
+      "p50": 377.52,
+      "p95": 436.05,
+      "max": 448.8,
+      "average": 343.31
+    },
+    "db_transaction_ms": {
+      "p50": 103.03,
+      "p95": 233.54,
+      "max": 233.54,
+      "average": 126.14
+    },
+    "lock_wait_ms": {
+      "p50": 0.8,
+      "p95": 24.03,
+      "max": 24.03,
+      "average": 3.22
+    },
+    "note": "P95 request latency over 100ms indicates the audit-chain serialization lock is the likely bottleneck."
+  }
+}

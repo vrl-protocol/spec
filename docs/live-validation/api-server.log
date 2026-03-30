@@ -1,0 +1,963 @@
+INFO:     Started server process [25800]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:61256 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61257 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61258 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     Started server process [34612]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:61303 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61304 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61309 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:61311 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:61314 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:61319 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:61325 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:61331 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:61305 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61306 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61310 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61312 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61313 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61307 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61315 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61316 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61308 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61318 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61338 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:61320 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61321 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61322 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61323 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61326 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61327 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61328 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61329 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61340 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61333 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61334 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61344 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61335 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61348 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61337 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61352 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61342 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61339 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61360 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61357 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61343 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61364 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61345 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61346 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61347 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61367 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61350 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61351 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61349 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61369 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61353 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61354 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61355 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61356 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61370 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61358 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61359 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61362 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61372 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61361 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61363 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61376 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61365 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61379 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61368 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61383 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61388 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61371 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61373 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61374 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61396 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61375 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61377 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61378 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61398 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61381 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61382 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61380 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61400 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61384 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61387 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61385 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61386 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61389 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61391 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61392 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61404 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61395 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61393 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61394 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61406 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61397 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61410 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61399 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61402 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61403 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61405 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61407 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61409 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61408 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61413 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:61411 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     Started server process [17420]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:58005 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58006 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58007 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     Started server process [4740]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:52057 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52061 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52065 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52067 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52070 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52075 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52081 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52087 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52062 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52093 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52094 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52095 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52096 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52066 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52099 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52074 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52080 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52102 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52059 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52063 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52069 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52068 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52104 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52073 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52071 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52064 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52105 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52077 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52076 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52078 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52106 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52083 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52082 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52085 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52084 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52107 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52089 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52090 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52097 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52092 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52113 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52116 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52122 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52125 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52103 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52112 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52100 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52110 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52101 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52133 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52134 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52121 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52131 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52109 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52139 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52140 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52124 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52108 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52144 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52145 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52111 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52114 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52147 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52117 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52119 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52118 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52120 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52123 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52152 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52127 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52128 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52129 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52154 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52130 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52115 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52155 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52158 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52141 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52153 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52170 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52132 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52137 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52173 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52138 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52159 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52142 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52135 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52167 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52157 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52160 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52150 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52146 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52166 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52168 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52156 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52161 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52163 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52162 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52169 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52171 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:52172 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     Started server process [19684]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:59226 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59227 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59228 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     Started server process [15144]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:59277 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59278 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59283 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59286 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59288 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59294 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59300 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59309 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59284 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59282 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59292 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59297 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59316 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59312 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59285 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59315 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59321 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59317 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59304 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59313 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59279 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59326 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59323 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59295 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59329 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59311 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59331 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59281 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59280 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59290 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59330 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59287 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59327 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59291 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59328 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59296 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59299 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59289 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59324 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59301 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59302 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59342 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59303 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59310 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59345 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59318 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59348 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59314 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59341 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59355 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59344 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59319 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59347 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59320 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59325 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59356 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59322 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59359 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59334 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59371 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59337 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59354 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59374 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59369 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59377 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59365 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59332 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59350 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59333 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59366 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59376 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59382 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59335 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59362 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59363 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59380 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59339 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59381 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59343 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59387 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59346 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59357 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59336 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59351 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59353 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59390 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59361 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59386 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59367 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59364 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59389 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59391 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59383 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59373 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59372 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:59375 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59388 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59379 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59378 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59384 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59385 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     Started server process [15748]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:49946 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49947 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49948 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     Started server process [36384]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:49984 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49985 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49991 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49992 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49994 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49997 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50062 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50068 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50075 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49993 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49998 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50081 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50063 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50070 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50084 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49988 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49996 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50083 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50069 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50077 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50079 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50092 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50060 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50090 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50061 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50072 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50093 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50098 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50091 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49990 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50086 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49989 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50094 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49987 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:49995 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50106 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50065 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50067 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50102 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50078 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:50066 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50073 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50076 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50115 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50080 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50109 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50082 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50088 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50097 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50085 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50122 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50087 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50126 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50107 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50101 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50089 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50131 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50133 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50127 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50118 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50138 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50095 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50108 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50096 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50134 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50114 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50144 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50100 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50119 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50147 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50121 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50123 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50103 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50145 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50112 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50104 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50153 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50149 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50110 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50130 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50111 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50152 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50116 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50136 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50139 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50120 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50157 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50128 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50129 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50150 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50135 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50141 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50154 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50158 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50142 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50146 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50143 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50148 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50155 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50151 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50156 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     Started server process [31392]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54284 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54286 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54287 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     Started server process [20964]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54329 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54330 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54335 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54331 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54336 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54332 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54337 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54338 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54333 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54339 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54343 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54342 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54334 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54345 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54346 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54347 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54348 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54349 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54350 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54351 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54353 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54354 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54355 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54356 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54357 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54358 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54360 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54361 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54362 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54363 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54364 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:54365 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54366 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54367 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54368 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54369 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54370 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54372 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54371 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54373 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54374 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54375 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54376 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54377 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54379 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54378 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54380 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54381 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54382 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54384 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54383 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54385 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54386 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54387 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54389 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54388 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54390 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54391 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54392 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54393 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54394 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54395 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54396 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54397 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54398 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54399 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54400 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54401 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54402 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54403 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54404 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54405 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54406 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54407 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54408 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54409 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54411 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54410 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54412 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54413 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54414 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54415 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54416 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54417 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54419 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54420 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54421 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54422 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54423 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54424 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54425 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54426 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54427 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54428 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54429 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54430 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54432 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54433 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54434 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54435 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54436 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     Started server process [15648]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:59899 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59900 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59901 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     Started server process [12552]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:59951 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59952 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59953 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59957 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59954 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59958 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59959 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59960 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59961 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59962 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59964 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59955 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59963 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59966 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59967 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59968 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59969 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59956 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59970 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59973 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59972 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59974 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59975 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59976 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59977 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59979 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59982 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59983 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59984 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59985 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59986 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59987 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59989 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59990 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59991 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59992 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59993 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59994 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59996 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59997 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59995 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59998 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59999 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60000 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60002 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60001 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60003 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60005 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60006 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60007 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60009 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60008 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60010 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60011 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60012 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60013 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60014 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60015 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60016 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60017 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60018 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60020 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60019 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60021 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60022 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60024 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60023 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60025 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60026 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60028 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60030 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60029 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60031 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60032 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60033 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60035 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60036 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60037 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60038 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60039 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60040 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60041 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60042 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60043 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60044 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60045 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60046 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60047 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60048 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60049 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60050 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60051 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60052 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60053 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60054 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60055 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60056 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60057 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60059 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     Started server process [21856]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:59418 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59420 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59421 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     Started server process [6372]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:59471 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59472 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59473 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59477 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59474 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59478 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59480 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59475 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59479 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59481 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59482 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59476 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59483 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59484 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59486 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59487 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59488 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59489 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59490 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59491 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59492 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59494 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59495 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59496 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59497 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59498 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59501 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59502 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59503 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59505 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59506 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:59507 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59509 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59510 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59508 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59511 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59512 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59513 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59515 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59514 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59516 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59518 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59519 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59517 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59521 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59520 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59522 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59523 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59524 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59526 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59525 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59527 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59529 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59528 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59530 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59531 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59532 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59533 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59534 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59535 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59536 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59537 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59538 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59539 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59540 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59541 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59542 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59543 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59544 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59546 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59547 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59548 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59549 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59550 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59551 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59552 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59553 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59554 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59555 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59557 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59558 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59559 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59560 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59561 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59562 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59564 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59563 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59566 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59567 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59568 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59569 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59570 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59571 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59572 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59573 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59574 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59575 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59576 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59579 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59580 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59581 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52825 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:52828 - "POST /calculate HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 410, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\applications.py", line 1160, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py", line 122, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py", line 108, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py", line 532, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\13173\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py", line 316, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\13173\OneDrive\Documents\verifiable-reality-layer\api\routes.py", line 84, in calculate
+    payload = await _load_json_payload(request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\13173\OneDrive\Documents\verifiable-reality-layer\api\routes.py", line 50, in _load_json_payload
+    enforce_payload_guards(payload)
+  File "C:\Users\13173\OneDrive\Documents\verifiable-reality-layer\security\guards.py", line 58, in enforce_payload_guards
+    _walk(payload)
+  File "C:\Users\13173\OneDrive\Documents\verifiable-reality-layer\security\guards.py", line 29, in _walk
+    _walk(item)
+  File "C:\Users\13173\OneDrive\Documents\verifiable-reality-layer\security\guards.py", line 41, in _walk
+    raise SecurityViolation('Potential injection pattern detected')
+security.guards.SecurityViolation: Potential injection pattern detected
+INFO:     127.0.0.1:52829 - "POST /calculate HTTP/1.1" 413 Request Entity Too Large
+INFO:     127.0.0.1:52830 - "POST /calculate HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52831 - "POST /calculate HTTP/1.1" 400 Bad Request
+INFO:     Started server process [16496]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:49242 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49243 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49244 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     Started server process [37844]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:49293 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49295 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49294 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49299 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49296 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49300 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49301 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49297 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49302 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49303 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49304 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49298 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49305 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49306 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49307 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49308 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49310 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49311 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49313 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49314 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49315 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49317 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49318 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49319 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49320 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49321 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49324 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49325 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49326 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49327 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49329 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49328 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49330 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49331 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49332 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49333 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49334 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49335 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49336 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49337 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49339 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49338 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49340 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49341 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49342 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49344 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49343 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49345 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49346 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49348 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49347 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49349 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49350 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49352 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49351 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49353 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49354 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49355 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49356 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49357 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49358 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49359 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49360 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49362 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49363 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49364 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49365 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49366 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49367 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49368 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49369 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49371 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49370 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49372 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49374 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49375 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49376 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49377 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49378 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49379 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49380 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49383 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49382 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49384 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49385 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49386 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49387 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49388 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49389 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49390 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49391 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49392 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49393 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49395 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49396 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49398 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49399 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49400 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49401 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49402 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49403 - "POST /calculate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49498 - "POST /calculate HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:49500 - "POST /calculate HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:49501 - "POST /calculate HTTP/1.1" 413 Request Entity Too Large
+INFO:     127.0.0.1:49502 - "POST /calculate HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:49504 - "POST /calculate HTTP/1.1" 400 Bad Request

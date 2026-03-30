@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-03-29T04:23:33Z",
+  "step_8": {
+    "step": "failure_injection",
+    "status": "PASS",
+    "kill_mid_transaction": {
+      "input_hash": "kill-mid-1774758201",
+      "residual_request_count": 0,
+      "status": "PASS"
+    },
+    "drop_connection_mid_write": {
+      "input_hash": "drop-conn-1774758202",
+      "residual_request_count": 0,
+      "terminated_backend_pid": 30076,
+      "status": "PASS"
+    },
+    "duplicate_hash_attempt": {
+      "status": 409,
+      "body": {
+        "detail": "Duplicate input hash detected: ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7"
+      },
+      "latency_ms": 21.2
+    }
+  },
+  "step_9": {
+    "step": "adversarial_input_testing",
+    "status": "PASS",
+    "audit_log_count_before": 111,
+    "audit_log_count_after": 111,
+    "cases": {
+      "sql_injection_payload": {
+        "status": 400,
+        "body": {
+          "detail": "Potential injection pattern detected"
+        },
+        "latency_ms": 16.68
+      },
+      "oversized_json": {
+        "status": 413,
+        "body": {
+          "detail": "Request body too large"
+        },
+        "latency_ms": 15.46
+      },
+      "malformed_schema": {
+        "status": 400,
+        "body": {
+          "detail": "JSON body must be an object"
+        },
+        "latency_ms": 19.09
+      },
+      "invalid_hs_code": {
+        "status": 400,
+        "body": {
+          "detail": "Input validation failed"
+        },
+        "latency_ms": 2.85
+      }
+    }
+  }
+}
