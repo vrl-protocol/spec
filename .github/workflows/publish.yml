@@ -1,0 +1,34 @@
+name: Publish vrl-sdk to PyPI
+
+on:
+  release:
+      types: [published]
+
+      jobs:
+        publish:
+            name: Build and publish to PyPI
+                runs-on: ubuntu-latest
+                    defaults:
+                          run:
+                                  working-directory: sdk/python
+
+                                      steps:
+                                            - name: Checkout repository
+                                                    uses: actions/checkout@v4
+
+                                                          - name: Set up Python
+                                                                  uses: actions/setup-python@v5
+                                                                          with:
+                                                                                    python-version: "3.11"
+
+                                                                                          - name: Install build tools
+                                                                                                  run: pip install --upgrade build twine
+
+                                                                                                        - name: Build distribution packages
+                                                                                                                run: python -m build
+                                                                                                                
+                                                                                                                      - name: Publish to PyPI
+                                                                                                                              env:
+                                                                                                                                        TWINE_USERNAME: __token__
+                                                                                                                                                  TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+                                                                                                                                                          run: twine upload dist/*
