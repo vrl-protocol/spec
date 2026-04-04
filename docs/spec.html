@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRL Specification v1.0</title>
+  <meta name="description" content="VRL Proof Bundle Specification - The standard for cryptographically verifiable AI outputs.">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .spec-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .spec-sidebar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+
+    .spec-sidebar h4 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+    }
+
+    .spec-sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .spec-sidebar li {
+      margin-bottom: 0.5rem;
+    }
+
+    .spec-sidebar a {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.25rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+
+    .spec-sidebar a:hover,
+    .spec-sidebar a.active {
+      background: var(--bg-hover);
+      color: var(--accent);
+    }
+
+    .spec-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 2rem;
+    }
+
+    .spec-content h2 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+
+    .spec-content h2:first-child {
+      margin-top: 0;
+    }
+
+    .spec-content h3 {
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .spec-content p {
+      margin-bottom: 1rem;
+    }
+
+    .spec-content ul,
+    .spec-content ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .spec-content li {
+      margin-bottom: 0.5rem;
+    }
+
+    .spec-content code {
+      background: var(--bg-darker);
+      padding: 0.3em 0.5em;
+    }
+
+    .spec-content pre {
+      background: var(--bg-darker);
+      overflow-x: auto;
+    }
+
+    .spec-table {
+      width: 100%;
+      margin: 1rem 0;
+      border-collapse: collapse;
+    }
+
+    .spec-table th,
+    .spec-table td {
+      border: 1px solid var(--border);
+      padding: 0.75rem;
+      text-align: left;
+    }
+
+    .spec-table th {
+      background: var(--bg-darker);
+      font-weight: 600;
+    }
+
+    @media (max-width: 1024px) {
+      .spec-container {
+        grid-template-columns: 1fr;
+      }
+
+      .spec-sidebar {
+        position: static;
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">VRL</div>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="verify.html">Verify</a></li>
+          <li><a href="registry.html">Registry</a></li>
+          <li><a href="spec.html" class="active">Spec</a></li>
+          <li><a href="https://github.com/vrl-protocol" target="_blank">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section>
+      <div class="container">
+        <h1>VRL Proof Bundle Specification v1.0</h1>
+        <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem;">
+          The complete specification for cryptographically verifiable AI outputs.
+        </p>
+
+        <div class="spec-container">
+          <!-- Sidebar -->
+          <div class="spec-sidebar">
+            <h4>Contents</h4>
+            <ul>
+              <li><a href="#abstract">Abstract</a></li>
+              <li><a href="#status">Status</a></li>
+              <li><a href="#table-of-contents">Table of Contents</a></li>
+              <li><a href="#terminology">Terminology</a></li>
+              <li><a href="#ai-identity">AI Identity Standard</a></li>
+              <li><a href="#bundle-structure">Proof Bundle Structure</a></li>
+              <li><a href="#proof-systems">Proof Systems</a></li>
+              <li><a href="#circuit-registry">Circuit Registry</a></li>
+              <li><a href="#data-commitments">Data Commitments</a></li>
+              <li><a href="#proof-graph">Proof Graph</a></li>
+              <li><a href="#legal-layer">Legal Layer</a></li>
+              <li><a href="#canonical-serialization">Canonical Serialization</a></li>
+              <li><a href="#hash-computation">Hash Computation</a></li>
+              <li><a href="#verification">Verification Procedure</a></li>
+            </ul>
+          </div>
+
+          <!-- Content -->
+          <div class="spec-content">
+            <section id="abstract">
+              <h2>Abstract</h2>
+              <p>This document defines the <strong>VRL Proof Bundle</strong> — a portable, self-contained artifact
+                that cryptographically attests to the identity, inputs, outputs, and execution correctness of any AI
+                system or deterministic computation.</p>
+              <p>A VRL Proof Bundle carries enough information for any third party to independently verify its
+                authenticity without trusting the issuing party or any centralised service.</p>
+              <p>The VRL Proof Bundle is designed to become the universal envelope for verifiable AI output — the
+                equivalent of a TLS certificate for computational truth.</p>
+            </section>
+
+            <section id="status">
+              <h2>Status of This Document</h2>
+              <p>This document is a <strong>Draft Specification</strong> open for public review and contribution.</p>
+              <p>The key words <strong>MUST</strong>, <strong>MUST NOT</strong>, <strong>REQUIRED</strong>,
+                <strong>SHALL</strong>, <strong>SHALL NOT</strong>, <strong>SHOULD</strong>, <strong>SHOULD
+                  NOT</strong>, <strong>RECOMMENDED</strong>, <strong>MAY</strong>, and <strong>OPTIONAL</strong> in
+                this document are to be interpreted as described in RFC 2119.</p>
+            </section>
+
+            <section id="table-of-contents">
+              <h2>Table of Contents</h2>
+              <ol>
+                <li><a href="#terminology">Terminology</a></li>
+                <li><a href="#ai-identity">AI Identity Standard (AI-ID)</a></li>
+                <li><a href="#bundle-structure">Proof Bundle Structure</a></li>
+                <li><a href="#proof-systems">Proof Systems</a></li>
+                <li><a href="#circuit-registry">Circuit Registry</a></li>
+                <li><a href="#data-commitments">Data Commitments</a></li>
+                <li><a href="#proof-graph">Proof Graph</a></li>
+                <li><a href="#legal-layer">Legal Layer</a></li>
+                <li><a href="#trust-context">Trust Context</a></li>
+                <li><a href="#canonical-serialization">Canonical Serialisation</a></li>
+                <li><a href="#hash-computation">Hash Computation</a></li>
+                <li><a href="#verification">Verification Procedure</a></li>
+                <li><a href="#output-envelope">Mandatory Output Envelope</a></li>
+                <li><a href="#security">Security Considerations</a></li>
+                <li><a href="#versioning">Versioning</a></li>
+                <li><a href="#examples">Complete Examples</a></li>
+                <li><a href="#json-schema">JSON Schema</a></li>
+              </ol>
+            </section>
+
+            <section id="terminology">
+              <h2>1. Terminology</h2>
+              <ul>
+                <li><strong>AI-ID</strong> — A cryptographic identifier uniquely bound to a specific AI model at a
+                  specific version in a specific execution environment.</li>
+                <li><strong>Circuit</strong> — A deterministic, verifiable computation encoded as arithmetic
+                  constraints, identified by circuit hash and registered in the VRL Circuit Registry.</li>
+                <li><strong>Integrity Hash</strong> — SHA-256 digest of the concatenation of input_hash + output_hash
+                  + trace_hash. Binds all three artifacts into a single verifiable fingerprint.</li>
+                <li><strong>Proof Bundle</strong> — The complete, portable artifact. Contains AI identity claim,
+                  computation record, cryptographic proof, optional legal metadata, data commitments, and graph
+                  edges.</li>
+                <li><strong>Proof System</strong> — The cryptographic mechanism used to generate and verify the proof.
+                </li>
+                <li><strong>TEE</strong> — Trusted Execution Environment. Hardware-isolated compute enclave that
+                  generates a signed attestation report.</li>
+                <li><strong>Trace</strong> — Ordered sequence of intermediate computation steps between input and
+                  output.</li>
+                <li><strong>Verifier</strong> — Any party that independently checks a proof bundle's validity.</li>
+              </ul>
+            </section>
+
+            <section id="ai-identity">
+              <h2>2. AI Identity Standard (AI-ID)</h2>
+              <h3>2.1 Purpose</h3>
+              <p>An AI-ID is a stable, verifiable identifier for a specific AI model at a specific version under a
+                specific execution configuration. It allows any party to assert: <em>"This exact model, in this exact
+                  state, produced this output."</em></p>
+
+              <h3>2.2 AI-ID Computation</h3>
+              <p>An AI-ID is computed as:</p>
+              <pre><code>AI_ID = SHA-256(canonical_json({
+  "model_weights_hash":      SHA-256(model_weights_bytes),
+  "runtime_hash":            SHA-256(runtime_environment),
+  "config_hash":             SHA-256(canonical_json(config)),
+  "provider_id":             "&lt;provider&gt;",
+  "model_name":              "&lt;name&gt;",
+  "model_version":           "&lt;semver&gt;",
+  "spec_version":            "vrl/ai-id/1.0"
+}))</code></pre>
+
+              <h3>2.3 AI Identity Object</h3>
+              <table class="spec-table">
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>ai_id</code></td>
+                    <td>hex string (64 chars)</td>
+                    <td>Yes</td>
+                    <td>SHA-256 digest of canonical AI identity record</td>
+                  </tr>
+                  <tr>
+                    <td><code>model_name</code></td>
+                    <td>string</td>
+                    <td>Yes</td>
+                    <td>Human-readable model name (e.g., "llama-3-70b")</td>
+                  </tr>
+                  <tr>
+                    <td><code>model_version</code></td>
+                    <td>string (semver)</td>
+                    <td>Yes</td>
+                    <td>Semantic version of the model</td>
+                  </tr>
+                  <tr>
+                    <td><code>provider_id</code></td>
+                    <td>string</td>
+                    <td>Yes</td>
+                    <td>Canonical provider identifier (e.g., "io.meta")</td>
+                  </tr>
+                  <tr>
+                    <td><code>execution_environment</code></td>
+                    <td>enum</td>
+                    <td>Yes</td>
+                    <td>one of: tee, gpu, cpu, deterministic, web</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="bundle-structure">
+              <h2>3. Proof Bundle Structure</h2>
+              <table class="spec-table">
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>vrl_version</code></td>
+                    <td>string</td>
+                    <td>Yes</td>
+                    <td>Specification version (must be "1.0")</td>
+                  </tr>
+                  <tr>
+                    <td><code>bundle_id</code></td>
+                    <td>UUID v4</td>
+                    <td>Yes</td>
+                    <td>Unique identifier for this bundle</td>
+                  </tr>
+                  <tr>
+                    <td><code>ai_identity</code></td>
+                    <td>object</td>
+                    <td>Yes</td>
+                    <td>AI Identity object (see §2)</td>
+                  </tr>
+                  <tr>
+                    <td><code>computation</code></td>
+                    <td>object</td>
+                    <td>Yes</td>
+                    <td>Computation record with hashes</td>
+                  </tr>
+                  <tr>
+                    <td><code>proof</code></td>
+                    <td>object</td>
+                    <td>Yes</td>
+                    <td>Cryptographic proof (see §4)</td>
+                  </tr>
+                  <tr>
+                    <td><code>data_commitments</code></td>
+                    <td>array</td>
+                    <td>No</td>
+                    <td>Array of signed dataset commitments</td>
+                  </tr>
+                  <tr>
+                    <td><code>legal</code></td>
+                    <td>object</td>
+                    <td>No</td>
+                    <td>Compliance and jurisdiction metadata</td>
+                  </tr>
+                  <tr>
+                    <td><code>issued_at</code></td>
+                    <td>ISO 8601</td>
+                    <td>No</td>
+                    <td>Timestamp of bundle creation</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>Computation Object</h3>
+              <p>The <code>computation</code> object records what was computed:</p>
+              <table class="spec-table">
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>circuit_id</code></td>
+                    <td>string</td>
+                    <td>Registered circuit identifier (domain/name@version)</td>
+                  </tr>
+                  <tr>
+                    <td><code>circuit_hash</code></td>
+                    <td>hex string</td>
+                    <td>SHA-256 of circuit constraint system</td>
+                  </tr>
+                  <tr>
+                    <td><code>input_hash</code></td>
+                    <td>hex string</td>
+                    <td>SHA-256 of canonical input</td>
+                  </tr>
+                  <tr>
+                    <td><code>output_hash</code></td>
+                    <td>hex string</td>
+                    <td>SHA-256 of canonical output</td>
+                  </tr>
+                  <tr>
+                    <td><code>trace_hash</code></td>
+                    <td>hex string</td>
+                    <td>SHA-256 of execution trace</td>
+                  </tr>
+                  <tr>
+                    <td><code>integrity_hash</code></td>
+                    <td>hex string</td>
+                    <td>SHA-256(input_hash + output_hash + trace_hash)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="proof-systems">
+              <h2>4. Proof Systems</h2>
+              <p>VRL is proof-system agnostic. The following are the standardised proof mechanisms:</p>
+              <table class="spec-table">
+                <thead>
+                  <tr>
+                    <th>Proof System</th>
+                    <th>Strength</th>
+                    <th>Best For</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>plonk-halo2-pasta</code></td>
+                    <td>Cryptographic</td>
+                    <td>Deterministic computations, compliance</td>
+                  </tr>
+                  <tr>
+                    <td><code>tee-intel-tdx</code></td>
+                    <td>Hardware</td>
+                    <td>LLM inference in Intel TDX enclaves</td>
+                  </tr>
+                  <tr>
+                    <td><code>tee-amd-sev-snp</code></td>
+                    <td>Hardware</td>
+                    <td>AI in AMD SEV-SNP enclaves</td>
+                  </tr>
+                  <tr>
+                    <td><code>zk-ml</code></td>
+                    <td>Cryptographic</td>
+                    <td>Small ML models via EZKL</td>
+                  </tr>
+                  <tr>
+                    <td><code>sha256-deterministic</code></td>
+                    <td>Hash-chain</td>
+                    <td>Rule engines, audit trails</td>
+                  </tr>
+                  <tr>
+                    <td><code>api-hash-binding</code></td>
+                    <td>Hash-binding</td>
+                    <td>API-hosted models</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="circuit-registry">
+              <h2>5. Circuit Registry</h2>
+              <p>The VRL Circuit Registry is an open, append-only catalog of certified computation circuits.</p>
+              <p>Circuits have three certification tiers:</p>
+              <ul>
+                <li><strong>EXPERIMENTAL</strong> — Submitted, not yet reviewed</li>
+                <li><strong>REVIEWED</strong> — Reviewed by VRL maintainers</li>
+                <li><strong>CERTIFIED</strong> — Independently audited and formally verified</li>
+              </ul>
+              <p>See <a href="registry.html">the registry browser</a> for the current circuit catalog.</p>
+            </section>
+
+            <section id="data-commitments">
+              <h2>6. Data Commitments</h2>
+              <p>A data commitment cryptographically binds a proof bundle to a specific version of an external
+                dataset, signed by the dataset's authoritative provider.</p>
+              <table class="spec-table">
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>dataset_id</code></td>
+                    <td>string</td>
+                    <td>Authoritative dataset identifier</td>
+                  </tr>
+                  <tr>
+                    <td><code>dataset_version</code></td>
+                    <td>string</td>
+                    <td>Version of the dataset used</td>
+                  </tr>
+                  <tr>
+                    <td><code>dataset_hash</code></td>
+                    <td>hex string</td>
+                    <td>SHA-256 of canonical dataset</td>
+                  </tr>
+                  <tr>
+                    <td><code>provider_id</code></td>
+                    <td>string</td>
+                    <td>Authoritative provider identifier</td>
+                  </tr>
+                  <tr>
+                    <td><code>committed_at</code></td>
+                    <td>ISO 8601</td>
+                    <td>Timestamp of commitment</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="proof-graph">
+              <h2>7. Proof Graph</h2>
+              <p>Proof bundles can reference each other as dependencies, forming a directed acyclic graph (DAG).
+                This allows composition of verifiable computations.</p>
+            </section>
+
+            <section id="legal-layer">
+              <h2>8. Legal Layer</h2>
+              <p>The legal metadata allows proof bundles to declare their compliance context:</p>
+              <table class="spec-table">
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>jurisdictions</code></td>
+                    <td>array</td>
+                    <td>ISO 3166-1 alpha-2 country codes</td>
+                  </tr>
+                  <tr>
+                    <td><code>admissibility_standard</code></td>
+                    <td>string</td>
+                    <td>e.g., "VRL_v1", "EVIDENTIARY"</td>
+                  </tr>
+                  <tr>
+                    <td><code>compliance_flags</code></td>
+                    <td>array</td>
+                    <td>e.g., ["EU_AI_ACT", "HIPAA", "SOX"]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="canonical-serialization">
+              <h2>10. Canonical Serialisation</h2>
+              <p>All JSON must be serialised canonically (sorted keys, no whitespace) for hashing:</p>
+              <pre><code>canonical_json(obj) = JSON with:
+  • Keys sorted lexicographically
+  • No whitespace (no spaces after : or ,)
+  • No trailing newlines
+  • UTF-8 encoded</code></pre>
+            </section>
+
+            <section id="hash-computation">
+              <h2>11. Hash Computation</h2>
+              <p>All hashes use SHA-256 and are represented as lowercase hexadecimal strings.</p>
+              <pre><code>hash = lowercase(hex(SHA-256(bytes)))</code></pre>
+            </section>
+
+            <section id="verification">
+              <h2>12. Verification Procedure</h2>
+              <p>The 10-step verification procedure:</p>
+              <ol>
+                <li>Parse the JSON bundle</li>
+                <li>Check vrl_version equals "1.0"</li>
+                <li>Validate all required fields are present</li>
+                <li>Validate ai_identity structure</li>
+                <li>Validate computation data</li>
+                <li>Validate proof structure</li>
+                <li>Verify integrity_hash = SHA256(input_hash + output_hash + trace_hash)</li>
+                <li>Validate bundle_id is valid UUID v4</li>
+                <li>Validate timestamps (if present) are valid ISO 8601</li>
+                <li>Return VALID or INVALID with detailed error codes</li>
+              </ol>
+              <p>See <a href="verify.html">the web verifier</a> for a live implementation.</p>
+            </section>
+
+            <section id="security">
+              <h2>14. Security Considerations</h2>
+              <ul>
+                <li>All hashes are non-invertible (SHA-256)</li>
+                <li>Proof bundles are immutable once issued</li>
+                <li>Verification requires no trust in the issuer</li>
+                <li>Private inputs are hashed, never exposed</li>
+                <li>Bundle tampering is immediately detectable</li>
+              </ul>
+            </section>
+
+            <section id="versioning">
+              <h2>15. Versioning</h2>
+              <p>This is VRL Proof Bundle Specification v1.0. Breaking changes require a major version bump.
+                Minor features may be added without breaking backward compatibility.</p>
+            </section>
+
+            <section>
+              <h2>Learn More</h2>
+              <p>For the complete specification including JSON Schema, examples, and formal definitions, see the <a
+                  href="https://github.com/vrl-protocol/spec" target="_blank">GitHub repository</a>.</p>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>VRL</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="verify.html">Verifier</a></li>
+            <li><a href="registry.html">Registry</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Specification</h4>
+          <ul>
+            <li><a href="spec.html">Full Spec</a></li>
+            <li><a href="https://github.com/vrl-protocol/spec" target="_blank">GitHub</a></li>
+            <li><a href="https://github.com/vrl-protocol/spec/issues" target="_blank">Issues</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Tools</h4>
+          <ul>
+            <li><a href="https://github.com/vrl-protocol" target="_blank">Python SDK</a></li>
+            <li><a href="https://github.com/vrl-protocol" target="_blank">Reference Verifier</a></li>
+            <li><a href="https://github.com/vrl-protocol" target="_blank">CLI Tools</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>VRL Specification v1.0 licensed under <a href="https://creativecommons.org/licenses/by/4.0/"
+            target="_blank">CC BY 4.0</a>. Implementation licensed under MIT.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/vrl.js"></script>
+</body>
+</html>

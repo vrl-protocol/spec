@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRL Verifier — Verify Proof Bundles</title>
+  <meta name="description" content="Verify VRL Proof Bundles offline using pure cryptography in your browser.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">VRL</div>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="verify.html" class="active">Verify</a></li>
+          <li><a href="registry.html">Registry</a></li>
+          <li><a href="spec.html">Spec</a></li>
+          <li><a href="https://github.com/vrl-protocol" target="_blank">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Header Section -->
+    <section>
+      <div class="container">
+        <h1>VRL Proof Bundle Verifier</h1>
+        <p>Paste a VRL Proof Bundle JSON to verify it offline. All cryptographic operations run in your browser using
+          the SubtleCrypto Web API. No data is sent to any server.</p>
+      </div>
+    </section>
+
+    <!-- Verifier Section -->
+    <section>
+      <div class="container">
+        <div class="verifier-wrapper">
+          <!-- Input Panel -->
+          <div class="input-area" style="display: block;">
+            <h3>Paste a Bundle</h3>
+            <textarea id="bundleInput" placeholder="Paste a VRL Proof Bundle JSON here..."></textarea>
+            <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+              <button class="btn btn-primary" onclick="runVerification()">Verify</button>
+              <button class="btn btn-secondary" onclick="loadValidTradeExample()">Load Valid Trade</button>
+              <button class="btn btn-secondary" onclick="loadValidTeeExample()">Load Valid TEE</button>
+            </div>
+          </div>
+
+          <!-- Output Panel -->
+          <div class="output-area" id="outputArea" style="display: none;">
+            <h3>Verification Result</h3>
+            <div id="verificationResults"></div>
+            <div style="margin-top: 1.5rem;">
+              <button class="btn btn-secondary" onclick="clearResults()">Verify Another</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section>
+      <div class="container">
+        <h2>How Verification Works</h2>
+        <div class="grid grid-3">
+          <div class="card">
+            <h3>10-Step Process</h3>
+            <p>VRL verification follows a deterministic 10-step procedure:</p>
+            <ol style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li style="margin-bottom: 0.5rem;">Parse JSON</li>
+              <li style="margin-bottom: 0.5rem;">Check VRL version</li>
+              <li style="margin-bottom: 0.5rem;">Validate required fields</li>
+              <li style="margin-bottom: 0.5rem;">Validate AI Identity</li>
+              <li style="margin-bottom: 0.5rem;">Validate computation data</li>
+              <li style="margin-bottom: 0.5rem;">Validate proof structure</li>
+              <li style="margin-bottom: 0.5rem;">Verify integrity hash</li>
+              <li style="margin-bottom: 0.5rem;">Validate bundle ID</li>
+              <li style="margin-bottom: 0.5rem;">Validate timestamps</li>
+              <li>Final summary</li>
+            </ol>
+          </div>
+
+          <div class="card">
+            <h3>Cryptographic Verification</h3>
+            <p>The integrity hash is verified using SHA-256:</p>
+            <pre style="margin-top: 1rem;"><code>integrity_hash = SHA256(
+  input_hash +
+  output_hash +
+  trace_hash
+)</code></pre>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">Computed client-side using the SubtleCrypto Web API.</p>
+          </div>
+
+          <div class="card">
+            <h3>Offline, No Trust</h3>
+            <p>All verification happens in your browser. No network calls are made. You don't have to trust VRL, your
+              browser, or any server. Just the mathematics.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bundle Structure Section -->
+    <section>
+      <div class="container">
+        <h2>Proof Bundle Structure</h2>
+        <p>A valid VRL Proof Bundle contains:</p>
+        <div class="grid grid-2">
+          <div class="card">
+            <h4>vrl_version</h4>
+            <p>The VRL specification version (e.g., "1.0")</p>
+          </div>
+
+          <div class="card">
+            <h4>bundle_id</h4>
+            <p>UUID v4 unique identifier for this bundle</p>
+          </div>
+
+          <div class="card">
+            <h4>ai_identity</h4>
+            <p>Proof of which AI ran: model name, version, provider, AI-ID hash, execution environment</p>
+          </div>
+
+          <div class="card">
+            <h4>computation</h4>
+            <p>What the AI computed: circuit ID, input/output/trace hashes, integrity hash, circuit hash</p>
+          </div>
+
+          <div class="card">
+            <h4>proof</h4>
+            <p>The cryptographic proof: proof system, proof bytes, public inputs, verification key ID</p>
+          </div>
+
+          <div class="card">
+            <h4>legal (optional)</h4>
+            <p>Compliance metadata: jurisdictions, admissibility standard, compliance flags</p>
+          </div>
+
+          <div class="card">
+            <h4>data_commitments (optional)</h4>
+            <p>Binding to external datasets: dataset ID, version, hash, provider, commitment hash</p>
+          </div>
+
+          <div class="card">
+            <h4>issued_at (optional)</h4>
+            <p>ISO 8601 timestamp of bundle creation</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Proof Systems Section -->
+    <section>
+      <div class="container">
+        <h2>Supported Proof Systems</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Proof System</th>
+              <th>Strength</th>
+              <th>Use Case</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>plonk-halo2-pasta</code></td>
+              <td>Cryptographic</td>
+              <td>Deterministic compliance calculations, tariff rules, decision logic</td>
+            </tr>
+            <tr>
+              <td><code>tee-intel-tdx</code></td>
+              <td>Hardware</td>
+              <td>AI inference inside Intel Trusted Execution Environment</td>
+            </tr>
+            <tr>
+              <td><code>tee-amd-sev-snp</code></td>
+              <td>Hardware</td>
+              <td>AI inference inside AMD SEV-SNP enclave</td>
+            </tr>
+            <tr>
+              <td><code>zk-ml</code></td>
+              <td>Cryptographic</td>
+              <td>Small ML models using zero-knowledge proofs (EZKL)</td>
+            </tr>
+            <tr>
+              <td><code>sha256-deterministic</code></td>
+              <td>Hash-chain</td>
+              <td>Rule engines, simple verifiable rules, audit trail binding</td>
+            </tr>
+            <tr>
+              <td><code>api-hash-binding</code></td>
+              <td>Hash-binding</td>
+              <td>API-hosted models, HMAC-based audit trails</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section>
+      <div class="container">
+        <h2>Frequently Asked Questions</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <h4>Is verification really offline?</h4>
+            <p>Yes. All verification steps run in your browser using the SubtleCrypto Web API. SHA-256 is computed
+              client-side. No network requests are made.</p>
+          </div>
+
+          <div class="card">
+            <h4>What does verification actually check?</h4>
+            <p>The 10-step procedure validates the bundle structure, checks that the integrity hash is correct (input +
+              output + trace), and confirms all required fields are present and well-formed.</p>
+          </div>
+
+          <div class="card">
+            <h4>Can I trust the result?</h4>
+            <p>You're trusting the mathematics (SHA-256) and your browser's SubtleCrypto implementation (which is
+              standardized and audited). You're not trusting VRL, any server, or any external service.</p>
+          </div>
+
+          <div class="card">
+            <h4>What does a "VALID" result mean?</h4>
+            <p>It means the bundle is well-formed and the integrity hash is correct. It does NOT guarantee that the AI
+              actually ran correctly — that requires checking the proof system (PLONK, TEE, etc.).</p>
+          </div>
+
+          <div class="card">
+            <h4>Where do I get VRL bundles?</h4>
+            <p>From AI systems that have implemented the VRL spec and integrated it with their proof generation system.
+              See the SDK and circuit registry for details.</p>
+          </div>
+
+          <div class="card">
+            <h4>Can I integrate this verifier into my app?</h4>
+            <p>Yes! Use the <code>verifyProofBundle()</code> function from <code>assets/vrl.js</code>. It returns a
+              structured result object.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>VRL</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="spec.html">Specification</a></li>
+            <li><a href="registry.html">Circuit Registry</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Tools</h4>
+          <ul>
+            <li><a href="verify.html">Verifier</a></li>
+            <li><a href="https://github.com/vrl-protocol" target="_blank">Python SDK</a></li>
+            <li><a href="https://github.com/vrl-protocol" target="_blank">Reference CLI</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="https://github.com/vrl-protocol" target="_blank">GitHub</a></li>
+            <li><a href="https://github.com/vrl-protocol/spec/issues" target="_blank">Issues</a></li>
+            <li><a href="https://github.com/vrl-protocol/spec#contributing" target="_blank">Contributing</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>VRL is an open standard. Specification: <a href="https://creativecommons.org/licenses/by/4.0/"
+            target="_blank">CC BY 4.0</a>. Implementation: MIT.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/vrl.js"></script>
+  <script>
+    // Example bundles (embedded inline)
+    const validTradeBundle = {
+      "vrl_version": "1.0",
+      "bundle_id": "e2cad545-1910-5f44-a596-1ccd4591c538",
+      "issued_at": "2026-04-04T12:00:00.000Z",
+      "ai_identity": {
+        "ai_id": "a3f2c1d4e5b6a7f8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+        "model_name": "vrl-deterministic-engine",
+        "model_version": "1.0.0",
+        "provider_id": "io.vrl",
+        "execution_environment": "deterministic"
+      },
+      "computation": {
+        "circuit_id": "trade/import-landed-cost@2.0.0",
+        "circuit_version": "2.0.0",
+        "circuit_hash": "14414791513f16066b2288ac9053bba1f5de3f4a53f7cb59f1dd68c6ecba58ad",
+        "input_hash": "ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7",
+        "output_hash": "0c866369e1ab87b0d0b624c0fdeb490aa05fa2524e9368a023308a1437ec5b5b",
+        "trace_hash": "e14d0cb8d4a11cf1db1def3942fa7246b72cb6989463e8d379ade6e90a0405e6",
+        "integrity_hash": "7b58cd2c0b85716175e90136d025d8d282abb1b56cb98ffaa33d4cbde3db70a1"
+      },
+      "proof": {
+        "proof_system": "sha256-deterministic",
+        "proof_bytes": "0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a",
+        "public_inputs": [
+          "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b",
+          "2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c"
+        ],
+        "verification_key_id": "aadfa62983a64cb674b1b9b1c4379d8a01e02948fed731506de4bcf2950012a0",
+        "proof_hash": "4f9d4ea2e0f7eeacf99207348e7e6f4f136ce0afac279f31085274cfa9eb7538"
+      },
+      "data_commitments": [
+        {
+          "dataset_id": "cbp/hts-tariff-rules",
+          "dataset_version": "2026.1.0",
+          "dataset_hash": "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+          "provider_id": "gov.us.cbp",
+          "committed_at": "2026-04-01T00:00:00.000Z",
+          "commitment_hash": "ceeffe6774ca25b9f24b48a8a075c1c45944f2b4afa6751077ae402f79a6aff7"
+        }
+      ],
+      "legal": {
+        "jurisdictions": ["US"],
+        "admissibility_standard": "VRL_v1",
+        "compliance_flags": ["CBP_ACE"]
+      }
+    };
+
+    const validTeeBundle = {
+      "vrl_version": "1.0",
+      "bundle_id": "f3cad545-1910-5f44-a596-1ccd4591c539",
+      "issued_at": "2026-04-04T13:15:00.000Z",
+      "ai_identity": {
+        "ai_id": "b4f3d2e5c6a7b8f9d0e1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c3",
+        "model_name": "llama-3-70b-instruct",
+        "model_version": "3.0.0",
+        "provider_id": "io.meta",
+        "execution_environment": "tee"
+      },
+      "computation": {
+        "circuit_id": "general/tee-inference-attestation@1.0.0",
+        "circuit_version": "1.0.0",
+        "circuit_hash": "d1f8c5a9b2e7d3f6a8c1e4b7d0f5a2c9e3f1b8d5a7c2e6f1a3b8c5d9e2f4a",
+        "input_hash": "fbf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea8",
+        "output_hash": "1c866369e1ab87b0d0b624c0fdeb490aa05fa2524e9368a023308a1437ec5b5c",
+        "trace_hash": "f14d0cb8d4a11cf1db1def3942fa7246b72cb6989463e8d379ade6e90a0405e7",
+        "integrity_hash": "8b58cd2c0b85716175e90136d025d8d282abb1b56cb98ffaa33d4cbde3db70a2"
+      },
+      "proof": {
+        "proof_system": "tee-intel-tdx",
+        "proof_bytes": "1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b",
+        "public_inputs": [
+          "3b4c5d6e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3d"
+        ],
+        "verification_key_id": "bbdfa62983a64cb674b1b9b1c4379d8a01e02948fed731506de4bcf2950012a1",
+        "proof_hash": "5f9d4ea2e0f7eeacf99207348e7e6f4f136ce0afac279f31085274cfa9eb7539"
+      },
+      "legal": {
+        "jurisdictions": ["US", "EU"],
+        "admissibility_standard": "VRL_v1",
+        "compliance_flags": ["EU_AI_ACT"]
+      }
+    };
+
+    async function runVerification() {
+      const bundleInput = document.getElementById('bundleInput').value.trim();
+      if (!bundleInput) {
+        alert('Please paste a VRL Proof Bundle JSON.');
+        return;
+      }
+
+      const outputArea = document.getElementById('outputArea');
+      const resultsDiv = document.getElementById('verificationResults');
+
+      // Show output area
+      outputArea.style.display = 'block';
+      resultsDiv.innerHTML = '<div style="text-align: center; padding: 2rem;"><p>Verifying...</p></div>';
+
+      // Give the DOM time to update
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      const result = await verifyProofBundle(bundleInput);
+      renderVerificationResult(result);
+    }
+
+    function loadValidTradeExample() {
+      document.getElementById('bundleInput').value = JSON.stringify(validTradeBundle, null, 2);
+      setTimeout(() => runVerification(), 100);
+    }
+
+    function loadValidTeeExample() {
+      document.getElementById('bundleInput').value = JSON.stringify(validTeeBundle, null, 2);
+      setTimeout(() => runVerification(), 100);
+    }
+
+    function clearResults() {
+      document.getElementById('outputArea').style.display = 'none';
+      document.getElementById('bundleInput').value = '';
+      document.getElementById('bundleInput').focus();
+    }
+
+    function renderVerificationResult(result) {
+      const resultsDiv = document.getElementById('verificationResults');
+
+      let html = '';
+
+      // Status badge
+      if (result.status === 'VALID') {
+        html += '<div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem;">';
+        html += '<h4 style="color: var(--success); margin: 0 0 0.5rem 0;">✓ VALID</h4>';
+        html += '<p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">This proof bundle is cryptographically valid and well-formed.</p>';
+        html += '</div>';
+
+        if (result.bundle_summary) {
+          const summary = result.bundle_summary;
+          html += '<div style="background: var(--bg-darker); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem;">';
+          html += '<h4>Bundle Summary</h4>';
+          html += `<p><strong>Bundle ID:</strong><br><code>${summary.bundle_id}</code></p>`;
+          html += `<p><strong>AI Model:</strong><br>${summary.model}</p>`;
+          html += `<p><strong>Circuit:</strong><br>${summary.circuit}</p>`;
+          html += `<p><strong>Proof System:</strong><br>${summary.proof_system}</p>`;
+          html += '</div>';
+        }
+      } else {
+        html += '<div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem;">';
+        html += `<h4 style="color: var(--error); margin: 0 0 0.5rem 0;">✗ ${result.status}</h4>`;
+        html += `<p style="margin: 0; color: var(--error); font-size: 0.9rem;">Error: ${result.error_code}</p>`;
+        html += '</div>';
+      }
+
+      // Verification steps
+      html += '<div><h4>Verification Steps</h4><div style="display: flex; flex-direction: column; gap: 0.75rem;">';
+      result.steps.forEach((step, idx) => {
+        const isPass = step.status === 'PASS';
+        const icon = isPass ? '✓' : '✗';
+        const color = isPass ? 'var(--success)' : 'var(--error)';
+        const bgColor = isPass ? 'rgba(16, 185, 129, 0.05)' : 'rgba(239, 68, 68, 0.05)';
+
+        html += `<div style="padding: 1rem; background: ${bgColor}; border-left: 3px solid ${color}; border-radius: 0.25rem;">`;
+        html += `<div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">`;
+        html += `<span style="color: ${color}; font-size: 1.25rem; flex-shrink: 0;">${icon}</span>`;
+        html += `<div>`;
+        html += `<strong style="color: ${color}; display: block;">Step ${step.step}: ${step.name}</strong>`;
+        if (step.message) {
+          html += `<p style="margin: 0.5rem 0 0 0; color: var(--text-secondary); font-size: 0.9rem;">${step.message}</p>`;
+        }
+        html += `</div>`;
+        html += `</div>`;
+        html += '</div>';
+      });
+      html += '</div></div>';
+
+      resultsDiv.innerHTML = html;
+    }
+  </script>
+</body>
+</html>

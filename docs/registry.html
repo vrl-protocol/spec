@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRL Circuit Registry</title>
+  <meta name="description" content="Browse the VRL circuit registry - certified computation circuits across all domains.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">VRL</div>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="verify.html">Verify</a></li>
+          <li><a href="registry.html" class="active">Registry</a></li>
+          <li><a href="spec.html">Spec</a></li>
+          <li><a href="https://github.com/vrl-protocol" target="_blank">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Header Section -->
+    <section>
+      <div class="container">
+        <h1>VRL Circuit Registry</h1>
+        <p>The open, immutable catalog of certified computation circuits. Browse, search, and filter by domain and
+          certification tier.</p>
+      </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section>
+      <div class="container">
+        <h2>Browse Circuits</h2>
+
+        <div class="filter-controls">
+          <div class="filter-group">
+            <label for="searchInput">Search</label>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by name or ID...">
+          </div>
+          <div class="filter-group">
+            <label for="domainFilter">Domain</label>
+            <select id="domainFilter" onchange="updateRegistry()">
+              <option value="">All Domains</option>
+              <option value="trade">Trade</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="finance">Finance</option>
+              <option value="general">General</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="tierFilter">Certification Tier</label>
+            <select id="tierFilter" onchange="updateRegistry()">
+              <option value="">All Tiers</option>
+              <option value="CERTIFIED">Certified</option>
+              <option value="REVIEWED">Reviewed</option>
+              <option value="EXPERIMENTAL">Experimental</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Circuits Table -->
+        <div style="overflow-x: auto;">
+          <table class="circuit-table" id="circuitsTable">
+            <thead>
+              <tr>
+                <th style="width: 35%;">Circuit ID</th>
+                <th style="width: 15%;">Domain</th>
+                <th style="width: 15%;">Tier</th>
+                <th style="width: 20%;">Description</th>
+                <th style="width: 15%;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="circuitsBody">
+            </tbody>
+          </table>
+        </div>
+
+        <div id="noCircuits" class="empty-state" style="display: none;">
+          <p>No circuits match your filters.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Circuit Registry Section -->
+    <section>
+      <div class="container">
+        <h2>About the Registry</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>Open & Immutable</h3>
+            <p>The circuit registry is an append-only catalog. Once a circuit is registered, it is immutable. New
+              versions can be submitted, but old versions remain available.</p>
+          </div>
+
+          <div class="card">
+            <h3>Three Tiers</h3>
+            <p>EXPERIMENTAL circuits are newly submitted. REVIEWED circuits have been checked by VRL maintainers.
+              CERTIFIED circuits have been independently audited.</p>
+          </div>
+
+          <div class="card">
+            <h3>Domains</h3>
+            <p>Circuits are organized by domain: Trade (tariffs, logistics), Healthcare (clinical decisions),
+              Finance (credit, fraud), and General (infrastructure).</p>
+          </div>
+
+          <div class="card">
+            <h3>Submit a Circuit</h3>
+            <p>See the <a href="https://github.com/vrl-protocol/spec#registry" target="_blank">submission
+                guide</a> to register your own computation circuit.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certification Tiers Section -->
+    <section>
+      <div class="container">
+        <h2>Certification Tiers</h2>
+        <div class="grid grid-3">
+          <div class="card">
+            <h3>Certified</h3>
+            <p><span class="badge badge-certified">CERTIFIED</span></p>
+            <p>Independently audited, formally verified, and approved for high-stakes use. Suitable for regulated
+              industries (healthcare, finance, trade).</p>
+          </div>
+
+          <div class="card">
+            <h3>Reviewed</h3>
+            <p><span class="badge badge-reviewed">REVIEWED</span></p>
+            <p>Reviewed by VRL core maintainers. Considered production-ready but not independently audited. Good for
+              most enterprise use.</p>
+          </div>
+
+          <div class="card">
+            <h3>Experimental</h3>
+            <p><span class="badge badge-experimental">EXPERIMENTAL</span></p>
+            <p>Newly submitted, not yet reviewed. Use for testing and development only. Subject to change.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Domains Section -->
+    <section>
+      <div class="container">
+        <h2>Domains</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>Trade</h3>
+            <p>Circuits for international trade, tariff calculations, export compliance, and customs verification.
+              Used by supply chain and trade finance.</p>
+          </div>
+
+          <div class="card">
+            <h3>Healthcare</h3>
+            <p>Circuits for clinical decision support, drug interactions, treatment recommendations, and FDA SaMD
+              compliance. Used by hospitals and health systems.</p>
+          </div>
+
+          <div class="card">
+            <h3>Finance</h3>
+            <p>Circuits for credit risk, fraud detection, algorithmic trading, and regulatory compliance. Used by
+              banks and fintech.</p>
+          </div>
+
+          <div class="card">
+            <h3>General</h3>
+            <p>Infrastructure circuits: TEE attestation verification, API hash binding, and proof graph composition.
+              Used across all domains.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>VRL</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="verify.html">Verifier</a></li>
+            <li><a href="spec.html">Spec</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Registry</h4>
+          <ul>
+            <li><a href="registry.html">Browser</a></li>
+            <li><a href="https://github.com/vrl-protocol/spec/tree/main/registry" target="_blank">GitHub</a></li>
+            <li><a href="https://github.com/vrl-protocol/spec#registry" target="_blank">Submit Circuit</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="https://github.com/vrl-protocol" target="_blank">GitHub</a></li>
+            <li><a href="https://github.com/vrl-protocol/spec/issues" target="_blank">Issues</a></li>
+            <li><a href="https://github.com/vrl-protocol/spec#contributing" target="_blank">Contributing</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>VRL Circuit Registry. Specification: <a href="https://creativecommons.org/licenses/by/4.0/"
+            target="_blank">CC BY 4.0</a>. Implementation: MIT.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/vrl.js"></script>
+  <script>
+    // Embedded registry data
+    const registryData = {
+      "spec_version": "vrl/registry/1.0",
+      "registry_version": "1.0.0",
+      "last_updated": "2026-04-04T00:00:00Z",
+      "circuits": [
+        {
+          "circuit_id": "trade/import-landed-cost@1.0.0",
+          "circuit_hash": "2f1a5c8b3e7d9a4b6c2e1f8a5d9c3b7e8f1a5c2d9e3f4a7b1c8e5d2a9f6b3",
+          "domain": "trade",
+          "name": "import-landed-cost",
+          "version": "1.0.0",
+          "description": "Calculates the landed cost of imported goods including tariffs, freight, insurance, and compliance fees.",
+          "input_schema": {
+            "private": ["customs_value", "freight", "insurance", "quantity"],
+            "public": ["hs_code", "country_of_origin", "shipping_mode"]
+          },
+          "output_schema": {
+            "public": ["landed_cost", "duty_amount", "mpf_amount", "hmf_amount"]
+          },
+          "proof_systems": ["plonk-halo2-pasta"],
+          "constraint_count": 8,
+          "dataset_dependencies": [
+            {
+              "dataset_id": "cbp/hts-tariff-rules",
+              "min_version": "2026.1.0"
+            }
+          ],
+          "certification_tier": "REVIEWED",
+          "published_at": "2026-03-15T10:30:00Z",
+          "author": "VRL Trade Working Group",
+          "license": "Apache-2.0"
+        },
+        {
+          "circuit_id": "trade/import-landed-cost@2.0.0",
+          "circuit_hash": "a9f2c5e1b7d4f3a8c6e2b9f5d1a7c4e9b2f6a3d8c5e1f9a2b7d4c6e8f1a3b",
+          "domain": "trade",
+          "name": "import-landed-cost",
+          "version": "2.0.0",
+          "description": "Calculates the landed cost of imported goods with enhanced support for bonded warehouses and free trade agreements.",
+          "input_schema": {
+            "private": ["customs_value", "freight", "insurance", "quantity", "warehouse_type"],
+            "public": ["hs_code", "country_of_origin", "shipping_mode", "fta_eligible"]
+          },
+          "output_schema": {
+            "public": ["landed_cost", "duty_amount", "mpf_amount", "hmf_amount", "fta_savings"]
+          },
+          "proof_systems": ["plonk-halo2-pasta"],
+          "constraint_count": 12,
+          "dataset_dependencies": [
+            {
+              "dataset_id": "cbp/hts-tariff-rules",
+              "min_version": "2026.1.0"
+            },
+            {
+              "dataset_id": "ustr/fta-eligibility",
+              "min_version": "2026.1.0"
+            }
+          ],
+          "certification_tier": "CERTIFIED",
+          "published_at": "2026-04-01T14:00:00Z",
+          "author": "VRL Trade Working Group",
+          "license": "Apache-2.0"
+        },
+        {
+          "circuit_id": "trade/export-compliance-check@1.0.0",
+          "circuit_hash": "f3d8a1c7e4b9f2d5a8c1e6f3b7d4a9c2e5f8b1a6d3c8e1f4a7b2c5d8e1f4a",
+          "domain": "trade",
+          "name": "export-compliance-check",
+          "version": "1.0.0",
+          "description": "Verifies export eligibility based on destination country restrictions, product classification, and sanctions lists.",
+          "input_schema": {
+            "private": ["hs_code", "item_description", "quantity", "unit_value"],
+            "public": ["destination_country", "exporter_id", "end_use"]
+          },
+          "output_schema": {
+            "public": ["compliant", "restriction_codes", "license_required", "review_required"]
+          },
+          "proof_systems": ["plonk-halo2-pasta"],
+          "constraint_count": 6,
+          "dataset_dependencies": [
+            {
+              "dataset_id": "bae/ccl-items",
+              "min_version": "2026.2.0"
+            },
+            {
+              "dataset_id": "treasury/ofac-sdn",
+              "min_version": "2026.1.15"
+            }
+          ],
+          "certification_tier": "REVIEWED",
+          "published_at": "2026-03-20T09:45:00Z",
+          "author": "VRL Trade Working Group",
+          "license": "Apache-2.0"
+        },
+        {
+          "circuit_id": "healthcare/clinical-decision-support@1.0.0",
+          "circuit_hash": "e2c1f9b4a8d6f1e3c7a2d5b8f3c6e1a9d2f5c8b1e4a7d2c5f8b1e4a7d0c3",
+          "domain": "healthcare",
+          "name": "clinical-decision-support",
+          "version": "1.0.0",
+          "description": "Verifies clinical decision support recommendations based on patient history, lab results, and evidence-based guidelines.",
+          "input_schema": {
+            "private": ["patient_age", "comorbidities", "lab_results", "medication_history"],
+            "public": ["diagnosis_code", "severity_score", "guideline_version"]
+          },
+          "output_schema": {
+            "public": ["recommended_treatment", "contraindication_flags", "evidence_quality"]
+          },
+          "proof_systems": ["plonk-halo2-pasta"],
+          "constraint_count": 10,
+          "dataset_dependencies": [
+            {
+              "dataset_id": "fda/drug-interactions",
+              "min_version": "2026.3.0"
+            },
+            {
+              "dataset_id": "nih/evidence-guidelines",
+              "min_version": "2026.2.5"
+            }
+          ],
+          "certification_tier": "CERTIFIED",
+          "published_at": "2026-02-28T16:20:00Z",
+          "author": "VRL Healthcare Working Group",
+          "license": "CC0-1.0"
+        },
+        {
+          "circuit_id": "finance/credit-risk-scoring@1.0.0",
+          "circuit_hash": "b7a3e1f9d2c6a4f8e1b5c9d3f7a2b6e8c1d5f9a3b7e1c4f8a2d6b9e3c7f1a",
+          "domain": "finance",
+          "name": "credit-risk-scoring",
+          "version": "1.0.0",
+          "description": "Computes credit risk scores based on credit history, income, debt ratios, and application data.",
+          "input_schema": {
+            "private": ["monthly_income", "employment_length", "debt_balance", "age"],
+            "public": ["credit_bureau_id", "loan_amount", "loan_term_months"]
+          },
+          "output_schema": {
+            "public": ["risk_score", "risk_category", "approval_probability"]
+          },
+          "proof_systems": ["plonk-halo2-bn254"],
+          "constraint_count": 9,
+          "dataset_dependencies": [
+            {
+              "dataset_id": "cfpb/mortgage-disclosure",
+              "min_version": "2026.1.0"
+            }
+          ],
+          "certification_tier": "REVIEWED",
+          "published_at": "2026-03-01T11:15:00Z",
+          "author": "VRL Finance Working Group",
+          "license": "Apache-2.0"
+        },
+        {
+          "circuit_id": "finance/fraud-detection@1.0.0",
+          "circuit_hash": "c9f2a1e5b8d3f7a2c6e1b5d9f2a8c3e7a1f4b8d1c5e9f2a6b3c7d1e5f8a2",
+          "domain": "finance",
+          "name": "fraud-detection",
+          "version": "1.0.0",
+          "description": "Detects fraudulent transactions using transaction patterns, merchant data, and behavioral anomaly detection.",
+          "input_schema": {
+            "private": ["transaction_amount", "merchant_category", "timestamp", "cardholder_location"],
+            "public": ["account_id", "card_last4", "merchant_name"]
+          },
+          "output_schema": {
+            "public": ["fraud_risk_score", "flagged", "anomaly_indicators"]
+          },
+          "proof_systems": ["plonk-halo2-bn254"],
+          "constraint_count": 7,
+          "dataset_dependencies": [
+            {
+              "dataset_id": "iso/merchant-codes",
+              "min_version": "2026.1.0"
+            }
+          ],
+          "certification_tier": "REVIEWED",
+          "published_at": "2026-03-10T13:30:00Z",
+          "author": "VRL Finance Working Group",
+          "license": "Apache-2.0"
+        },
+        {
+          "circuit_id": "general/tee-inference-attestation@1.0.0",
+          "circuit_hash": "d1f8c5a9b2e7d3f6a8c1e4b7d0f5a2c9e3f1b8d5a7c2e6f1a3b8c5d9e2f4a",
+          "domain": "general",
+          "name": "tee-inference-attestation",
+          "version": "1.0.0",
+          "description": "Verifies that an AI inference occurred inside a trusted execution environment and binds the computation to TEE attestation.",
+          "input_schema": {
+            "private": ["tee_quote", "tee_report_data", "enclave_mrenclave"],
+            "public": ["tee_type", "model_hash", "inference_timestamp"]
+          },
+          "output_schema": {
+            "public": ["tee_verified", "enclave_identity", "report_timestamp"]
+          },
+          "proof_systems": ["tee-intel-tdx", "tee-amd-sev-snp"],
+          "constraint_count": 4,
+          "dataset_dependencies": [],
+          "certification_tier": "REVIEWED",
+          "published_at": "2026-03-05T08:00:00Z",
+          "author": "VRL Core Contributors",
+          "license": "Apache-2.0"
+        },
+        {
+          "circuit_id": "general/api-hash-binding@1.0.0",
+          "circuit_hash": "a4b7c2d8e1f5a9c3f6b1d5e8a2f7c1d6a9b3e7f2c5d1a8e3f6c1d5a9e2f7b",
+          "domain": "general",
+          "name": "api-hash-binding",
+          "version": "1.0.0",
+          "description": "Binds API inputs and outputs cryptographically using HMAC-SHA256, for weak hash-chain proofs of computation.",
+          "input_schema": {
+            "private": ["api_request_body", "api_secret_key"],
+            "public": ["api_endpoint", "request_timestamp"]
+          },
+          "output_schema": {
+            "public": ["response_hash", "binding_valid"]
+          },
+          "proof_systems": ["api-hash-binding"],
+          "constraint_count": 2,
+          "dataset_dependencies": [],
+          "certification_tier": "REVIEWED",
+          "published_at": "2026-02-15T12:00:00Z",
+          "author": "VRL Core Contributors",
+          "license": "Apache-2.0"
+        }
+      ]
+    };
+
+    let expandedCircuit = null;
+
+    function updateRegistry() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const domain = document.getElementById('domainFilter').value;
+      const tier = document.getElementById('tierFilter').value;
+
+      const filteredCircuits = registryData.circuits.filter(circuit => {
+        const matchesSearch = circuit.circuit_id.toLowerCase().includes(searchTerm) ||
+          circuit.name.toLowerCase().includes(searchTerm) ||
+          circuit.description.toLowerCase().includes(searchTerm);
+        const matchesDomain = !domain || circuit.domain === domain;
+        const matchesTier = !tier || circuit.certification_tier === tier;
+
+        return matchesSearch && matchesDomain && matchesTier;
+      });
+
+      const tbody = document.getElementById('circuitsBody');
+      const noCircuits = document.getElementById('noCircuits');
+
+      if (filteredCircuits.length === 0) {
+        tbody.innerHTML = '';
+        noCircuits.style.display = 'block';
+        return;
+      }
+
+      noCircuits.style.display = 'none';
+      tbody.innerHTML = filteredCircuits.map((circuit, idx) => {
+        const badge = getCertificationBadge(circuit.certification_tier);
+        const isExpanded = expandedCircuit === circuit.circuit_id;
+
+        return `
+          <tr>
+            <td><strong>${circuit.circuit_id}</strong></td>
+            <td><code>${circuit.domain}</code></td>
+            <td><span class="badge ${badge.class}">${badge.label}</span></td>
+            <td>${circuit.description.substring(0, 60)}${circuit.description.length > 60 ? '...' : ''}</td>
+            <td><a href="#" class="expandable-trigger" onclick="toggleExpand('${circuit.circuit_id}'); return false;">
+              ${isExpanded ? '▼ Hide' : '▶ Show'}
+            </a></td>
+          </tr>
+          ${isExpanded ? renderCircuitDetails(circuit) : ''}
+        `;
+      }).join('');
+    }
+
+    function renderCircuitDetails(circuit) {
+      const badge = getCertificationBadge(circuit.certification_tier);
+
+      return `
+        <tr style="background: var(--bg-darker);">
+          <td colspan="5">
+            <div style="padding: 2rem;">
+              <h4>${circuit.name} v${circuit.version}</h4>
+              <p style="margin-bottom: 1.5rem;">${circuit.description}</p>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                <div>
+                  <strong style="display: block; margin-bottom: 0.5rem;">Circuit Hash</strong>
+                  <code style="word-break: break-all; font-size: 0.85rem;">${circuit.circuit_hash.substring(0, 32)}...</code>
+                </div>
+                <div>
+                  <strong style="display: block; margin-bottom: 0.5rem;">Author</strong>
+                  <p style="margin: 0;">${circuit.author}</p>
+                </div>
+                <div>
+                  <strong style="display: block; margin-bottom: 0.5rem;">Constraints</strong>
+                  <p style="margin: 0;">${circuit.constraint_count} constraints</p>
+                </div>
+                <div>
+                  <strong style="display: block; margin-bottom: 0.5rem;">Published</strong>
+                  <p style="margin: 0;">${new Date(circuit.published_at).toLocaleDateString()}</p>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 1.5rem;">
+                <h5 style="margin-bottom: 0.75rem;">Proof Systems</h5>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                  ${circuit.proof_systems.map(ps => `<code>${ps}</code>`).join('')}
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div>
+                  <h5 style="margin-bottom: 0.75rem;">Input Schema</h5>
+                  <p><strong>Private:</strong> ${circuit.input_schema.private.join(', ')}</p>
+                  <p><strong>Public:</strong> ${circuit.input_schema.public.join(', ')}</p>
+                </div>
+                <div>
+                  <h5 style="margin-bottom: 0.75rem;">Output Schema</h5>
+                  <p><strong>Public:</strong> ${circuit.output_schema.public.join(', ')}</p>
+                </div>
+              </div>
+
+              ${circuit.dataset_dependencies.length > 0 ? `
+                <div style="margin-top: 1.5rem;">
+                  <h5 style="margin-bottom: 0.75rem;">Dataset Dependencies</h5>
+                  <ul style="margin: 0; margin-left: 1.5rem;">
+                    ${circuit.dataset_dependencies.map(dep =>
+                      `<li><code>${dep.dataset_id}</code> (v${dep.min_version}+)</li>`
+                    ).join('')}
+                  </ul>
+                </div>
+              ` : ''}
+
+              <p style="margin-top: 1.5rem; color: var(--text-secondary); font-size: 0.9rem;">
+                License: ${circuit.license}
+              </p>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+
+    function toggleExpand(circuitId) {
+      if (expandedCircuit === circuitId) {
+        expandedCircuit = null;
+      } else {
+        expandedCircuit = circuitId;
+      }
+      updateRegistry();
+    }
+
+    // Search input event listener
+    document.getElementById('searchInput').addEventListener('input', updateRegistry);
+
+    // Initial render
+    document.addEventListener('DOMContentLoaded', updateRegistry);
+  </script>
+</body>
+</html>

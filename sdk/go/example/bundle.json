@@ -1,0 +1,57 @@
+{
+  "vrl_version": "1.0",
+  "bundle_id": "7f3a1b29-8c4e-5d6f-9a0b-1c2d3e4f5a6b",
+  "issued_at": "2026-04-04T12:00:00.000Z",
+  "ai_identity": {
+    "ai_id": "a3f2c1d4e5b6a7f8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a",
+    "model_name": "vrl-deterministic-engine",
+    "model_version": "1.0.0",
+    "provider_id": "io.vrl",
+    "execution_environment": "deterministic"
+  },
+  "computation": {
+    "circuit_id": "trade/import-landed-cost@2.0.0",
+    "circuit_version": "2.0.0",
+    "circuit_hash": "3fa24c7763608b01b4c7e411655ebc75ff7a906c38bd79a4cc3be0f4479cdf23",
+    "input_hash": "ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7",
+    "output_hash": "0c866369e1ab87b0d0b624c0fdeb490aa05fa2524e9368a023308a1437ec5b5b",
+    "trace_hash": "e14d0cb8d4a11cf1db1def3942fa7246b72cb6989463e8d379ade6e90a0405e6",
+    "integrity_hash": "7b58cd2c0b85716175e90136d025d8d282abb1b56cb98ffaa33d4cbde3db70a1"
+  },
+  "proof": {
+    "proof_system": "plonk-halo2-pasta",
+    "proof_bytes": "0a1b2c3d",
+    "public_inputs": [
+      "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b",
+      "2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c"
+    ],
+    "verification_key_id": "aadfa62983a64cb674b1b9b1c4379d8a01e02948fed731506de4bcf2950012a0",
+    "proof_hash": "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2"
+  },
+  "data_commitments": [
+    {
+      "dataset_id": "cbp/hts-tariff-rules",
+      "dataset_version": "2026.1.0",
+      "dataset_hash": "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+      "provider_id": "gov.us.cbp",
+      "committed_at": "2026-04-01T00:00:00.000Z",
+      "commitment_hash": "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6"
+    }
+  ],
+  "legal": {
+    "jurisdictions": [
+      "US"
+    ],
+    "admissibility_standard": "VRL_v1",
+    "compliance_flags": [
+      "CBP_ACE"
+    ]
+  },
+  "trust_context": {
+    "prover_id": "vrl-prover-primary",
+    "prover_version": "1.0.0",
+    "trust_score_at_issuance": 1.0,
+    "circuit_certification_tier": "gold",
+    "anomaly_flags": []
+  }
+}

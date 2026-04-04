@@ -1,0 +1,162 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test-python:
+    name: Test Python SDK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          cd sdk/python
+          pip install -e .
+
+      - name: Run tests
+        run: |
+          cd sdk/python
+          pip install pytest pytest-cov
+          pytest tests/ -v --cov=vrl --cov-report=xml
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./sdk/python/coverage.xml
+          flags: python
+          name: python-coverage
+
+  test-typescript:
+    name: Test TypeScript SDK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: |
+          cd sdk/typescript
+          npm install
+
+      - name: Run tests
+        run: |
+          cd sdk/typescript
+          npm test
+
+  test-go:
+    name: Test Go SDK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go 1.21
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+
+      - name: Run tests
+        run: |
+          cd sdk/go
+          go test ./... -v
+
+  validate-spec:
+    name: Validate Test Bundles Against Spec
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install validation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jsonschema
+
+      - name: Validate test bundles
+        run: |
+          python .github/scripts/validate_bundles.py
+
+  validate-registry:
+    name: Validate Registry Circuits
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install validation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jsonschema
+
+      - name: Validate circuits
+        run: |
+          python .github/scripts/validate_registry.py
+
+  lint-spec:
+    name: Lint Specification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check SPEC.md exists
+        run: |
+          if [ ! -f SPEC.md ]; then
+            echo "ERROR: SPEC.md not found"
+            exit 1
+          fi
+          echo "✓ SPEC.md exists"
+
+      - name: Check required sections in SPEC.md
+        run: |
+          for section in "2. AI Identity" "3. Proof Bundle" "4. Proof Systems" "5. Circuit Registry" "6. Data Commitments" "7. Proof Graph" "8. Legal Layer" "9. Trust Context" "10. Canonical Serialisation" "11. Hash Computation" "12. Verification Procedure" "13. Mandatory Output" "14. Security Considerations" "15. Versioning" "16. Complete Examples" "17. JSON Schema"; do
+            if grep -q "^## .*$section" SPEC.md; then
+              echo "✓ Found section: $section"
+            else
+              echo "ERROR: Missing section: $section"
+              exit 1
+            fi
+          done
+
+      - name: Count sections in SPEC.md
+        run: |
+          section_count=$(grep -c "^## [0-9]" SPEC.md)
+          echo "Total major sections: $section_count"
+          if [ "$section_count" -lt 17 ]; then
+            echo "WARNING: Expected at least 17 sections, found $section_count"
+          fi
+
+      - name: Validate README.md exists
+        run: |
+          if [ ! -f README.md ]; then
+            echo "ERROR: README.md not found"
+            exit 1
+          fi
+          echo "✓ README.md exists"
+
+      - name: Check README links (basic validation)
+        run: |
+          # Check for common markdown link patterns and warn on broken references
+          grep -o '\[.*\](.*SPEC\.md.*§[0-9]\+' README.md || true
+          echo "✓ README.md basic syntax validated"

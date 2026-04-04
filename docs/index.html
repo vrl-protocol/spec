@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRL — Verifiable Reality Layer</title>
+  <meta name="description" content="The open standard for cryptographically verifiable AI outputs. Proof bundles for any AI decision.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">VRL</div>
+        <ul>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="verify.html">Verify</a></li>
+          <li><a href="registry.html">Registry</a></li>
+          <li><a href="spec.html">Spec</a></li>
+          <li><a href="https://github.com/vrl-protocol" target="_blank">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h1>Cryptographically Verifiable AI</h1>
+        <p class="hero-subtitle">The open standard for AI proof bundles</p>
+        <p class="hero-description">
+          Every AI decision made today leaves no receipt. VRL is the infrastructure layer that fixes this.
+          A portable, self-contained proof bundle that any third party can verify offline — no trust in any
+          server required.
+        </p>
+        <div class="hero-buttons">
+          <a href="verify.html" class="btn btn-primary">Try the Verifier</a>
+          <a href="spec.html" class="btn btn-outline">Read the Spec</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section>
+      <div class="container">
+        <h2>What VRL Proves</h2>
+        <div class="grid grid-3">
+          <!-- Feature 1: AI Identity -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon">🔐</div>
+              <h3>AI Identity</h3>
+            </div>
+            <p>Cryptographically bound to specific model weights, runtime, and configuration. Every computation
+              carries proof of exactly which AI ran.</p>
+          </div>
+
+          <!-- Feature 2: Proof Bundle -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon">📦</div>
+              <h3>Proof Bundle</h3>
+            </div>
+            <p>A portable, self-contained artifact that includes the AI identity, computation record, cryptographic
+              proof, and legal metadata — everything needed to verify offline.</p>
+          </div>
+
+          <!-- Feature 3: Offline Verification -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon">✓</div>
+              <h3>Offline Verification</h3>
+            </div>
+            <p>Verify any proof bundle without network access, without trusting VRL, and without accessing the
+              original AI system. Pure cryptographic verification.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Demo Section -->
+    <section>
+      <div class="container">
+        <h2>Try It Live</h2>
+        <p>Paste a VRL Proof Bundle JSON below and verify it instantly in your browser using pure cryptography
+          (SHA-256).</p>
+
+        <div class="verifier-wrapper">
+          <!-- Input Panel -->
+          <div class="input-area">
+            <h3>Paste a Bundle</h3>
+            <textarea id="bundleInput" placeholder="Paste a VRL Proof Bundle JSON here..."></textarea>
+            <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+              <button class="btn btn-primary" onclick="runVerification()">Verify</button>
+              <button class="btn btn-secondary" onclick="loadExample()">Try Example</button>
+            </div>
+          </div>
+
+          <!-- Output Panel -->
+          <div class="output-area" id="outputArea">
+            <h3>Verification Result</h3>
+            <div id="verificationResults"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why VRL Section -->
+    <section>
+      <div class="container">
+        <h2>Why VRL Matters</h2>
+        <div class="grid grid-2">
+          <!-- EU AI Act -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon">⚖️</div>
+              <h3>EU AI Act</h3>
+            </div>
+            <p>High-risk AI systems must maintain audit trails. VRL provides the technical standard for documenting
+              which AI ran, on what data, with what proof.</p>
+          </div>
+
+          <!-- Healthcare / FDA -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon">🏥</div>
+              <h3>Healthcare & FDA</h3>
+            </div>
+            <p>AI-based medical devices (SaMD) require evidence of correctness and traceability. VRL proof bundles are
+              legally structured for FDA submissions.</p>
+          </div>
+
+          <!-- Finance -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon">💰</div>
+              <h3>Finance & Regulatory</h3>
+            </div>
+            <p>Credit decisions, fraud detection, trading algorithms — all require explainability and evidence.
+              Regulators can now independently verify.</p>
+          </div>
+
+          <!-- Courts & Legal -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon">⚒️</div>
+              <h3>Courts & Evidence</h3>
+            </div>
+            <p>AI-generated evidence requires admissibility. VRL bundles are self-authenticating cryptographic
+              artifacts that meet legal evidentiary standards.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Proof Systems Section -->
+    <section>
+      <div class="container">
+        <h2>Proof Systems Supported</h2>
+        <p>VRL is proof-system agnostic. Choose the mechanism that fits your trust model:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Mode</th>
+              <th>Proof Strength</th>
+              <th>Best For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>plonk-halo2-pasta</code></td>
+              <td>Cryptographic</td>
+              <td>Deterministic computations, compliance calculations</td>
+            </tr>
+            <tr>
+              <td><code>tee-intel-tdx</code></td>
+              <td>Hardware</td>
+              <td>LLM inference in Intel TDX enclaves</td>
+            </tr>
+            <tr>
+              <td><code>tee-amd-sev-snp</code></td>
+              <td>Hardware</td>
+              <td>Models in AMD SEV-SNP enclaves</td>
+            </tr>
+            <tr>
+              <td><code>zk-ml</code></td>
+              <td>Cryptographic</td>
+              <td>Small ML models via EZKL</td>
+            </tr>
+            <tr>
+              <td><code>sha256-deterministic</code></td>
+              <td>Hash-chain</td>
+              <td>Rule engines, verifiable calculations</td>
+            </tr>
+            <tr>
+              <td><code>api-hash-binding</code></td>
+              <td>Hash-binding</td>
+              <td>API-hosted models, audit trail use cases</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section>
+      <div class="container">
+        <h2>Get Started</h2>
+        <div class="grid grid-3">
+          <!-- Verify a Bundle -->
+          <div class="card">
+            <h3>Verify a Bundle</h3>
+            <p>Use the web verifier above or the reference CLI to validate any proof bundle offline.</p>
+            <p><a href="verify.html" class="btn btn-secondary btn-small">Open Verifier →</a></p>
+          </div>
+
+          <!-- Read the Spec -->
+          <div class="card">
+            <h3>Read the Spec</h3>
+            <p>The full VRL Proof Bundle Specification v1.0 defines the standard, proof systems, and verification
+              procedure.</p>
+            <p><a href="spec.html" class="btn btn-secondary btn-small">View Spec →</a></p>
+          </div>
+
+          <!-- Browse Circuits -->
+          <div class="card">
+            <h3>Browse Circuits</h3>
+            <p>The circuit registry is the immutable catalog of verified computation circuits across all domains.</p>
+            <p><a href="registry.html" class="btn btn-secondary btn-small">Open Registry →</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Links Section -->
+    <section>
+      <div class="container">
+        <h2>Resources</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>Python SDK</h3>
+            <p>Build and verify proof bundles with the <code>vrl-sdk</code> library.</p>
+            <pre><code>pip install vrl-sdk</code></pre>
+          </div>
+
+          <div class="card">
+            <h3>Reference Verifier</h3>
+            <p>Command-line verifier for validating bundles offline.</p>
+            <pre><code>python -m vrl.verify bundle.json</code></pre>
+          </div>
+
+          <div class="card">
+            <h3>GitHub Repository</h3>
+            <p>Specification, SDKs, tools, and circuit registry are all open source.</p>
+            <p><a href="https://github.com/vrl-protocol" target="_blank">github.com/vrl-protocol →</a></p>
+          </div>
+
+          <div class="card">
+            <h3>Contributing</h3>
+            <p>Submit circuits, propose spec changes, or implement new proof systems.</p>
+            <p><a href="https://github.com/vrl-protocol/spec#contributing" target="_blank">Contributing Guide →</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>VRL</h4>
+          <ul>
+            <li><a href="spec.html">Specification</a></li>
+            <li><a href="registry.html">Circuit Registry</a></li>
+            <li><a href="verify.html">Verifier</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Developers</h4>
+          <ul>
+            <li><a href="https://github.com/vrl-protocol" target="_blank">GitHub</a></li>
+            <li><a href="https://github.com/vrl-protocol/spec" target="_blank">Specification Repo</a></li>
+            <li><a href="https://github.com/vrl-protocol" target="_blank">SDKs & Tools</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Learn</h4>
+          <ul>
+            <li><a href="spec.html#terminology">Concepts</a></li>
+            <li><a href="verify.html">Try the Verifier</a></li>
+            <li><a href="https://github.com/vrl-protocol" target="_blank">Examples</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>VRL is an open standard for verifiable AI. Specification licensed under <a
+            href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>. Implementation under
+          MIT.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/vrl.js"></script>
+  <script>
+    // Example valid_trade bundle (embedded inline for demo)
+    const exampleBundle = {
+      "vrl_version": "1.0",
+      "bundle_id": "e2cad545-1910-5f44-a596-1ccd4591c538",
+      "issued_at": "2026-04-04T12:00:00.000Z",
+      "ai_identity": {
+        "ai_id": "a3f2c1d4e5b6a7f8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+        "model_name": "vrl-deterministic-engine",
+        "model_version": "1.0.0",
+        "provider_id": "io.vrl",
+        "execution_environment": "deterministic"
+      },
+      "computation": {
+        "circuit_id": "trade/import-landed-cost@2.0.0",
+        "circuit_version": "2.0.0",
+        "circuit_hash": "14414791513f16066b2288ac9053bba1f5de3f4a53f7cb59f1dd68c6ecba58ad",
+        "input_hash": "ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7",
+        "output_hash": "0c866369e1ab87b0d0b624c0fdeb490aa05fa2524e9368a023308a1437ec5b5b",
+        "trace_hash": "e14d0cb8d4a11cf1db1def3942fa7246b72cb6989463e8d379ade6e90a0405e6",
+        "integrity_hash": "7b58cd2c0b85716175e90136d025d8d282abb1b56cb98ffaa33d4cbde3db70a1"
+      },
+      "proof": {
+        "proof_system": "sha256-deterministic",
+        "proof_bytes": "0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a",
+        "public_inputs": [
+          "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b",
+          "2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c"
+        ],
+        "verification_key_id": "aadfa62983a64cb674b1b9b1c4379d8a01e02948fed731506de4bcf2950012a0",
+        "proof_hash": "4f9d4ea2e0f7eeacf99207348e7e6f4f136ce0afac279f31085274cfa9eb7538"
+      },
+      "data_commitments": [
+        {
+          "dataset_id": "cbp/hts-tariff-rules",
+          "dataset_version": "2026.1.0",
+          "dataset_hash": "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+          "provider_id": "gov.us.cbp",
+          "committed_at": "2026-04-01T00:00:00.000Z",
+          "commitment_hash": "ceeffe6774ca25b9f24b48a8a075c1c45944f2b4afa6751077ae402f79a6aff7"
+        }
+      ],
+      "legal": {
+        "jurisdictions": ["US"],
+        "admissibility_standard": "VRL_v1",
+        "compliance_flags": ["CBP_ACE"]
+      }
+    };
+
+    async function runVerification() {
+      const bundleInput = document.getElementById('bundleInput').value.trim();
+      if (!bundleInput) {
+        alert('Please paste a VRL Proof Bundle JSON.');
+        return;
+      }
+
+      const outputArea = document.getElementById('outputArea');
+      const resultsDiv = document.getElementById('verificationResults');
+
+      // Show loading state
+      outputArea.classList.add('active');
+      resultsDiv.innerHTML = '<div style="text-align: center; padding: 2rem;"><p>Verifying...</p></div>';
+
+      // Give the DOM time to update
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      const result = await verifyProofBundle(bundleInput);
+      renderVerificationResult(result);
+    }
+
+    function loadExample() {
+      document.getElementById('bundleInput').value = JSON.stringify(exampleBundle, null, 2);
+      // Auto-run verification
+      setTimeout(() => runVerification(), 100);
+    }
+
+    function renderVerificationResult(result) {
+      const resultsDiv = document.getElementById('verificationResults');
+      const outputArea = document.getElementById('outputArea');
+
+      let html = '';
+
+      if (result.status === 'VALID') {
+        html += '<div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem;">';
+        html += '<h4 style="color: var(--success); margin: 0 0 0.5rem 0;">✓ VALID</h4>';
+        html += '<p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">This proof bundle is cryptographically valid.</p>';
+        html += '</div>';
+
+        if (result.bundle_summary) {
+          const summary = result.bundle_summary;
+          html += '<div style="margin-bottom: 1.5rem;">';
+          html += `<h4>Bundle Summary</h4>`;
+          html += `<p><strong>Model:</strong> ${summary.model}</p>`;
+          html += `<p><strong>Circuit:</strong> ${summary.circuit}</p>`;
+          html += `<p><strong>Proof System:</strong> ${summary.proof_system}</p>`;
+          html += '</div>';
+        }
+      } else {
+        html += '<div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem;">';
+        html += `<h4 style="color: var(--error); margin: 0 0 0.5rem 0;">✗ ${result.status}</h4>`;
+        html += `<p style="margin: 0; color: var(--error); font-size: 0.9rem;">Error: ${result.error_code}</p>`;
+        html += '</div>';
+      }
+
+      // Verification steps
+      html += '<div><h4>Verification Steps</h4>';
+      result.steps.forEach(step => {
+        const isPass = step.status === 'PASS';
+        const icon = isPass ? '✓' : '✗';
+        const color = isPass ? 'var(--success)' : 'var(--error)';
+        const bgColor = isPass ? 'rgba(16, 185, 129, 0.05)' : 'rgba(239, 68, 68, 0.05)';
+
+        html += `<div style="padding: 0.75rem; background: ${bgColor}; border-left: 3px solid ${color}; margin-bottom: 0.75rem; border-radius: 0.25rem;">`;
+        html += `<strong style="color: ${color};">${icon} ${step.name}</strong>`;
+        if (step.message) {
+          html += `<p style="margin: 0.5rem 0 0 0; color: var(--text-secondary); font-size: 0.9rem;">${step.message}</p>`;
+        }
+        html += '</div>';
+      });
+      html += '</div>';
+
+      resultsDiv.innerHTML = html;
+    }
+  </script>
+</body>
+</html>

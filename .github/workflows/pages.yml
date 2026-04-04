@@ -1,0 +1,68 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build Pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare documentation
+        run: |
+          # Create _site directory for GitHub Pages
+          mkdir -p _site
+
+          # Copy docs/ folder if it exists, otherwise use ui/index.html
+          if [ -d docs ]; then
+            echo "Found docs/ directory, copying to _site/"
+            cp -r docs/* _site/
+          elif [ -f ui/index.html ]; then
+            echo "Found ui/index.html, using as index"
+            cp ui/index.html _site/index.html
+          else
+            echo "ERROR: Neither docs/ directory nor ui/index.html found"
+            exit 1
+          fi
+
+          # Copy README and SPEC for reference
+          if [ -f README.md ]; then
+            cp README.md _site/README.md
+          fi
+
+          if [ -f SPEC.md ]; then
+            cp SPEC.md _site/SPEC.md
+          fi
+
+          # Verify _site has content
+          ls -la _site/
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: "_site"
+
+  deploy:
+    name: Deploy Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

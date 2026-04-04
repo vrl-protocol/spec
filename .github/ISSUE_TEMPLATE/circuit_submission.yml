@@ -1,0 +1,157 @@
+name: Circuit Submission
+description: Submit a new verified computation circuit to the VRL registry
+title: "[CIRCUIT] "
+labels: ["circuit-submission"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Circuit Submission Form
+
+        Thank you for contributing a circuit to the VRL Circuit Registry! Please complete this form with full details about your computation circuit.
+
+        For detailed guidance, see [registry/SUBMISSION.md](../registry/SUBMISSION.md).
+
+  - type: textarea
+    id: circuit_id
+    attributes:
+      label: Circuit ID
+      description: |
+        Format: `domain/circuit-name@version` (e.g., `trade/import-landed-cost@2.0.0`)
+
+        Domains: healthcare, finance, trade, legal, general
+      placeholder: "domain/circuit-name@1.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      description: Primary domain for this circuit
+      options:
+        - healthcare
+        - finance
+        - trade
+        - legal
+        - general
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Circuit Description
+      description: |
+        What does this circuit compute? Provide:
+        - Input specification
+        - Output specification
+        - Computation logic
+        - Use case examples
+      placeholder: Clear technical description of the circuit
+    validations:
+      required: true
+
+  - type: textarea
+    id: proof_systems
+    attributes:
+      label: Supported Proof Systems
+      description: |
+        Which proof systems does this circuit support?
+
+        Examples: plonk-halo2-pasta, tee-intel-tdx, sha256-deterministic, zk-ml, api-hash-binding
+      placeholder: |
+        - plonk-halo2-pasta
+        - sha256-deterministic
+    validations:
+      required: true
+
+  - type: dropdown
+    id: certification_tier
+    attributes:
+      label: Requested Certification Tier
+      description: What level of certification are you requesting?
+      options:
+        - EXPERIMENTAL
+        - REVIEWED
+        - CERTIFIED
+    validations:
+      required: true
+
+  - type: textarea
+    id: audit_info
+    attributes:
+      label: Audit and Verification Info
+      description: |
+        For REVIEWED or CERTIFIED tiers, provide:
+        - Auditor name and credentials
+        - Audit report summary
+        - Formal verification notes (if applicable)
+        - Independent test results
+      placeholder: Audit trail and verification details
+
+  - type: textarea
+    id: schema
+    attributes:
+      label: Circuit JSON (registry/circuits/{circuit_id}.json)
+      description: |
+        Complete JSON descriptor for the circuit.
+        Must conform to registry/schema/circuit.schema.json
+      render: json
+      placeholder: |
+        {
+          "circuit_id": "domain/circuit-name@1.0.0",
+          "domain": "domain",
+          "name": "Circuit Name",
+          "version": "1.0.0",
+          "description": "...",
+          "proof_systems": ["..."],
+          "certification_tier": "EXPERIMENTAL"
+        }
+    validations:
+      required: true
+
+  - type: textarea
+    id: test_cases
+    attributes:
+      label: Test Cases
+      description: |
+        Provide at least 3 test cases:
+        1. Valid happy path
+        2. Edge case
+        3. Invalid input handling
+      placeholder: |
+        Test Case 1 (Valid):
+        Input: ...
+        Expected Output: ...
+
+        Test Case 2 (Edge):
+        ...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: spec_compliance
+    attributes:
+      label: Specification Compliance Checklist
+      options:
+        - label: Circuit ID follows `domain/name@version` format
+          required: true
+        - label: JSON schema validates against circuit.schema.json
+          required: true
+        - label: Proof systems are from the VRL spec (§4)
+          required: true
+        - label: Circuit descriptor includes all required fields
+          required: true
+        - label: Test cases are provided and pass
+          required: true
+        - label: Documentation is clear and complete
+          required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other information (references, related circuits, etc.)
+      placeholder: Links, references, or related work

@@ -1,0 +1,102 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  publish-python:
+    name: Publish Python SDK to PyPI
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/vrl-sdk/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Build Python package
+        run: |
+          cd sdk/python
+          python -m build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: sdk/python/dist/
+          verbose: true
+
+  publish-npm:
+    name: Publish TypeScript SDK to npm
+    runs-on: ubuntu-latest
+    environment:
+      name: npm
+      url: https://www.npmjs.com/package/vrl-sdk
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: |
+          cd sdk/typescript
+          npm install
+
+      - name: Build TypeScript package
+        run: |
+          cd sdk/typescript
+          npm run build
+
+      - name: Publish to npm
+        run: |
+          cd sdk/typescript
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-go:
+    name: Publish Go SDK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go 1.21
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+
+      - name: Validate Go module
+        run: |
+          cd sdk/go
+          go mod tidy
+          go mod verify
+          go test ./...
+
+      - name: Create release notes
+        run: |
+          echo "Go SDK published via Git tag"
+          echo "Module: github.com/vrl-protocol/spec/sdk/go"
+          echo "Tag: ${{ github.ref_name }}"
