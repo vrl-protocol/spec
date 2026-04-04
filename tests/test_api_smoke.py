@@ -15,3 +15,6 @@ def test_expected_routes_are_registered() -> None:
     assert '/start' in routes
     assert '/stop' in routes
     assert '/healthz' in routes
+    assert '/metrics' in routes
+    assert '/training/dataset' in routes
+    assert '/training/moat' in routes

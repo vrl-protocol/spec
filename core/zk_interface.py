@@ -45,9 +45,9 @@ def extract_witness(
         public_inputs=public_inputs,
         private_inputs=private_inputs,
         trace_steps=response.trace,
-        input_hash=response.proof.input_hash,
-        output_hash=response.proof.output_hash,
-        trace_hash=response.proof.trace_hash,
+        input_hash=response.integrity.input_hash,
+        output_hash=response.integrity.output_hash,
+        trace_hash=response.integrity.trace_hash,
     )
 
 
@@ -88,4 +88,3 @@ def verify_zk_proof(proof: ZKProof, witness: ZKWitness) -> bool:
         raise ValueError('verify_zk_proof: proof_bytes is empty - refusing to verify')
     recomputed = generate_zk_proof(witness)
     return constant_time_equal(proof.proof_bytes.hex(), recomputed.proof_bytes.hex())
-

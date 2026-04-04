@@ -336,9 +336,9 @@ async def step_immutability() -> dict[str, Any]:
         return {
             "step": "immutability_test",
             "status": "PASS" if passed else "FAIL",
-            "seed_input_hash": seeded.proof.input_hash,
-            "seed_output_hash": seeded.proof.output_hash,
-            "seed_final_proof": seeded.proof.final_proof,
+            "seed_input_hash": seeded.integrity.input_hash,
+            "seed_output_hash": seeded.integrity.output_hash,
+            "seed_final_proof": seeded.evidence.proof.final_proof,
             "writer_update_error": writer_update_error,
             "writer_delete_error": writer_delete_error,
             "superuser_update_error": superuser_update_error,
@@ -538,9 +538,10 @@ async def step_replay_validation() -> dict[str, Any]:
     recomputed = calculate_import_landed_cost(ImportCalculationRequest.model_validate(row["raw_input"]))
     passed = (
         verification.verification.status == "VALID"
-        and row["input_hash"] == recomputed.proof.input_hash
-        and row["output_hash"] == recomputed.proof.output_hash
-        and row["final_proof"] == recomputed.proof.final_proof
+        and row["input_hash"] == recomputed.integrity.input_hash
+        and row["output_hash"] == recomputed.integrity.output_hash
+        and verification.evidence is not None
+        and row["final_proof"] == verification.evidence.proof.final_proof
     )
     return {
         "step": "replay_validation",
@@ -548,9 +549,9 @@ async def step_replay_validation() -> dict[str, Any]:
         "stored_input_hash": row["input_hash"],
         "stored_output_hash": row["output_hash"],
         "stored_final_proof": row["final_proof"],
-        "recomputed_input_hash": recomputed.proof.input_hash,
-        "recomputed_output_hash": recomputed.proof.output_hash,
-        "recomputed_final_proof": recomputed.proof.final_proof,
+        "recomputed_input_hash": recomputed.integrity.input_hash,
+        "recomputed_output_hash": recomputed.integrity.output_hash,
+        "recomputed_final_proof": verification.evidence.proof.final_proof if verification.evidence is not None else None,
         "verification": verification.model_dump(mode="json"),
     }
 

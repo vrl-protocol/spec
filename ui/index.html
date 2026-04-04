@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verifiable Reality Layer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sidebar-bg: #0d0d1a;
+      --sidebar-hover: #1a1a30;
+      --sidebar-active: #1e1e3f;
+      --accent: #7c3aed;
+      --accent-light: #a78bfa;
+      --accent-glow: rgba(124,58,237,0.18);
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --error: #ef4444;
+      --error-bg: #fef2f2;
+      --warn: #f59e0b;
+      --warn-bg: #fffbeb;
+      --main-bg: #ffffff;
+      --msg-bg: #f8f7ff;
+      --border: #e5e7eb;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-muted: #9ca3af;
+      --hash-color: #6366f1;
+      --terminal-bg: #0d0d1a;
+      --terminal-text: #a5f3fc;
+      --terminal-prompt: #7c3aed;
+      --code-bg: #1e1e3f;
+      --code-text: #e2e8f0;
+      --sidebar-width: 260px;
+      --terminal-height: 280px;
+    }
+    html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--main-bg); color: var(--text-primary); }
+    #root { height: 100%; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.5; } }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+    @keyframes shimmer { from { background-position: -200% 0; } to { background-position: 200% 0; } }
+    @keyframes slideIn { from { transform: translateX(-10px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    .fade-in { animation: fadeIn 0.25s ease-out forwards; }
+    .spin { animation: spin 1s linear infinite; }
+    .pulse { animation: pulse 2s ease-in-out infinite; }
+    .cursor-blink { animation: blink 1s step-end infinite; }
+
+    /* Layout */
+    .app-shell {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 16px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .logo-shield {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 0 16px rgba(124,58,237,0.4);
+      flex-shrink: 0;
+    }
+    .logo-text { color: #fff; font-weight: 700; font-size: 15px; letter-spacing: -0.3px; }
+    .logo-sub { color: rgba(255,255,255,0.35); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-top: 1px; }
+
+    .new-chat-btn {
+      margin: 12px 12px 6px;
+      padding: 9px 14px;
+      background: rgba(124,58,237,0.15);
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 8px;
+      color: #a78bfa;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      transition: all 0.15s;
+    }
+    .new-chat-btn:hover { background: rgba(124,58,237,0.25); border-color: rgba(124,58,237,0.5); }
+
+    .sidebar-section { padding: 6px 8px; }
+    .sidebar-section-label { color: rgba(255,255,255,0.25); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; padding: 8px 8px 4px; }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 10px;
+      border-radius: 8px;
+      color: rgba(255,255,255,0.55);
+      font-size: 13.5px;
+      cursor: pointer;
+      transition: all 0.12s;
+      margin-bottom: 1px;
+      user-select: none;
+    }
+    .nav-item:hover { background: var(--sidebar-hover); color: rgba(255,255,255,0.85); }
+    .nav-item.active { background: var(--sidebar-active); color: #a78bfa; border: 1px solid rgba(124,58,237,0.25); }
+    .nav-item.active .nav-icon { color: #a78bfa; }
+    .nav-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+    .nav-badge { margin-left: auto; background: var(--accent); color: white; font-size: 10px; padding: 1px 6px; border-radius: 9px; font-weight: 600; }
+
+    .history-section { flex: 1; overflow-y: auto; padding: 0 8px 8px; }
+    .history-label { color: rgba(255,255,255,0.2); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; padding: 8px 8px 4px; }
+    .history-item {
+      padding: 7px 10px; border-radius: 6px;
+      color: rgba(255,255,255,0.4); font-size: 12px;
+      cursor: pointer; transition: all 0.12s;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 1px;
+    }
+    .history-item:hover { background: var(--sidebar-hover); color: rgba(255,255,255,0.65); }
+
+    .sidebar-footer { padding: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .connection-pill {
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 10px; border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      font-size: 12px; color: rgba(255,255,255,0.45);
+      cursor: pointer; transition: all 0.12s;
+    }
+    .connection-pill:hover { background: rgba(255,255,255,0.08); }
+    .conn-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .conn-dot.connected { background: var(--success); box-shadow: 0 0 6px var(--success); }
+    .conn-dot.disconnected { background: var(--error); }
+    .conn-dot.checking { background: var(--warn); animation: pulse 1s ease-in-out infinite; }
+
+    /* Main area */
+    .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--main-bg);
+    }
+
+    .main-header {
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+      background: white;
+      flex-shrink: 0;
+    }
+    .main-header h1 { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+    .main-header p { font-size: 13px; color: var(--text-secondary); margin-top: 1px; }
+    .header-actions { margin-left: auto; display: flex; gap: 8px; }
+    .btn-icon {
+      padding: 6px 12px; border-radius: 7px; font-size: 13px; font-weight: 500;
+      cursor: pointer; border: 1px solid var(--border); background: white;
+      color: var(--text-secondary); transition: all 0.12s; display: flex; align-items: center; gap: 6px;
+    }
+    .btn-icon:hover { background: #f9fafb; border-color: #d1d5db; color: var(--text-primary); }
+    .btn-primary {
+      padding: 7px 16px; border-radius: 7px; font-size: 13px; font-weight: 600;
+      cursor: pointer; border: none; background: var(--accent); color: white;
+      transition: all 0.12s; display: flex; align-items: center; gap: 6px;
+    }
+    .btn-primary:hover { background: #6d28d9; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Content views */
+    .content-area { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+
+    /* Chat view */
+    .chat-messages { flex: 1; overflow-y: auto; padding: 20px 0; }
+    .chat-messages-inner { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+    .empty-state {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100%; padding: 40px 24px; text-align: center;
+    }
+    .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-title { font-size: 22px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+    .empty-desc { font-size: 14px; color: var(--text-secondary); max-width: 460px; line-height: 1.6; }
+    .quick-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 24px; }
+    .quick-btn {
+      padding: 9px 16px; border-radius: 20px; font-size: 13px;
+      border: 1px solid var(--border); background: white; color: var(--text-secondary);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .quick-btn:hover { border-color: var(--accent-light); color: var(--accent); background: var(--accent-glow); }
+
+    /* Message bubbles */
+    .msg-row { margin-bottom: 20px; animation: fadeIn 0.2s ease-out; }
+    .msg-row.user { display: flex; justify-content: flex-end; }
+    .msg-row.system { display: flex; justify-content: flex-start; }
+
+    .msg-bubble-user {
+      background: var(--accent);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 16px 16px 4px 16px;
+      max-width: 72%;
+      font-size: 14px; line-height: 1.5;
+    }
+    .msg-bubble-system {
+      background: var(--msg-bg);
+      border: 1px solid #ede9fe;
+      padding: 0;
+      border-radius: 4px 16px 16px 16px;
+      max-width: 92%;
+      font-size: 14px;
+      overflow: hidden;
+    }
+    .msg-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+
+    /* Proof result card */
+    .proof-card { background: white; }
+    .proof-card-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid #ede9fe;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .status-badge {
+      display: flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    }
+    .status-badge.valid { background: var(--success-bg); color: var(--success); }
+    .status-badge.invalid { background: var(--error-bg); color: var(--error); }
+    .status-badge.pending { background: var(--warn-bg); color: var(--warn); }
+
+    .proof-summary { padding: 16px; }
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    .result-item { background: #f8f7ff; border-radius: 8px; padding: 10px 12px; }
+    .result-item-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+    .result-item-value { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+    .result-item-sub { font-size: 11px; color: var(--text-secondary); margin-top: 1px; }
+
+    .hash-section { background: #f8f7ff; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+    .hash-title { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .hash-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .hash-key { font-size: 11px; color: var(--text-muted); width: 110px; flex-shrink: 0; }
+    .hash-val { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px; color: var(--hash-color); word-break: break-all; }
+
+    .trace-toggle {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 12px; font-size: 12px; color: var(--accent);
+      cursor: pointer; background: transparent; border: none;
+      font-weight: 500; transition: all 0.12s;
+    }
+    .trace-toggle:hover { color: #6d28d9; }
+
+    .trace-steps { background: #f0f0ff; border-top: 1px solid #ede9fe; }
+    .trace-step {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(124,58,237,0.08);
+      font-size: 12px;
+    }
+    .trace-step:last-child { border-bottom: none; }
+    .trace-step-name { font-weight: 600; color: var(--text-primary); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .trace-step-rule { font-size: 10px; color: var(--accent-light); font-family: monospace; }
+    .trace-kv { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+    .trace-kv-item { font-size: 11px; }
+    .trace-kv-key { color: var(--text-muted); }
+    .trace-kv-val { color: var(--text-primary); font-weight: 500; font-family: monospace; }
+
+    /* Chat input area */
+    .chat-input-area {
+      padding: 14px 24px 20px;
+      border-top: 1px solid var(--border);
+      background: white;
+      flex-shrink: 0;
+    }
+    .chat-input-inner { max-width: 760px; margin: 0 auto; }
+    .input-mode-tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+    .tab-btn {
+      padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;
+      cursor: pointer; border: 1px solid transparent; transition: all 0.12s;
+      color: var(--text-secondary); background: transparent;
+    }
+    .tab-btn.active { background: var(--accent-glow); color: var(--accent); border-color: rgba(124,58,237,0.25); }
+    .tab-btn:hover:not(.active) { background: #f9fafb; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .form-group { display: flex; flex-direction: column; gap: 3px; }
+    .form-label { font-size: 11px; font-weight: 500; color: var(--text-secondary); }
+    .form-input {
+      padding: 7px 10px; border: 1px solid var(--border); border-radius: 7px;
+      font-size: 13px; color: var(--text-primary); background: white;
+      transition: border-color 0.12s; outline: none;
+    }
+    .form-input:focus { border-color: var(--accent-light); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .form-select {
+      padding: 7px 10px; border: 1px solid var(--border); border-radius: 7px;
+      font-size: 13px; color: var(--text-primary); background: white;
+      transition: border-color 0.12s; outline: none; cursor: pointer;
+    }
+    .form-select:focus { border-color: var(--accent-light); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+    .json-input {
+      width: 100%; min-height: 90px; max-height: 200px;
+      padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px;
+      color: var(--text-primary); background: #fafafa;
+      transition: border-color 0.12s; outline: none; resize: vertical;
+      margin-bottom: 8px;
+    }
+    .json-input:focus { border-color: var(--accent-light); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+    .input-footer { display: flex; align-items: center; justify-content: space-between; }
+    .input-hint { font-size: 11px; color: var(--text-muted); }
+    .send-btn {
+      padding: 8px 20px; border-radius: 8px; background: var(--accent);
+      color: white; border: none; font-size: 13px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 6px;
+      transition: all 0.12s;
+    }
+    .send-btn:hover { background: #6d28d9; }
+    .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Verify view */
+    .verify-container { flex: 1; overflow-y: auto; padding: 24px; max-width: 760px; margin: 0 auto; width: 100%; }
+    .verify-result {
+      border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
+      animation: fadeIn 0.25s ease-out; margin-top: 20px;
+    }
+    .verify-result.valid { border-color: var(--success); }
+    .verify-result.invalid { border-color: var(--error); }
+
+    /* Audit Chain view */
+    .audit-container { flex: 1; overflow-y: auto; padding: 24px; }
+    .audit-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .audit-header h2 { font-size: 16px; font-weight: 600; }
+    .chain-status-badge {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
+    }
+    .chain-status-badge.valid { background: var(--success-bg); color: var(--success); }
+    .chain-status-badge.invalid { background: var(--error-bg); color: var(--error); }
+
+    .audit-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .audit-table th {
+      text-align: left; padding: 8px 12px;
+      border-bottom: 2px solid var(--border);
+      color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .audit-table td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; }
+    .audit-table tr:hover td { background: #f8f7ff; }
+    .hash-short { font-family: monospace; font-size: 11px; color: var(--hash-color); }
+    .event-type-badge {
+      display: inline-flex; padding: 2px 8px; border-radius: 4px;
+      font-size: 11px; font-weight: 600; background: var(--accent-glow); color: var(--accent);
+    }
+
+    /* Metrics view */
+    .metrics-container { flex: 1; overflow-y: auto; padding: 24px; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .metric-card {
+      background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px;
+      transition: box-shadow 0.12s;
+    }
+    .metric-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .metric-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .metric-value { font-size: 26px; font-weight: 700; color: var(--text-primary); }
+    .metric-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+    /* API Docs view */
+    .api-container { flex: 1; overflow-y: auto; padding: 24px; max-width: 800px; margin: 0 auto; width: 100%; }
+    .endpoint-card {
+      border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 14px;
+    }
+    .endpoint-header {
+      padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+      background: #fafafa; cursor: pointer; user-select: none; transition: background 0.12s;
+    }
+    .endpoint-header:hover { background: #f3f4f6; }
+    .method-badge {
+      padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;
+      font-family: monospace; flex-shrink: 0;
+    }
+    .method-GET { background: #d1fae5; color: #065f46; }
+    .method-POST { background: #ede9fe; color: #5b21b6; }
+    .endpoint-path { font-family: monospace; font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .endpoint-desc { font-size: 12px; color: var(--text-secondary); margin-left: auto; }
+    .endpoint-body { padding: 16px; border-top: 1px solid var(--border); }
+    .endpoint-try {
+      padding: 10px 12px; background: var(--code-bg); border-radius: 8px; margin-bottom: 10px;
+    }
+    .endpoint-try pre { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: var(--code-text); white-space: pre-wrap; }
+    .try-btn {
+      padding: 6px 14px; border-radius: 6px; background: var(--accent); color: white;
+      border: none; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.12s;
+    }
+    .try-btn:hover { background: #6d28d9; }
+
+    /* Settings view */
+    .settings-container { flex: 1; overflow-y: auto; padding: 24px; max-width: 600px; }
+    .settings-section { margin-bottom: 28px; }
+    .settings-section h3 { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .settings-field { margin-bottom: 14px; }
+    .settings-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 5px; display: block; }
+    .settings-input {
+      width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 13px; color: var(--text-primary); outline: none; transition: border-color 0.12s;
+    }
+    .settings-input:focus { border-color: var(--accent-light); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .settings-desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+    .save-btn {
+      padding: 9px 20px; background: var(--accent); color: white; border: none;
+      border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.12s;
+    }
+    .save-btn:hover { background: #6d28d9; }
+
+    /* Terminal */
+    .terminal-panel {
+      background: var(--terminal-bg);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex; flex-direction: column;
+      flex-shrink: 0;
+      transition: height 0.2s ease;
+    }
+    .terminal-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
+      cursor: pointer; user-select: none;
+    }
+    .terminal-dots { display: flex; gap: 5px; }
+    .terminal-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .terminal-dot.red { background: #ff5f57; }
+    .terminal-dot.yellow { background: #ffbd2e; }
+    .terminal-dot.green { background: #28c840; }
+    .terminal-title { color: rgba(255,255,255,0.35); font-size: 11px; font-family: monospace; margin-left: 4px; }
+    .terminal-chevron { margin-left: auto; color: rgba(255,255,255,0.25); font-size: 12px; transition: transform 0.2s; }
+    .terminal-chevron.open { transform: rotate(180deg); }
+
+    .terminal-output { flex: 1; overflow-y: auto; padding: 10px 14px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; line-height: 1.6; }
+    .terminal-line { margin-bottom: 1px; }
+    .terminal-line.prompt { color: var(--terminal-prompt); }
+    .terminal-line.output { color: var(--terminal-text); }
+    .terminal-line.error { color: var(--error); }
+    .terminal-line.success { color: var(--success); }
+    .terminal-line.muted { color: rgba(255,255,255,0.3); }
+    .terminal-line.json { color: #fde68a; }
+
+    .terminal-input-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .terminal-prompt-sym { color: var(--terminal-prompt); font-family: monospace; font-size: 13px; flex-shrink: 0; }
+    .terminal-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: rgba(255,255,255,0.85); font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px;
+    }
+
+    /* Loading dots */
+    .loading-dots { display: flex; gap: 4px; align-items: center; padding: 14px 16px; }
+    .loading-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent-light);
+    }
+    .loading-dot:nth-child(1) { animation: pulse 1.2s ease-in-out 0s infinite; }
+    .loading-dot:nth-child(2) { animation: pulse 1.2s ease-in-out 0.2s infinite; }
+    .loading-dot:nth-child(3) { animation: pulse 1.2s ease-in-out 0.4s infinite; }
+
+    /* Code block */
+    .code-block {
+      background: var(--code-bg); border-radius: 8px; padding: 12px 14px; overflow-x: auto;
+      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px;
+      color: var(--code-text); line-height: 1.6; margin: 8px 0;
+    }
+
+    /* Scrollable table wrapper */
+    .table-wrapper { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
+
+    /* Tooltip */
+    .tooltip-wrap { position: relative; display: inline-block; }
+    .tooltip-wrap:hover .tooltip-box { display: block; }
+    .tooltip-box {
+      display: none; position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
+      background: #1f2937; color: white; font-size: 11px; padding: 4px 8px;
+      border-radius: 4px; white-space: nowrap; z-index: 100;
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ─── Icons (inline SVG as components) ──────────────────────────────────────
+const IconShield = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    <path d="m9 12 2 2 4-4" strokeWidth="2"/>
+  </svg>
+);
+const IconProve    = () => <span>⚡</span>;
+const IconVerify  = () => <span>✅</span>;
+const IconAudit   = () => <span>🔗</span>;
+const IconMetrics = () => <span>📊</span>;
+const IconAPI     = () => <span>🔌</span>;
+const IconTerminal= () => <span>⬛</span>;
+const IconSettings= () => <span>⚙️</span>;
+const IconSend    = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+  </svg>
+);
+const IconSpinner = () => (
+  <svg className="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+    <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+  </svg>
+);
+const IconChevron = ({open}) => (
+  <svg className={`terminal-chevron ${open?'open':''}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+);
+const IconNew = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+  </svg>
+);
+const IconCopy = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+  </svg>
+);
+
+// ─── Constants ───────────────────────────────────────────────────────────────
+const SAMPLE_REQUEST = {
+  hs_code: "8471300000",
+  country_of_origin: "CN",
+  customs_value: "450.00",
+  freight: "35.00",
+  insurance: "4.50",
+  quantity: 10,
+  shipping_mode: "ocean"
+};
+
+const ENDPOINTS = [
+  { method: 'GET',  path: '/healthz',    desc: 'Health check', body: null },
+  { method: 'GET',  path: '/status',     desc: 'Runtime status', body: null },
+  { method: 'GET',  path: '/dashboard',  desc: 'Dashboard + audit chain', body: null },
+  { method: 'GET',  path: '/metrics',    desc: 'Chain metrics & backpressure', body: null },
+  { method: 'POST', path: '/calculate',  desc: 'Calculate landed cost with proof', body: SAMPLE_REQUEST },
+  { method: 'POST', path: '/prove',      desc: 'Enqueue async PLONK proof', body: SAMPLE_REQUEST },
+  { method: 'GET',  path: '/proof/{task_id}', desc: 'Poll proof job status', body: null },
+  { method: 'POST', path: '/verify',     desc: 'Verify persisted evidence', body: { request: SAMPLE_REQUEST } },
+];
+
+// ─── Utility ─────────────────────────────────────────────────────────────────
+const shortHash = h => h ? `${h.slice(0,8)}…${h.slice(-6)}` : '—';
+const fmt$      = v => `$${parseFloat(v).toFixed(2)}`;
+const fmtPct    = v => `${(parseFloat(v)*100).toFixed(2)}%`;
+
+// ─── API Layer ────────────────────────────────────────────────────────────────
+const useApi = (config) => {
+  const call = useCallback(async (method, path, body) => {
+    const url = `${config.baseUrl}${path}`;
+    const headers = { 'Content-Type': 'application/json' };
+    if (config.apiKey) headers['X-Api-Key'] = config.apiKey;
+    const opts = { method, headers };
+    if (body) opts.body = JSON.stringify(body);
+    const res = await fetch(url, opts);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`);
+    return data;
+  }, [config]);
+  return { call };
+};
+
+// ─── Sidebar ──────────────────────────────────────────────────────────────────
+const Sidebar = ({ view, setView, onNewChat, history, connStatus, onConnClick }) => {
+  const navItems = [
+    { id: 'prove',    label: 'Prove',         icon: <IconProve/> },
+    { id: 'verify',  label: 'Verify',         icon: <IconVerify/> },
+    { id: 'audit',   label: 'Audit Chain',    icon: <IconAudit/> },
+    { id: 'metrics', label: 'Metrics',        icon: <IconMetrics/> },
+    { id: 'api',     label: 'API Explorer',   icon: <IconAPI/> },
+    { id: 'settings',label: 'Settings',       icon: <IconSettings/> },
+  ];
+  const connLabel = connStatus === 'connected' ? 'Connected' : connStatus === 'checking' ? 'Checking…' : 'Disconnected';
+  return (
+    <div className="sidebar">
+      <div className="sidebar-logo">
+        <div className="logo-shield"><IconShield/></div>
+        <div>
+          <div className="logo-text">VRL</div>
+          <div className="logo-sub">Verifiable Reality Layer</div>
+        </div>
+      </div>
+
+      <button className="new-chat-btn" onClick={onNewChat}>
+        <IconNew/> New Session
+      </button>
+
+      <div className="sidebar-section">
+        <div className="sidebar-section-label">Workspace</div>
+        {navItems.map(n => (
+          <div
+            key={n.id}
+            className={`nav-item ${view === n.id ? 'active' : ''}`}
+            onClick={() => setView(n.id)}
+          >
+            <span className="nav-icon">{n.icon}</span>
+            {n.label}
+          </div>
+        ))}
+      </div>
+
+      <div className="history-section">
+        {history.length > 0 && (
+          <>
+            <div className="history-label">Recent</div>
+            {history.map((h, i) => (
+              <div key={i} className="history-item" title={h.label}>
+                🔒 {h.label}
+              </div>
+            ))}
+          </>
+        )}
+      </div>
+
+      <div className="sidebar-footer">
+        <div className="connection-pill" onClick={onConnClick}>
+          <div className={`conn-dot ${connStatus}`}/>
+          <span style={{flex:1}}>{connLabel}</span>
+          <span style={{fontSize:'11px'}}>localhost:8000</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── Proof Result Card ────────────────────────────────────────────────────────
+const ProofCard = ({ data }) => {
+  const [showTrace, setShowTrace] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const res = data.result;
+  const integrity = data.integrity;
+  const evidence = data.evidence;
+  const proof = evidence?.proof;
+
+  const copyProof = () => {
+    navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
+  };
+
+  return (
+    <div className="proof-card">
+      <div className="proof-card-header">
+        <div className="status-badge valid">✓ Proof Valid</div>
+        <span style={{fontSize:'12px',color:'var(--text-muted)',marginLeft:'4px'}}>
+          {res?.hs_code} · {res?.country_of_origin}
+        </span>
+        <button className="btn-icon" onClick={copyProof} style={{marginLeft:'auto',padding:'4px 8px',fontSize:'12px'}}>
+          <IconCopy/> {copied ? 'Copied!' : 'Copy bundle'}
+        </button>
+      </div>
+
+      <div className="proof-summary">
+        <div className="result-grid">
+          <div className="result-item">
+            <div className="result-item-label">Landed Cost</div>
+            <div className="result-item-value">{res ? fmt$(res.landed_cost) : '—'}</div>
+            <div className="result-item-sub">Total verified cost</div>
+          </div>
+          <div className="result-item">
+            <div className="result-item-label">Duty Amount</div>
+            <div className="result-item-value">{res ? fmt$(res.duty_amount) : '—'}</div>
+            <div className="result-item-sub">Base duty + Section 301</div>
+          </div>
+          <div className="result-item">
+            <div className="result-item-label">MPF</div>
+            <div className="result-item-value">{res ? fmt$(res.mpf_amount) : '—'}</div>
+            <div className="result-item-sub">Merchandise Processing Fee</div>
+          </div>
+          <div className="result-item">
+            <div className="result-item-label">HMF</div>
+            <div className="result-item-value">{res ? fmt$(res.hmf_amount) : '—'}</div>
+            <div className="result-item-sub">Harbor Maintenance Fee</div>
+          </div>
+        </div>
+
+        {res && (
+          <div className="result-item" style={{marginBottom:'12px',display:'flex',gap:'16px',flexWrap:'wrap'}}>
+            <span style={{fontSize:'12px',color:'var(--text-secondary)'}}>Duty rate: <strong>{fmtPct(res.duty_rate)}</strong></span>
+            <span style={{fontSize:'12px',color:'var(--text-secondary)'}}>S301 rate: <strong>{fmtPct(res.section_301_rate)}</strong></span>
+            <span style={{fontSize:'12px',color:'var(--text-secondary)'}}>Rule: <strong style={{fontFamily:'monospace'}}>{res.tariff_rule_ref}</strong></span>
+            <span style={{fontSize:'12px',color:'var(--text-secondary)'}}>Mode: <strong>{res.country_of_origin}</strong> via {data.result?.shipping_mode || '—'}</span>
+          </div>
+        )}
+
+        <div className="hash-section">
+          <div className="hash-title">🔐 Integrity Hashes</div>
+          {[
+            ['Input hash',     integrity?.input_hash],
+            ['Output hash',    integrity?.output_hash],
+            ['Trace hash',     integrity?.trace_hash],
+            ['Integrity hash', integrity?.integrity_hash],
+            proof && ['Final proof',    proof.final_proof],
+            proof && ['Circuit hash',   proof.circuit_hash],
+          ].filter(Boolean).map(([k, v]) => v && (
+            <div key={k} className="hash-row">
+              <span className="hash-key">{k}</span>
+              <span className="hash-val" title={v}>{shortHash(v)}</span>
+            </div>
+          ))}
+        </div>
+
+        {evidence && (
+          <div style={{fontSize:'12px',color:'var(--text-secondary)',padding:'4px 0',display:'flex',gap:'14px',flexWrap:'wrap'}}>
+            <span>Request ID: <span className="hash-val" style={{fontSize:'11px'}}>{shortHash(evidence.request?.id)}</span></span>
+            <span>Proof system: <strong style={{fontFamily:'monospace'}}>{proof?.proof_system || 'sha256-stub'}</strong></span>
+            <span>Audit chain: <span style={{color: evidence.audit_log ? 'var(--success)' : 'var(--warn)'}}>{evidence.audit_log ? '✓ Chained' : '⚠ Not chained'}</span></span>
+          </div>
+        )}
+      </div>
+
+      {data.trace && (
+        <>
+          <button className="trace-toggle" onClick={() => setShowTrace(v => !v)}>
+            {showTrace ? '▾' : '▸'} {showTrace ? 'Hide' : 'Show'} execution trace ({data.trace.length} steps)
+          </button>
+          {showTrace && (
+            <div className="trace-steps">
+              {data.trace.map((step, i) => (
+                <div key={i} className="trace-step">
+                  <div className="trace-step-name">
+                    <span style={{background:'var(--accent)',color:'white',borderRadius:'4px',padding:'1px 6px',fontSize:'10px',fontWeight:700}}>{i+1}</span>
+                    {step.step}
+                    <span className="trace-step-rule">{step.rule_ref}</span>
+                  </div>
+                  <div className="trace-kv">
+                    {Object.entries({...step.inputs, ...step.outputs}).map(([k,v]) => (
+                      <span key={k} className="trace-kv-item">
+                        <span className="trace-kv-key">{k}: </span>
+                        <span className="trace-kv-val">{String(v).length > 20 ? shortHash(String(v)) : v}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+};
+
+// ─── Prove View ───────────────────────────────────────────────────────────────
+const ProveView = ({ api, addHistory }) => {
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [inputMode, setInputMode] = useState('form');
+  const [jsonInput, setJsonInput] = useState(JSON.stringify(SAMPLE_REQUEST, null, 2));
+  const [form, setForm] = useState({...SAMPLE_REQUEST});
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, loading]);
+
+  const handleForm = f => setForm(p => ({...p, ...f}));
+
+  const buildPayload = () => {
+    if (inputMode === 'json') {
+      return JSON.parse(jsonInput);
+    }
+    return {
+      hs_code: form.hs_code,
+      country_of_origin: form.country_of_origin,
+      customs_value: form.customs_value,
+      freight: form.freight,
+      insurance: form.insurance,
+      quantity: parseInt(form.quantity),
+      shipping_mode: form.shipping_mode,
+    };
+  };
+
+  const submit = async () => {
+    let payload;
+    try { payload = buildPayload(); }
+    catch(e) { alert('Invalid JSON: ' + e.message); return; }
+
+    const label = `${payload.hs_code} / ${payload.country_of_origin}`;
+    setMessages(m => [...m, { type: 'user', text: JSON.stringify(payload, null, 2), label }]);
+    setLoading(true);
+
+    try {
+      const data = await api.call('POST', '/calculate', payload);
+      setMessages(m => [...m, { type: 'proof', data }]);
+      addHistory({ label: `${label} — ${fmt$(data.result?.landed_cost)}` });
+    } catch(err) {
+      setMessages(m => [...m, { type: 'error', text: err.message }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const quickSubmit = async (preset) => {
+    setForm({...preset});
+    setJsonInput(JSON.stringify(preset, null, 2));
+    const label = `${preset.hs_code} / ${preset.country_of_origin}`;
+    setMessages(m => [...m, { type: 'user', text: JSON.stringify(preset, null, 2), label }]);
+    setLoading(true);
+    try {
+      const data = await api.call('POST', '/calculate', preset);
+      setMessages(m => [...m, { type: 'proof', data }]);
+      addHistory({ label: `${label} — ${fmt$(data.result?.landed_cost)}` });
+    } catch(err) {
+      setMessages(m => [...m, { type: 'error', text: err.message }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="content-area">
+      <div className="chat-messages">
+        <div className="chat-messages-inner">
+          {messages.length === 0 && !loading && (
+            <div className="empty-state">
+              <div className="empty-icon">🔐</div>
+              <div className="empty-title">Generate a Verified Proof</div>
+              <div className="empty-desc">
+                Submit an import calculation. The engine computes deterministically, generates a ZK proof bundle, and chains every result into an immutable audit log.
+              </div>
+              <div className="quick-actions">
+                <button className="quick-btn" onClick={() => quickSubmit({hs_code:"8471300000",country_of_origin:"CN",customs_value:"450.00",freight:"35.00",insurance:"4.50",quantity:10,shipping_mode:"ocean"})}>
+                  🖥 Electronics from China (ocean)
+                </button>
+                <button className="quick-btn" onClick={() => quickSubmit({hs_code:"6109100010",country_of_origin:"VN",customs_value:"8.50",freight:"1.20",insurance:"0.10",quantity:500,shipping_mode:"ocean"})}>
+                  👕 Apparel from Vietnam
+                </button>
+                <button className="quick-btn" onClick={() => quickSubmit({hs_code:"8703210000",country_of_origin:"DE",customs_value:"28000.00",freight:"800.00",insurance:"140.00",quantity:1,shipping_mode:"ocean"})}>
+                  🚗 Auto parts from Germany
+                </button>
+              </div>
+            </div>
+          )}
+
+          {messages.map((msg, i) => (
+            <div key={i} className={`msg-row ${msg.type === 'user' ? 'user' : 'system'}`}>
+              {msg.type === 'user' && (
+                <div>
+                  <div className="msg-label" style={{justifyContent:'flex-end'}}>You · Import Request</div>
+                  <div className="msg-bubble-user">
+                    <pre style={{fontFamily:'monospace',fontSize:'11px',whiteSpace:'pre-wrap',color:'rgba(255,255,255,0.9)'}}>{msg.text}</pre>
+                  </div>
+                </div>
+              )}
+              {msg.type === 'proof' && (
+                <div style={{width:'100%'}}>
+                  <div className="msg-label">🔐 VRL Engine · Proof Bundle</div>
+                  <div className="msg-bubble-system">
+                    <ProofCard data={msg.data}/>
+                  </div>
+                </div>
+              )}
+              {msg.type === 'error' && (
+                <div style={{width:'100%'}}>
+                  <div className="msg-label">⚠ Error</div>
+                  <div className="msg-bubble-system" style={{borderColor:'var(--error)'}}>
+                    <div style={{padding:'12px 14px',color:'var(--error)',fontSize:'13px'}}>{msg.text}</div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {loading && (
+            <div className="msg-row system">
+              <div>
+                <div className="msg-label">🔐 VRL Engine · Computing proof…</div>
+                <div className="msg-bubble-system">
+                  <div className="loading-dots">
+                    <div className="loading-dot"/><div className="loading-dot"/><div className="loading-dot"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          <div ref={bottomRef}/>
+        </div>
+      </div>
+
+      <div className="chat-input-area">
+        <div className="chat-input-inner">
+          <div className="input-mode-tabs">
+            <button className={`tab-btn ${inputMode==='form'?'active':''}`} onClick={() => setInputMode('form')}>Form</button>
+            <button className={`tab-btn ${inputMode==='json'?'active':''}`} onClick={() => setInputMode('json')}>JSON</button>
+          </div>
+
+          {inputMode === 'form' ? (
+            <div className="form-grid">
+              <div className="form-group">
+                <label className="form-label">HS Code (10 digits)</label>
+                <input className="form-input" value={form.hs_code} onChange={e => handleForm({hs_code:e.target.value})} placeholder="8471300000"/>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Country of Origin</label>
+                <input className="form-input" value={form.country_of_origin} onChange={e => handleForm({country_of_origin:e.target.value.toUpperCase()})} placeholder="CN" maxLength={2}/>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Shipping Mode</label>
+                <select className="form-select" value={form.shipping_mode} onChange={e => handleForm({shipping_mode:e.target.value})}>
+                  <option value="ocean">Ocean</option>
+                  <option value="air">Air</option>
+                  <option value="truck">Truck</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Customs Value (USD)</label>
+                <input className="form-input" value={form.customs_value} onChange={e => handleForm({customs_value:e.target.value})} placeholder="450.00"/>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Freight (USD)</label>
+                <input className="form-input" value={form.freight} onChange={e => handleForm({freight:e.target.value})} placeholder="35.00"/>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Quantity</label>
+                <input className="form-input" type="number" value={form.quantity} onChange={e => handleForm({quantity:e.target.value})} placeholder="10"/>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Insurance (USD)</label>
+                <input className="form-input" value={form.insurance} onChange={e => handleForm({insurance:e.target.value})} placeholder="4.50"/>
+              </div>
+            </div>
+          ) : (
+            <textarea
+              className="json-input"
+              value={jsonInput}
+              onChange={e => setJsonInput(e.target.value)}
+              placeholder={JSON.stringify(SAMPLE_REQUEST, null, 2)}
+              spellCheck={false}
+            />
+          )}
+
+          <div className="input-footer">
+            <span className="input-hint">Proof is generated, chained, and persisted automatically</span>
+            <button className="send-btn" onClick={submit} disabled={loading}>
+              {loading ? <><IconSpinner/> Proving…</> : <><IconSend/> Generate Proof</>}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── Verify View ──────────────────────────────────────────────────────────────
+const VerifyView = ({ api }) => {
+  const [json, setJson] = useState(JSON.stringify({ request: SAMPLE_REQUEST }, null, 2));
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const doVerify = async () => {
+    let payload;
+    try { payload = JSON.parse(json); }
+    catch(e) { alert('Invalid JSON'); return; }
+    setLoading(true); setResult(null);
+    try {
+      const data = await api.call('POST', '/verify', payload);
+      setResult({ ok: true, data });
+    } catch(err) {
+      setResult({ ok: false, msg: err.message });
+    } finally { setLoading(false); }
+  };
+
+  return (
+    <div className="content-area">
+      <div style={{flex:1,overflowY:'auto',padding:'24px'}}>
+        <div style={{maxWidth:'760px',margin:'0 auto'}}>
+          <h2 style={{fontSize:'16px',fontWeight:600,marginBottom:'6px'}}>Verify Persisted Evidence</h2>
+          <p style={{fontSize:'13px',color:'var(--text-secondary)',marginBottom:'16px'}}>
+            Submit an import request to recompute and verify it against the persisted audit chain.
+          </p>
+          <textarea
+            className="json-input"
+            style={{minHeight:'160px'}}
+            value={json}
+            onChange={e => setJson(e.target.value)}
+            spellCheck={false}
+          />
+          <div style={{display:'flex',justifyContent:'flex-end'}}>
+            <button className="send-btn" onClick={doVerify} disabled={loading}>
+              {loading ? <><IconSpinner/> Verifying…</> : <>✅ Verify</>}
+            </button>
+          </div>
+
+          {result && (
+            <div className={`verify-result ${result.ok && result.data?.verification?.status === 'VALID' ? 'valid' : 'invalid'}`} style={{marginTop:'20px',padding:'16px',borderRadius:'10px',border:'1px solid'}}>
+              {result.ok ? (
+                <>
+                  <div style={{display:'flex',alignItems:'center',gap:'10px',marginBottom:'12px'}}>
+                    <div className={`status-badge ${result.data.verification?.status === 'VALID' ? 'valid' : 'invalid'}`}>
+                      {result.data.verification?.status === 'VALID' ? '✓ VALID' : '✗ INVALID'}
+                    </div>
+                    <span style={{fontSize:'13px',color:'var(--text-secondary)'}}>{result.data.verification?.reason}</span>
+                  </div>
+                  <div className="hash-section">
+                    <div className="hash-title">Recomputed Hashes</div>
+                    {[
+                      ['Input hash', result.data.verification?.recomputed_input_hash],
+                      ['Output hash', result.data.verification?.recomputed_output_hash],
+                      ['Trace hash', result.data.verification?.recomputed_trace_hash],
+                      ['Integrity hash', result.data.verification?.recomputed_integrity_hash],
+                    ].map(([k,v]) => v && (
+                      <div key={k} className="hash-row">
+                        <span className="hash-key">{k}</span>
+                        <span className="hash-val">{shortHash(v)}</span>
+                      </div>
+                    ))}
+                  </div>
+                  {result.data.audit_chain && (
+                    <div style={{fontSize:'12px',color:'var(--text-secondary)'}}>
+                      Audit chain: <strong style={{color: result.data.audit_chain.status === 'VALID' ? 'var(--success)' : 'var(--error)'}}>
+                        {result.data.audit_chain.status}
+                      </strong> — {result.data.audit_chain.reason} ({result.data.audit_chain.checked_rows} rows checked)
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div style={{color:'var(--error)',fontSize:'13px'}}>⚠ {result.msg}</div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── Audit View ───────────────────────────────────────────────────────────────
+const AuditView = ({ api }) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    api.call('GET', '/dashboard').then(d => { setData(d); setLoading(false); }).catch(e => { setError(e.message); setLoading(false); });
+  }, []);
+
+  const refresh = () => {
+    setLoading(true); setError(null);
+    api.call('GET', '/dashboard').then(d => { setData(d); setLoading(false); }).catch(e => { setError(e.message); setLoading(false); });
+  };
+
+  return (
+    <div className="content-area">
+      <div className="audit-container">
+        <div className="audit-header">
+          <div>
+            <h2>Audit Chain</h2>
+            <p style={{fontSize:'12px',color:'var(--text-secondary)',marginTop:'2px'}}>
+              Append-only, tamper-evident chain of all proof events
+            </p>
+          </div>
+          <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
+            {data?.audit_chain && (
+              <div className={`chain-status-badge ${data.audit_chain.status?.toLowerCase()}`}>
+                {data.audit_chain.status === 'VALID' ? '✓' : '✗'} {data.audit_chain.status}
+                {data.audit_chain.checked_rows != null && ` · ${data.audit_chain.checked_rows} events`}
+              </div>
+            )}
+            <button className="btn-icon" onClick={refresh}>↻ Refresh</button>
+          </div>
+        </div>
+
+        {loading && <div style={{display:'flex',justifyContent:'center',padding:'40px'}}><IconSpinner/></div>}
+        {error && <div style={{color:'var(--error)',fontSize:'13px',padding:'20px'}}>{error}</div>}
+
+        {data && !loading && (
+          <>
+            <div className="metrics-grid" style={{marginBottom:'20px'}}>
+              {[
+                ['Total Proofs', data.proof_count ?? '—', 'Lifetime proof records'],
+                ['Requests', data.request_count ?? '—', 'Unique calculations'],
+                ['Audit Events', data.audit_chain?.checked_rows ?? '—', 'Chained events'],
+                ['Chain Status', data.audit_chain?.status ?? '—', 'Integrity status'],
+              ].map(([label, value, sub]) => (
+                <div key={label} className="metric-card">
+                  <div className="metric-label">{label}</div>
+                  <div className="metric-value" style={{fontSize:'22px'}}>{value}</div>
+                  <div className="metric-sub">{sub}</div>
+                </div>
+              ))}
+            </div>
+
+            {data.recent_proofs && data.recent_proofs.length > 0 && (
+              <div className="table-wrapper">
+                <table className="audit-table">
+                  <thead>
+                    <tr>
+                      <th>Proof ID</th>
+                      <th>Final Proof</th>
+                      <th>Integrity Hash</th>
+                      <th>Proof System</th>
+                      <th>Created</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.recent_proofs.map((p, i) => (
+                      <tr key={i}>
+                        <td><span className="hash-short">{shortHash(p.id)}</span></td>
+                        <td><span className="hash-short">{shortHash(p.final_proof)}</span></td>
+                        <td><span className="hash-short">{shortHash(p.integrity_hash)}</span></td>
+                        <td><span className="event-type-badge">{p.proof_system}</span></td>
+                        <td style={{fontSize:'12px',color:'var(--text-secondary)'}}>{p.created_at ? new Date(p.created_at).toLocaleString() : '—'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {(!data.recent_proofs || data.recent_proofs.length === 0) && (
+              <div style={{textAlign:'center',padding:'40px',color:'var(--text-muted)',fontSize:'13px'}}>
+                No proof records yet. Generate your first proof in the Prove tab.
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ─── Metrics View ─────────────────────────────────────────────────────────────
+const MetricsView = ({ api }) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.call('GET', '/metrics').then(d => { setData(d); setLoading(false); }).catch(() => setLoading(false));
+  }, []);
+
+  return (
+    <div className="content-area">
+      <div className="metrics-container">
+        <h2 style={{fontSize:'16px',fontWeight:600,marginBottom:'16px'}}>System Metrics</h2>
+        {loading && <div style={{display:'flex',justifyContent:'center',padding:'40px'}}><IconSpinner/></div>}
+        {data && (
+          <>
+            {data.backpressure && (
+              <>
+                <h3 style={{fontSize:'13px',fontWeight:600,color:'var(--text-secondary)',marginBottom:'10px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Backpressure</h3>
+                <div className="metrics-grid">
+                  {Object.entries(data.backpressure).map(([k, v]) => (
+                    <div key={k} className="metric-card">
+                      <div className="metric-label">{k.replace(/_/g,' ')}</div>
+                      <div className="metric-value" style={{fontSize:'20px'}}>{String(v)}</div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+            {data.chain_metrics && (
+              <>
+                <h3 style={{fontSize:'13px',fontWeight:600,color:'var(--text-secondary)',marginBottom:'10px',marginTop:'20px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Chain Metrics</h3>
+                <div className="code-block">{JSON.stringify(data.chain_metrics, null, 2)}</div>
+              </>
+            )}
+            {data.api_keys && (
+              <>
+                <h3 style={{fontSize:'13px',fontWeight:600,color:'var(--text-secondary)',marginBottom:'10px',marginTop:'20px',textTransform:'uppercase',letterSpacing:'0.5px'}}>API Keys</h3>
+                <div className="code-block">{JSON.stringify(data.api_keys, null, 2)}</div>
+              </>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ─── API Explorer ─────────────────────────────────────────────────────────────
+const APIView = ({ api }) => {
+  const [open, setOpen] = useState(null);
+  const [responses, setResponses] = useState({});
+  const [loading, setLoading] = useState({});
+
+  const tryEndpoint = async (ep, i) => {
+    setLoading(l => ({...l, [i]: true}));
+    try {
+      const data = await api.call(ep.method, ep.path.replace('{task_id}','test-id'), ep.body);
+      setResponses(r => ({...r, [i]: { ok: true, data }}));
+    } catch(err) {
+      setResponses(r => ({...r, [i]: { ok: false, msg: err.message }}));
+    } finally {
+      setLoading(l => ({...l, [i]: false}));
+    }
+  };
+
+  return (
+    <div className="content-area">
+      <div className="api-container">
+        <h2 style={{fontSize:'16px',fontWeight:600,marginBottom:'6px'}}>API Explorer</h2>
+        <p style={{fontSize:'13px',color:'var(--text-secondary)',marginBottom:'20px'}}>
+          All endpoints — test them live against your running server.
+        </p>
+        {ENDPOINTS.map((ep, i) => (
+          <div key={i} className="endpoint-card">
+            <div className="endpoint-header" onClick={() => setOpen(open === i ? null : i)}>
+              <span className={`method-badge method-${ep.method}`}>{ep.method}</span>
+              <span className="endpoint-path">{ep.path}</span>
+              <span className="endpoint-desc">{ep.desc}</span>
+              <span style={{marginLeft:'8px',fontSize:'12px',color:'var(--text-muted)'}}>{open===i?'▾':'▸'}</span>
+            </div>
+            {open === i && (
+              <div className="endpoint-body">
+                {ep.body && (
+                  <>
+                    <div style={{fontSize:'12px',fontWeight:600,color:'var(--text-secondary)',marginBottom:'6px'}}>Request Body</div>
+                    <div className="endpoint-try">
+                      <pre>{JSON.stringify(ep.body, null, 2)}</pre>
+                    </div>
+                  </>
+                )}
+                <div style={{display:'flex',alignItems:'center',gap:'10px',marginBottom:'10px'}}>
+                  <button className="try-btn" onClick={() => tryEndpoint(ep, i)} disabled={loading[i]}>
+                    {loading[i] ? '⏳ Running…' : '▶ Try it'}
+                  </button>
+                  <span style={{fontSize:'12px',color:'var(--text-muted)'}}>POST to your configured API base URL</span>
+                </div>
+                {responses[i] && (
+                  <div>
+                    <div style={{fontSize:'12px',fontWeight:600,color:'var(--text-secondary)',marginBottom:'6px'}}>
+                      Response {responses[i].ok ? '✓' : '✗'}
+                    </div>
+                    <div className="code-block">
+                      {responses[i].ok
+                        ? JSON.stringify(responses[i].data, null, 2).slice(0, 2000) + (JSON.stringify(responses[i].data, null, 2).length > 2000 ? '\n…(truncated)' : '')
+                        : responses[i].msg}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ─── Settings View ────────────────────────────────────────────────────────────
+const SettingsView = ({ config, setConfig, onTestConn }) => {
+  const [local, setLocal] = useState({...config});
+  const [saved, setSaved] = useState(false);
+
+  const save = () => {
+    setConfig(local);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 1800);
+  };
+
+  return (
+    <div className="content-area">
+      <div className="settings-container">
+        <div className="settings-section">
+          <h3>API Connection</h3>
+          <div className="settings-field">
+            <label className="settings-label">Base URL</label>
+            <input className="settings-input" value={local.baseUrl} onChange={e => setLocal(l => ({...l, baseUrl: e.target.value}))} placeholder="http://localhost:8000"/>
+            <div className="settings-desc">The root URL of your VRL FastAPI server (no trailing slash)</div>
+          </div>
+          <div className="settings-field">
+            <label className="settings-label">API Key (optional)</label>
+            <input className="settings-input" type="password" value={local.apiKey} onChange={e => setLocal(l => ({...l, apiKey: e.target.value}))} placeholder="Leave blank for dev mode (VRL_API_KEYS unset)"/>
+            <div className="settings-desc">Set VRL_API_KEYS on your server to enable API key enforcement. Sent as X-Api-Key header.</div>
+          </div>
+          <div style={{display:'flex',gap:'10px',marginTop:'4px'}}>
+            <button className="save-btn" onClick={save}>{saved ? '✓ Saved!' : 'Save'}</button>
+            <button className="btn-icon" onClick={onTestConn}>Test Connection</button>
+          </div>
+        </div>
+        <div className="settings-section">
+          <h3>About</h3>
+          <div style={{fontSize:'13px',color:'var(--text-secondary)',lineHeight:'1.7'}}>
+            <p><strong>Verifiable Reality Layer</strong> — production-grade, deterministic computation with ZK proofs.</p>
+            <p style={{marginTop:'8px'}}>Proof system: <code style={{fontFamily:'monospace',background:'#f3f4f6',padding:'1px 5px',borderRadius:'3px'}}>Halo2 · PLONK · Pasta curve</code></p>
+            <p style={{marginTop:'8px'}}>Backend: <code style={{fontFamily:'monospace',background:'#f3f4f6',padding:'1px 5px',borderRadius:'3px'}}>FastAPI + PostgreSQL + Rust ZK backend</code></p>
+            <p style={{marginTop:'8px'}}>Audit chain: <code style={{fontFamily:'monospace',background:'#f3f4f6',padding:'1px 5px',borderRadius:'3px'}}>64 partitions · SHA-256 chained · append-only</code></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── Terminal ─────────────────────────────────────────────────────────────────
+const Terminal = ({ api, open, onToggle }) => {
+  const [lines, setLines] = useState([
+    { type: 'muted', text: 'VRL Terminal — type `help` for commands' },
+    { type: 'muted', text: '─────────────────────────────────────' },
+  ]);
+  const [input, setInput] = useState('');
+  const [history, setHistory] = useState([]);
+  const [histIdx, setHistIdx] = useState(-1);
+  const outputRef = useRef(null);
+
+  useEffect(() => { outputRef.current?.scrollTo(0, outputRef.current.scrollHeight); }, [lines]);
+
+  const addLine = (type, text) => setLines(l => [...l, { type, text }]);
+
+  const HELP = `Commands:
+  help           — show this message
+  health         — check server health
+  status         — runtime status
+  metrics        — system metrics
+  calculate      — run sample calculation
+  verify         — verify sample request
+  clear          — clear terminal`;
+
+  const run = async (cmd) => {
+    const c = cmd.trim().toLowerCase();
+    addLine('prompt', `$ ${cmd}`);
+    setHistory(h => [cmd, ...h.slice(0,49)]);
+    setHistIdx(-1);
+
+    if (c === 'help') { addLine('output', HELP); return; }
+    if (c === 'clear') { setLines([]); return; }
+
+    if (c === 'health') {
+      try {
+        const d = await api.call('GET', '/healthz');
+        addLine('success', `✓ ${JSON.stringify(d)}`);
+      } catch(e) { addLine('error', `✗ ${e.message}`); }
+      return;
+    }
+    if (c === 'status') {
+      try {
+        const d = await api.call('GET', '/status');
+        addLine('json', JSON.stringify(d, null, 2));
+      } catch(e) { addLine('error', `✗ ${e.message}`); }
+      return;
+    }
+    if (c === 'metrics') {
+      try {
+        const d = await api.call('GET', '/metrics');
+        addLine('json', JSON.stringify(d, null, 2));
+      } catch(e) { addLine('error', `✗ ${e.message}`); }
+      return;
+    }
+    if (c === 'calculate') {
+      addLine('output', 'Submitting sample calculation…');
+      try {
+        const d = await api.call('POST', '/calculate', SAMPLE_REQUEST);
+        addLine('success', `✓ Landed cost: $${parseFloat(d.result?.landed_cost).toFixed(2)}`);
+        addLine('success', `  Integrity: ${shortHash(d.integrity?.integrity_hash)}`);
+        addLine('success', `  Proof:     ${shortHash(d.evidence?.proof?.final_proof)}`);
+      } catch(e) { addLine('error', `✗ ${e.message}`); }
+      return;
+    }
+    if (c === 'verify') {
+      addLine('output', 'Verifying sample request…');
+      try {
+        const d = await api.call('POST', '/verify', { request: SAMPLE_REQUEST });
+        addLine(d.verification?.status === 'VALID' ? 'success' : 'error', `${d.verification?.status === 'VALID' ? '✓' : '✗'} ${d.verification?.status}: ${d.verification?.reason}`);
+      } catch(e) { addLine('error', `✗ ${e.message}`); }
+      return;
+    }
+    addLine('error', `Unknown command: ${cmd}. Type 'help' for commands.`);
+  };
+
+  const onKey = e => {
+    if (e.key === 'Enter') { if (input.trim()) run(input); setInput(''); }
+    if (e.key === 'ArrowUp') { const i = Math.min(histIdx+1, history.length-1); setHistIdx(i); setInput(history[i] || ''); }
+    if (e.key === 'ArrowDown') { const i = Math.max(histIdx-1, -1); setHistIdx(i); setInput(i < 0 ? '' : history[i]); }
+  };
+
+  return (
+    <div className="terminal-panel" style={{height: open ? 'var(--terminal-height)' : '38px'}}>
+      <div className="terminal-header" onClick={onToggle}>
+        <div className="terminal-dots">
+          <div className="terminal-dot red"/>
+          <div className="terminal-dot yellow"/>
+          <div className="terminal-dot green"/>
+        </div>
+        <span className="terminal-title">vrl — terminal</span>
+        <IconChevron open={open}/>
+      </div>
+      {open && (
+        <>
+          <div className="terminal-output" ref={outputRef}>
+            {lines.map((l, i) => (
+              <div key={i} className={`terminal-line ${l.type}`}>
+                <pre style={{margin:0,fontFamily:'inherit',fontSize:'inherit',whiteSpace:'pre-wrap'}}>{l.text}</pre>
+              </div>
+            ))}
+          </div>
+          <div className="terminal-input-row">
+            <span className="terminal-prompt-sym">vrl $</span>
+            <input
+              className="terminal-input"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={onKey}
+              placeholder="help"
+              autoFocus={open}
+              spellCheck={false}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+// ─── Main Header ──────────────────────────────────────────────────────────────
+const MainHeader = ({ view, onToggleTerm, termOpen }) => {
+  const titles = {
+    prove:    { title: 'Generate Proof', desc: 'Calculate import landed cost with ZK proof and audit chain' },
+    verify:   { title: 'Verify Evidence', desc: 'Verify a persisted proof bundle against the audit chain' },
+    audit:    { title: 'Audit Chain', desc: 'Tamper-evident log of all verified computations' },
+    metrics:  { title: 'System Metrics', desc: 'Live performance and backpressure stats' },
+    api:      { title: 'API Explorer', desc: 'Browse and test all endpoints interactively' },
+    settings: { title: 'Settings', desc: 'Configure API connection and preferences' },
+  };
+  const { title, desc } = titles[view] || {};
+  return (
+    <div className="main-header">
+      <div>
+        <h1>{title}</h1>
+        <p>{desc}</p>
+      </div>
+      <div className="header-actions">
+        <button className="btn-icon" onClick={onToggleTerm}>
+          ⬛ {termOpen ? 'Hide' : 'Show'} Terminal
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ─── Root App ─────────────────────────────────────────────────────────────────
+const App = () => {
+  const [view, setView] = useState('prove');
+  const [termOpen, setTermOpen] = useState(false);
+  const [history, setHistory] = useState([]);
+  const [connStatus, setConnStatus] = useState('checking');
+  const [config, setConfig] = useState({ baseUrl: 'http://localhost:8000', apiKey: '' });
+  const { call } = useApi(config);
+  const api = { call };
+
+  const checkConn = useCallback(async () => {
+    setConnStatus('checking');
+    try {
+      await call('GET', '/healthz');
+      setConnStatus('connected');
+    } catch {
+      setConnStatus('disconnected');
+    }
+  }, [call]);
+
+  useEffect(() => { checkConn(); }, [config]);
+
+  const addHistory = (item) => setHistory(h => [item, ...h.slice(0, 19)]);
+  const newChat = () => {
+    setView('prove');
+    setHistory(h => h);
+  };
+
+  const renderView = () => {
+    switch(view) {
+      case 'prove':    return <ProveView api={api} addHistory={addHistory}/>;
+      case 'verify':   return <VerifyView api={api}/>;
+      case 'audit':    return <AuditView api={api}/>;
+      case 'metrics':  return <MetricsView api={api}/>;
+      case 'api':      return <APIView api={api}/>;
+      case 'settings': return <SettingsView config={config} setConfig={setConfig} onTestConn={checkConn}/>;
+      default:         return <ProveView api={api} addHistory={addHistory}/>;
+    }
+  };
+
+  return (
+    <div className="app-shell">
+      <Sidebar
+        view={view}
+        setView={setView}
+        onNewChat={newChat}
+        history={history}
+        connStatus={connStatus}
+        onConnClick={checkConn}
+      />
+      <div className="main-area">
+        <MainHeader view={view} onToggleTerm={() => setTermOpen(v => !v)} termOpen={termOpen}/>
+        {renderView()}
+        <Terminal api={api} open={termOpen} onToggle={() => setTermOpen(v => !v)}/>
+      </div>
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

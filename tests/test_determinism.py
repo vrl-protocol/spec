@@ -12,4 +12,4 @@ def test_same_input_produces_identical_output_and_proof() -> None:
     second = calculate_import_landed_cost(request)
 
     assert canonical_json(first.model_dump(mode='python')) == canonical_json(second.model_dump(mode='python'))
-    assert first.proof.model_dump(mode='python') == second.proof.model_dump(mode='python')
+    assert first.integrity.model_dump(mode='python') == second.integrity.model_dump(mode='python')

@@ -33,8 +33,15 @@ CREATE TABLE IF NOT EXISTS proofs (
     request_id UUID NOT NULL REFERENCES requests(id),
     trace_hash TEXT NOT NULL,
     final_proof TEXT NOT NULL,
+    integrity_hash TEXT NOT NULL,
+    proof_system TEXT NOT NULL,
+    circuit_hash TEXT NOT NULL,
+    verification_key_hash TEXT NOT NULL,
+    proof_bundle JSONB NOT NULL,
+    proof_verified BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL,
-    CONSTRAINT proofs_request_unique UNIQUE (request_id)
+    CONSTRAINT proofs_request_unique UNIQUE (request_id),
+    CONSTRAINT proofs_bundle_object CHECK (jsonb_typeof(proof_bundle) = 'object')
 );
 
 CREATE TABLE IF NOT EXISTS audit_log (

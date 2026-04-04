@@ -38,9 +38,9 @@ class RuntimeController:
             snapshot = self._snapshot
             snapshot.iteration_count += 1
             snapshot.last_run_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
-            snapshot.last_input_hash = response.proof.input_hash
-            snapshot.last_output_hash = response.proof.output_hash
-            snapshot.last_integrity_hash = response.proof.integrity_hash
+            snapshot.last_input_hash = response.integrity.input_hash
+            snapshot.last_output_hash = response.integrity.output_hash
+            snapshot.last_integrity_hash = response.integrity.integrity_hash
             snapshot.last_audit_hash = audit_hash
             snapshot.last_status = status
             snapshot.last_error = None
@@ -91,4 +91,3 @@ class RuntimeController:
 
 
 runtime = RuntimeController()
-

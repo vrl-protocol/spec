@@ -3,8 +3,12 @@ from __future__ import annotations
 import asyncio
 
 import asyncpg
+from pydantic import ValidationError
 
 from app.db.repository import DuplicateInputHashError, PersistenceIntegrityError, RepositoryProtocol, RepositoryUnavailableError
+from backend.proof_export import export_proof_bundle, verify_proof_bundle
+from backend.trace_adapter import build_trace_packet
+from backend.verified_dataset import build_verified_training_record
 from core.audit_chain import (
     build_audit_event,
     chain_id_for_input,
@@ -31,6 +35,9 @@ from models.schemas import (
 from utils.canonical import canonical_json
 from utils.hashing import constant_time_equal
 from utils.time import utc_now
+from zk.provers.plonk_prover import build_plonk_proof
+from zk.interfaces import Proof
+from zk.verifiers.plonk_verifier import verify_plonk_proof
 
 
 MAX_TRANSACTION_RETRIES = 5
@@ -55,8 +62,35 @@ class EvidenceService:
         # Phase 1 — compute (outside any transaction, no lock held)
         # ----------------------------------------------------------------
         response = calculate_import_landed_cost(request)
+        trace_packet = build_trace_packet(request.model_dump(mode='python'), produced_by='evidence_service', cycle=1)
+        zk_proof = build_plonk_proof(
+            trace_packet.witness_artifact,
+            trace_packet.trace_artifact.trace_hash,
+            produced_by='evidence_service',
+            cycle=1,
+        )
+        zk_verification = verify_plonk_proof(zk_proof, produced_by='evidence_service', cycle=1)
+        if zk_verification.status != 'VALID':
+            raise PersistenceIntegrityError(f'ZK proof verification failed before persistence: {zk_verification.reason}')
+        proof_bundle = export_proof_bundle(
+            request.model_dump(mode='python'),
+            packet=trace_packet,
+            proof=zk_proof,
+        )
+        bundle_verification = verify_proof_bundle(proof_bundle)
+        if not bundle_verification['valid']:
+            raise PersistenceIntegrityError(
+                f"Exported proof bundle failed offline verification: {bundle_verification['reason']}"
+            )
         created_at = utc_now()
-        request_record, result_record, proof_record = self._build_records(request, response, created_at)
+        request_record, result_record, proof_record = self._build_records(
+            request,
+            response,
+            created_at,
+            zk_proof=zk_proof,
+            proof_bundle=proof_bundle,
+            verification_key_hash=bundle_verification['verification_key_hash'],
+        )
 
         # Derive the partition once; used for the lock key and hash fetch.
         chain_id = chain_id_for_input(request_record.input_hash)
@@ -168,8 +202,15 @@ class EvidenceService:
                         persisted_response = PersistedCalculationResponse(
                             result=response.result,
                             trace=response.trace,
-                            proof=response.proof,
+                            integrity=response.integrity,
                             evidence=synthetic_bundle,
+                        )
+                        build_verified_training_record(
+                            persisted_response,
+                            zk_proof=zk_proof,
+                            witness_hash=trace_packet.witness_artifact.witness_hash,
+                            verification_key_hash=bundle_verification['verification_key_hash'],
+                            proof_bundle=proof_bundle,
                         )
 
                 if duplicate_error is not None:
@@ -212,17 +253,17 @@ class EvidenceService:
         repository = self._require_repository()
         request = ImportCalculationRequest.model_validate(request_payload)
         recomputed = calculate_import_landed_cost(request)
-        input_hash = recomputed.proof.input_hash
+        input_hash = recomputed.integrity.input_hash
         stored = await repository.fetch_by_input_hash(input_hash)
         audit_chain = await self.verify_audit_chain()
         if stored is None:
             verification = VerificationResult(
                 status='INVALID',
                 reason='No persisted evidence found for the supplied input hash',
-                recomputed_input_hash=recomputed.proof.input_hash,
-                recomputed_output_hash=recomputed.proof.output_hash,
-                recomputed_trace_hash=recomputed.proof.trace_hash,
-                recomputed_integrity_hash=recomputed.proof.integrity_hash,
+                recomputed_input_hash=recomputed.integrity.input_hash,
+                recomputed_output_hash=recomputed.integrity.output_hash,
+                recomputed_trace_hash=recomputed.integrity.trace_hash,
+                recomputed_integrity_hash=recomputed.integrity.integrity_hash,
             )
             return PersistedVerificationResponse(verification=verification, evidence=None, audit_chain=audit_chain)
 
@@ -248,31 +289,41 @@ class EvidenceService:
         request: ImportCalculationRequest,
         response: CalculationResponse,
         created_at,
+        *,
+        zk_proof,
+        proof_bundle: dict[str, object],
+        verification_key_hash: str,
     ) -> tuple[RequestRecord, ResultRecord, ProofRecord]:
         request_json = request.model_dump(mode='json')
         response_json = response.model_dump(mode='json')
-        request_id = deterministic_request_id(response.proof.input_hash)
-        result_id = deterministic_result_id(request_id, response.proof.output_hash)
-        proof_id = deterministic_proof_id(request_id, response.proof.integrity_hash)
+        request_id = deterministic_request_id(response.integrity.input_hash)
+        result_id = deterministic_result_id(request_id, response.integrity.output_hash)
+        proof_id = deterministic_proof_id(request_id, zk_proof.final_proof)
         return (
             RequestRecord(
                 id=request_id,
-                input_hash=response.proof.input_hash,
+                input_hash=response.integrity.input_hash,
                 raw_input=request_json,
                 created_at=created_at,
             ),
             ResultRecord(
                 id=result_id,
                 request_id=request_id,
-                output_hash=response.proof.output_hash,
+                output_hash=response.integrity.output_hash,
                 raw_output=response_json,
                 created_at=created_at,
             ),
             ProofRecord(
                 id=proof_id,
                 request_id=request_id,
-                trace_hash=response.proof.trace_hash,
-                integrity_hash=response.proof.integrity_hash,
+                trace_hash=response.integrity.trace_hash,
+                final_proof=zk_proof.final_proof,
+                integrity_hash=response.integrity.integrity_hash,
+                proof_system=zk_proof.proof_system,
+                circuit_hash=zk_proof.circuit_hash,
+                verification_key_hash=verification_key_hash,
+                proof_bundle=proof_bundle,
+                proof_verified=True,
                 created_at=created_at,
             ),
         )
@@ -291,7 +342,12 @@ class EvidenceService:
                 request, 'Stored request payload does not match canonical request data'
             )
 
-        stored_response = CalculationResponse.model_validate(evidence.result.raw_output)
+        if evidence.proof.proof_system != 'plonk':
+            return self._invalid_verification(request, 'legacy record')
+        try:
+            stored_response = CalculationResponse.model_validate(evidence.result.raw_output)
+        except ValidationError as exc:
+            return self._invalid_verification(request, f'Invalid stored calculation response: {exc}')
         verification = verify_proof(
             request.model_dump(mode='python'), stored_response.model_dump(mode='python')
         )
@@ -309,22 +365,36 @@ class EvidenceService:
             return self._invalid_verification(
                 request, 'Stored trace hash does not match recomputed trace hash'
             )
-        if not constant_time_equal(evidence.proof.integrity_hash, verification.recomputed_integrity_hash):
+        if not evidence.proof.proof_verified:
             return self._invalid_verification(
-                request, 'Stored integrity hash does not match recomputed integrity hash'
+                request, 'Stored proof is not marked as verified'
             )
-        if not constant_time_equal(stored_response.proof.output_hash, evidence.result.output_hash):
+        bundle_verification = verify_proof_bundle(evidence.proof.proof_bundle)
+        if not bundle_verification['valid']:
             return self._invalid_verification(
-                request, 'Stored response proof does not match persisted result hash'
+                request, f"Stored proof bundle failed offline verification: {bundle_verification['reason']}"
             )
-        if not constant_time_equal(stored_response.proof.trace_hash, evidence.proof.trace_hash):
+        try:
+            bundled_proof = Proof.model_validate(evidence.proof.proof_bundle.get('proof'))
+        except ValidationError as exc:
+            return self._invalid_verification(request, f'Invalid stored proof bundle: {exc}')
+        if not constant_time_equal(stored_response.integrity.output_hash, evidence.result.output_hash):
             return self._invalid_verification(
-                request, 'Stored response proof does not match persisted trace hash'
+                request, 'Stored response integrity does not match persisted result hash'
             )
-        if not constant_time_equal(stored_response.proof.integrity_hash, evidence.proof.integrity_hash):
+        if not constant_time_equal(stored_response.integrity.trace_hash, evidence.proof.trace_hash):
             return self._invalid_verification(
-                request, 'Stored response integrity hash does not match persisted integrity hash'
+                request, 'Stored response integrity does not match persisted trace hash'
             )
+        if not constant_time_equal(bundled_proof.final_proof, evidence.proof.final_proof):
+            return self._invalid_verification(request, 'Stored ZK proof does not match bundled final proof')
+        if not constant_time_equal(bundled_proof.circuit_hash, evidence.proof.circuit_hash):
+            return self._invalid_verification(request, 'Stored circuit hash does not match bundled circuit hash')
+        if not constant_time_equal(
+            bundled_proof.proof_blob_hex,
+            str(evidence.proof.proof_bundle.get('proof', {}).get('proof_blob_hex', '')),
+        ):
+            return self._invalid_verification(request, 'Stored proof bundle proof bytes are invalid')
         if evidence.audit_log is not None:
             expected_audit_hash = compute_audit_hash(
                 prev_hash=evidence.audit_log.prev_hash,
@@ -346,10 +416,10 @@ class EvidenceService:
         return VerificationResult(
             status='INVALID',
             reason=reason,
-            recomputed_input_hash=recomputed.proof.input_hash,
-            recomputed_output_hash=recomputed.proof.output_hash,
-            recomputed_trace_hash=recomputed.proof.trace_hash,
-            recomputed_integrity_hash=recomputed.proof.integrity_hash,
+            recomputed_input_hash=recomputed.integrity.input_hash,
+            recomputed_output_hash=recomputed.integrity.output_hash,
+            recomputed_trace_hash=recomputed.integrity.trace_hash,
+            recomputed_integrity_hash=recomputed.integrity.integrity_hash,
         )
 
     async def _log_failure_event(

@@ -62,7 +62,7 @@ class TraceStep(BaseModel):
     outputs: dict[str, str]
 
 
-class ProofArtifact(BaseModel):
+class IntegrityArtifact(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     input_hash: str
@@ -99,7 +99,7 @@ class CalculationResponse(BaseModel):
 
     result: CalculationResult
     trace: list[TraceStep]
-    proof: ProofArtifact
+    integrity: IntegrityArtifact
 
 
 class VerificationRequest(BaseModel):
@@ -145,7 +145,13 @@ class ProofRecord(BaseModel):
     id: UUID
     request_id: UUID
     trace_hash: str
+    final_proof: str
     integrity_hash: str
+    proof_system: str
+    circuit_hash: str
+    verification_key_hash: str
+    proof_bundle: dict[str, Any]
+    proof_verified: bool
     created_at: datetime
 
 

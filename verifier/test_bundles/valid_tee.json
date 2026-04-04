@@ -1,0 +1,31 @@
+{
+  "vrl_version": "1.0",
+  "bundle_id": "af99a6af-f130-5bc9-9608-013a2e29c71e",
+  "issued_at": "2026-04-04T14:30:00.000Z",
+  "ai_identity": {
+    "ai_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "model_name": "llama-3-70b-instruct",
+    "model_version": "1.0.0",
+    "provider_id": "com.meta",
+    "execution_environment": "tee",
+    "tee_attestation_report": "base64encodedattestationreporthere=="
+  },
+  "computation": {
+    "circuit_id": "ai/inference-llama@3.0.0",
+    "circuit_version": "3.0.0",
+    "circuit_hash": "24a64b8533a2b529cd69c924e561329ce60e3af3c24c4f256fd06ae06e60841f",
+    "input_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "trace_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "integrity_hash": "8ac657c0fcb8f95de25732d5ee9a3653543964f1e1ffd317cf7f4a8d7cf6699d"
+  },
+  "proof": {
+    "proof_system": "tee-intel-tdx",
+    "proof_bytes": "1111111111111111111111111111111111111111111111111111111111111111",
+    "public_inputs": [
+      "3333333333333333333333333333333333333333333333333333333333333333"
+    ],
+    "verification_key_id": "4444444444444444444444444444444444444444444444444444444444444444",
+    "proof_hash": "37bd3e4b6813c8fa286d82c8702bf4d84ca1e8aa275ee5d7cd7272147d64750b"
+  }
+}

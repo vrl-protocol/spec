@@ -3,7 +3,7 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
-from core.proof import build_proof_artifact
+from core.proof import build_integrity_artifact
 from core.tariffs import DATASET_HASH, DATASET_VERSION, lookup_tariff_rule
 from models.schemas import CalculationResponse, CalculationResult, ImportCalculationRequest, TraceStep
 from utils.canonical import canonical_json
@@ -136,5 +136,9 @@ def calculate_import_landed_cost(request: ImportCalculationRequest) -> Calculati
         landed_cost=landed_cost,
     )
 
-    proof = build_proof_artifact(request_payload, result.model_dump(mode="python"), [step.model_dump(mode="python") for step in trace])
-    return CalculationResponse(result=result, trace=trace, proof=proof)
+    integrity = build_integrity_artifact(
+        request_payload,
+        result.model_dump(mode="python"),
+        [step.model_dump(mode="python") for step in trace],
+    )
+    return CalculationResponse(result=result, trace=trace, integrity=integrity)

@@ -45,8 +45,20 @@ WITH
     RETURNING id
   ),
   prf AS (
-    INSERT INTO proofs (id, request_id, trace_hash, final_proof, created_at)
-    SELECT $9, req.id, $10, $11, $12 FROM req
+    INSERT INTO proofs (
+      id,
+      request_id,
+      trace_hash,
+      final_proof,
+      integrity_hash,
+      proof_system,
+      circuit_hash,
+      verification_key_hash,
+      proof_bundle,
+      proof_verified,
+      created_at
+    )
+    SELECT $9, req.id, $10, $11, $12, $13, $14, $15, $16, $17, $18 FROM req
     RETURNING id
   )
 SELECT 'ok'
@@ -90,6 +102,12 @@ SELECT
     p.request_id AS proof_request_id,
     p.trace_hash,
     p.final_proof,
+    p.integrity_hash,
+    p.proof_system,
+    p.circuit_hash,
+    p.verification_key_hash,
+    p.proof_bundle,
+    p.proof_verified,
     p.created_at AS proof_created_at,
     a.id AS audit_id,
     a.chain_id AS audit_chain_id,
@@ -118,6 +136,52 @@ FETCH_AUDIT_CHAIN_SQL = """
 SELECT id, chain_id, event_type, reference_id, event_payload, prev_hash, current_hash, created_at
 FROM audit_log
 ORDER BY chain_id ASC, id ASC
+"""
+
+FETCH_TRAINING_CANDIDATES_SQL = """
+SELECT
+    r.id AS request_id,
+    r.input_hash,
+    r.raw_input,
+    r.created_at AS request_created_at,
+    s.id AS result_id,
+    s.request_id AS result_request_id,
+    s.output_hash,
+    s.raw_output,
+    s.created_at AS result_created_at,
+    p.id AS proof_id,
+    p.request_id AS proof_request_id,
+    p.trace_hash,
+    p.final_proof,
+    p.integrity_hash,
+    p.proof_system,
+    p.circuit_hash,
+    p.verification_key_hash,
+    p.proof_bundle,
+    p.proof_verified,
+    p.created_at AS proof_created_at,
+    a.id AS audit_id,
+    a.chain_id AS audit_chain_id,
+    a.event_type AS audit_event_type,
+    a.reference_id AS audit_reference_id,
+    a.event_payload AS audit_event_payload,
+    a.prev_hash AS audit_prev_hash,
+    a.current_hash AS audit_current_hash,
+    a.created_at AS audit_created_at
+FROM requests r
+JOIN results s ON s.request_id = r.id
+JOIN proofs p ON p.request_id = r.id
+LEFT JOIN LATERAL (
+    SELECT id, chain_id, event_type, reference_id, event_payload, prev_hash, current_hash, created_at
+    FROM audit_log
+    WHERE reference_id = r.id
+    ORDER BY id DESC
+    LIMIT 1
+) a ON TRUE
+WHERE p.proof_verified = TRUE
+  AND p.proof_system = 'plonk'
+ORDER BY p.created_at ASC, p.id ASC
+LIMIT $1
 """
 
 LOCK_AUDIT_CHAIN_SQL = "SELECT pg_advisory_xact_lock($1)"
@@ -162,12 +226,14 @@ class RepositorySessionProtocol(Protocol):
     async def insert_records_batch(self, request: RequestRecord, result: ResultRecord, proof: ProofRecord) -> None: ...
     async def insert_audit_event(self, record: AuditEventRecord) -> AuditEventRecord: ...
     async def fetch_by_input_hash(self, input_hash: str) -> PersistedEvidenceBundle | None: ...
+    async def fetch_training_candidates(self, limit: int) -> list[PersistedEvidenceBundle]: ...
 
 
 class RepositoryProtocol(Protocol):
     def transaction(self, *, read_only: bool = False): ...
     async def fetch_by_input_hash(self, input_hash: str) -> PersistedEvidenceBundle | None: ...
     async def fetch_audit_chain(self) -> list[AuditEventRecord]: ...
+    async def fetch_training_candidates(self, limit: int = 1000) -> list[PersistedEvidenceBundle]: ...
 
 
 # ---------------------------------------------------------------------------
@@ -287,6 +353,12 @@ class PostgresRepositoryTransaction:
                 proof.id,
                 proof.trace_hash,
                 proof.final_proof,
+                proof.integrity_hash,
+                proof.proof_system,
+                proof.circuit_hash,
+                proof.verification_key_hash,
+                proof.proof_bundle,
+                proof.proof_verified,
                 proof.created_at,
             )
         except asyncpg.UniqueViolationError as exc:
@@ -310,6 +382,14 @@ class PostgresRepositoryTransaction:
     async def fetch_by_input_hash(self, input_hash: str) -> PersistedEvidenceBundle | None:
         row = await self._fetchrow(FETCH_BUNDLE_SQL, input_hash)
         return self._repository._bundle_from_row(row)
+
+    async def fetch_training_candidates(self, limit: int) -> list[PersistedEvidenceBundle]:
+        rows = await self._fetch(FETCH_TRAINING_CANDIDATES_SQL, limit)
+        return [
+            bundle
+            for bundle in (self._repository._bundle_from_row(row) for row in rows)
+            if bundle is not None
+        ]
 
 
 # ---------------------------------------------------------------------------
@@ -341,6 +421,10 @@ class PostgresEvidenceRepository:
         async with self.transaction(read_only=True) as session:
             rows = await session._fetch(FETCH_AUDIT_CHAIN_SQL)
             return [self._audit_from_row(row) for row in rows]
+
+    async def fetch_training_candidates(self, limit: int = 1000) -> list[PersistedEvidenceBundle]:
+        async with self.transaction(read_only=True) as session:
+            return await session.fetch_training_candidates(limit)
 
     @staticmethod
     def _audit_from_row(row: asyncpg.Record | None) -> AuditEventRecord | None:
@@ -394,6 +478,12 @@ class PostgresEvidenceRepository:
                 request_id=row['proof_request_id'],
                 trace_hash=row['trace_hash'],
                 final_proof=row['final_proof'],
+                integrity_hash=row['integrity_hash'],
+                proof_system=row['proof_system'],
+                circuit_hash=row['circuit_hash'],
+                verification_key_hash=row['verification_key_hash'],
+                proof_bundle=row['proof_bundle'],
+                proof_verified=row['proof_verified'],
                 created_at=row['proof_created_at'],
             ),
             audit_log=self._audit_from_row(row),

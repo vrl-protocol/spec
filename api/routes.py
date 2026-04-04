@@ -12,6 +12,7 @@ from fastapi.responses import JSONResponse
 from api.runtime import runtime
 from app.db.repository import DuplicateInputHashError, PersistenceIntegrityError, RepositoryUnavailableError
 from app.services.evidence_service import EvidenceService
+from app.services.training_service import VerifiedTrainingService
 from models.schemas import ImportCalculationRequest, PersistedVerificationRequest
 from security.api_keys import api_key_store
 from security.backpressure import BackpressureError, QueueDepthGuard
@@ -38,6 +39,17 @@ def _service_or_503(request: Request) -> EvidenceService:
     if service is None:
         raise HTTPException(status_code=503, detail='Database evidence repository is not configured')
     return service
+
+
+def _training_service_or_503(request: Request) -> VerifiedTrainingService:
+    service = getattr(request.app.state, 'training_service', None)
+    if service is None:
+        raise HTTPException(status_code=503, detail='Database training repository is not configured')
+    return service
+
+
+def _invalid_verification_response(reason: str) -> JSONResponse:
+    return JSONResponse(content={'valid': False, 'reason': reason}, status_code=200)
 
 
 def _require_api_key(x_api_key: str | None) -> None:
@@ -113,13 +125,48 @@ def metrics(request: Request) -> dict:
     }
 
 
+@router.get('/training/dataset')
+async def training_dataset(
+    request: Request,
+    limit: int = 1000,
+    x_api_key: str | None = Header(default=None),
+) -> JSONResponse:
+    _require_api_key(x_api_key)
+    if limit < 1 or limit > 10000:
+        raise HTTPException(status_code=400, detail='limit must be between 1 and 10000')
+    try:
+        export = await _training_service_or_503(request).export_dataset(limit=limit)
+    except RepositoryUnavailableError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail='Unable to export verified training dataset') from exc
+    return JSONResponse(content=export.model_dump(mode='json'))
+
+
+@router.get('/training/moat')
+async def training_moat(
+    request: Request,
+    limit: int = 1000,
+    x_api_key: str | None = Header(default=None),
+) -> JSONResponse:
+    _require_api_key(x_api_key)
+    if limit < 1 or limit > 10000:
+        raise HTTPException(status_code=400, detail='limit must be between 1 and 10000')
+    try:
+        metrics_payload = await _training_service_or_503(request).moat_metrics(limit=limit)
+    except RepositoryUnavailableError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail='Unable to compute moat metrics') from exc
+    return JSONResponse(content=metrics_payload.model_dump(mode='json'))
+
+
 @router.post('/calculate')
 async def calculate(request: Request, x_api_key: str | None = Header(default=None)) -> JSONResponse:
     """Calculate import landed cost.
 
-    With DB: persists evidence and returns full bundle.
-    Without DB: returns result + integrity_hash, enqueues PLONK proof job,
-    returns proof_status=pending and task_id for polling via GET /proof/{task_id}.
+    Evidence persistence is mandatory. Requests are rejected when the
+    evidence repository is not configured.
     """
     _require_api_key(x_api_key)
     rate_result = rate_limiter.allow(_client_key(request))
@@ -129,39 +176,24 @@ async def calculate(request: Request, x_api_key: str | None = Header(default=Non
     try:
         async with queue_guard.guarded():
             model = ImportCalculationRequest.model_validate(payload)
-            service = getattr(request.app.state, 'evidence_service', None)
-            if service is not None:
-                persisted = await service.calculate_and_persist(model.model_dump(mode='python'))
-                runtime.record_response(persisted, audit_hash=persisted.evidence.audit_log.current_hash if persisted.evidence.audit_log else None)
-                body = persisted.model_dump(mode='json')
-                body['integrity_hash'] = persisted.proof.integrity_hash
-                body['proof_status'] = 'not_enqueued'
-                return JSONResponse(content=body)
-            # Fast-path: no DB — compute inline, enqueue ZK proof, return immediately
-            from core.engine import calculate_import_landed_cost
-            from backend.trace_adapter import build_trace_packet
-            from backend.proof_queue import proof_queue
-            engine_response = calculate_import_landed_cost(model)
-            runtime.record_response(engine_response)
-            packet = build_trace_packet(model.model_dump(mode='python'))
-            task_id = proof_queue.submit(
-                packet.witness_artifact,
-                packet.trace_artifact.trace_hash,
-                produced_by='api_calculate',
-                cycle=1,
-                auto_verify=True,
+            service = _service_or_503(request)
+            persisted = await service.calculate_and_persist(model.model_dump(mode='python'))
+            runtime.record_response(
+                persisted,
+                audit_hash=persisted.evidence.audit_log.current_hash if persisted.evidence.audit_log else None,
             )
-            return JSONResponse(content={
-                'result': engine_response.result.model_dump(mode='json'),
-                'integrity_hash': engine_response.proof.integrity_hash,
-                'trace_hash': engine_response.proof.trace_hash,
-                'proof_status': 'pending',
-                'task_id': task_id,
-            })
+            body = persisted.model_dump(mode='json')
+            body['integrity_hash'] = persisted.integrity.integrity_hash
+            body['proof_status'] = 'persisted'
+            return JSONResponse(content=body)
+    except HTTPException:
+        raise
     except BackpressureError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     except DuplicateInputHashError as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except RepositoryUnavailableError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
     except SecurityViolation as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except ValidationError as exc:
@@ -187,6 +219,7 @@ async def prove(request: Request, x_api_key: str | None = Header(default=None)) 
     payload = await _load_json_payload(request)
     try:
         async with queue_guard.guarded():
+            _service_or_503(request)
             from backend.trace_adapter import build_trace_packet
             from backend.proof_queue import proof_queue
             packet = build_trace_packet(payload)
@@ -197,7 +230,11 @@ async def prove(request: Request, x_api_key: str | None = Header(default=None)) 
                 cycle=1,
                 auto_verify=True,
             )
+    except HTTPException:
+        raise
     except BackpressureError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except RepositoryUnavailableError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     except SecurityViolation as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -248,13 +285,13 @@ async def verify(request: Request, x_api_key: str | None = Header(default=None))
         model = PersistedVerificationRequest.model_validate(payload)
         result = await _service_or_503(request).verify_persisted(model.request.model_dump(mode='python'))
     except RepositoryUnavailableError as exc:
-        raise HTTPException(status_code=503, detail=str(exc)) from exc
+        return _invalid_verification_response(str(exc))
     except SecurityViolation as exc:
-        raise HTTPException(status_code=400, detail=str(exc)) from exc
+        return _invalid_verification_response(str(exc))
     except ValidationError as exc:
-        raise HTTPException(status_code=400, detail='Input validation failed') from exc
+        return _invalid_verification_response(f'Input validation failed: {exc}')
     except Exception as exc:
-        raise HTTPException(status_code=500, detail='Unable to verify persisted evidence') from exc
+        return _invalid_verification_response(f'Unable to verify persisted evidence: {exc}')
     return JSONResponse(content=result.model_dump(mode='json'))
 
 
@@ -290,7 +327,8 @@ async def run(request: Request, x_api_key: str | None = Header(default=None)) ->
 
 
 @router.post('/start')
-def start() -> dict[str, Any]:
+def start(request: Request) -> dict[str, Any]:
+    _service_or_503(request)
     snapshot = runtime.start()
     return {'status': 'started', 'runtime': snapshot.__dict__}
 

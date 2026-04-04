@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 from copy import deepcopy
 from dataclasses import dataclass, field
+from typing import Any
 
 from app.db.repository import AppendOnlyViolationError, DuplicateInputHashError
 from core.audit_chain import ZERO_HASH
@@ -115,6 +116,22 @@ class InMemoryRepositoryTransaction:
             audit_log=audit_log,
         )
 
+    async def fetch_training_candidates(self, limit: int) -> list[PersistedEvidenceBundle]:
+        bundles: list[PersistedEvidenceBundle] = []
+        for request in sorted(
+            self._state.requests_by_input_hash.values(),
+            key=lambda item: item.created_at,
+        ):
+            proof = self._state.proofs_by_request_id.get(request.id)
+            if proof is None or not proof.proof_verified or proof.proof_system != 'plonk':
+                continue
+            bundle = await self.fetch_by_input_hash(request.input_hash)
+            if bundle is not None:
+                bundles.append(bundle)
+            if len(bundles) >= limit:
+                break
+        return bundles
+
 
 class InMemoryEvidenceRepository:
     def __init__(self) -> None:
@@ -139,6 +156,10 @@ class InMemoryEvidenceRepository:
                 key=lambda r: (r.chain_id, r.id or 0),
             )
 
+    async def fetch_training_candidates(self, limit: int = 1000) -> list[PersistedEvidenceBundle]:
+        async with self.transaction(read_only=True) as session:
+            return await session.fetch_training_candidates(limit)
+
     def attempt_update_request(self) -> None:
         raise AppendOnlyViolationError('Append-only repository rejects updates')
 
@@ -152,6 +173,17 @@ class InMemoryEvidenceRepository:
         raw_output['result']['landed_cost'] = landed_cost
         self._state.results_by_request_id[request.id] = result.model_copy(
             update={'raw_output': raw_output}, deep=True
+        )
+
+    def tamper_proof_bundle(self, input_hash: str, update: dict[str, Any]) -> None:
+        request = self._state.requests_by_input_hash[input_hash]
+        proof = self._state.proofs_by_request_id[request.id]
+        bundle = deepcopy(proof.proof_bundle)
+        for key, value in update.items():
+            bundle[key] = value
+        self._state.proofs_by_request_id[request.id] = proof.model_copy(
+            update={'proof_bundle': bundle},
+            deep=True,
         )
 
     def tamper_audit_hash(self, index: int, new_hash: str) -> None:

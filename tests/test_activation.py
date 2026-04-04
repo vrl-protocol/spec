@@ -167,7 +167,7 @@ def test_integrity_hash_is_not_a_zk_proof():
     w = extract_witness(req, resp)
     proof = generate_zk_proof(w)
 
-    assert resp.proof.integrity_hash != proof.proof_bytes.hex(), (
+    assert resp.integrity.integrity_hash != proof.proof_bytes.hex(), (
         'integrity_hash must not equal ZK proof bytes — they are different artefacts'
     )
 

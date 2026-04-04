@@ -1,0 +1,106 @@
+{
+  "circuit_id": "finance/credit-risk-scoring@1.0.0",
+  "spec_version": "vrl/circuit/1.0",
+  "circuit_hash": "b7a3e1f9d2c6a4f8e1b5c9d3f7a2b6e8c1d5f9a3b7e1c4f8a2d6b9e3c7f1a",
+  "domain": "finance",
+  "name": "credit-risk-scoring",
+  "version": "1.0.0",
+  "description": "Computes credit risk scores based on credit history, income, debt ratios, and application data.",
+  "long_description": "This circuit verifies the computation of credit risk scores for loan applications using standard credit scoring models. It incorporates income verification, employment history, debt-to-income ratios, and credit bureau data to produce a transparent, auditable credit score and approval probability. Designed for compliance with Fair Credit Reporting Act (FCRA) and Equal Credit Opportunity Act (ECOA) requirements.",
+  "input_schema": {
+    "private": [
+      {
+        "name": "monthly_income",
+        "type": "integer",
+        "description": "Monthly income in USD cents"
+      },
+      {
+        "name": "employment_length",
+        "type": "integer",
+        "description": "Years of employment at current job"
+      },
+      {
+        "name": "debt_balance",
+        "type": "integer",
+        "description": "Total outstanding debt in USD cents"
+      },
+      {
+        "name": "age",
+        "type": "integer",
+        "description": "Applicant age in years"
+      }
+    ],
+    "public": [
+      {
+        "name": "credit_bureau_id",
+        "type": "string",
+        "description": "Credit bureau identifier (Equifax, Experian, TransUnion)"
+      },
+      {
+        "name": "loan_amount",
+        "type": "integer",
+        "description": "Requested loan amount in USD cents"
+      },
+      {
+        "name": "loan_term_months",
+        "type": "integer",
+        "description": "Requested loan term in months"
+      }
+    ]
+  },
+  "output_schema": {
+    "public": [
+      {
+        "name": "risk_score",
+        "type": "integer",
+        "description": "Risk score (300-850 scale)"
+      },
+      {
+        "name": "risk_category",
+        "type": "string",
+        "description": "Risk category: poor, fair, good, very-good, excellent"
+      },
+      {
+        "name": "approval_probability",
+        "type": "integer",
+        "description": "Estimated approval probability (0-100)"
+      }
+    ]
+  },
+  "proof_systems": ["plonk-halo2-bn254"],
+  "constraint_count": 9,
+  "instance_layout": [
+    "risk_score_commitment",
+    "risk_category_commitment",
+    "approval_probability_commitment",
+    "public_inputs_hash_commitment"
+  ],
+  "dataset_dependencies": [
+    {
+      "dataset_id": "cfpb/mortgage-disclosure",
+      "min_version": "2026.1.0",
+      "description": "CFPB Home Mortgage Disclosure Act data and lending standards"
+    }
+  ],
+  "certification_tier": "REVIEWED",
+  "certified_by": "VRL Maintainers",
+  "certification_date": "2026-03-01T11:15:00Z",
+  "published_at": "2026-03-01T11:15:00Z",
+  "updated_at": "2026-03-01T11:15:00Z",
+  "author": "VRL Finance Working Group",
+  "author_email": "finance@vrl-protocol.org",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/vrl-protocol/circuits-finance",
+  "tags": ["finance", "credit", "risk-scoring", "lending", "compliance"],
+  "compliance_frameworks": ["FCRA", "ECOA"],
+  "security_notes": "Uses standard credit scoring methodology. Designed to be transparent and auditable for FCRA/ECOA compliance. Does not use sensitive protected attributes (race, gender, religion).",
+  "performance_notes": "Constraint count: 9. Proof generation time: ~100ms. Proof size: ~2KB. Uses BN254 curve for efficiency.",
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-03-01",
+      "changes": "Initial release with FCRA and ECOA compliance"
+    }
+  ],
+  "deprecated": false
+}

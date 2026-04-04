@@ -27,7 +27,22 @@ async def test_verify_persisted_detects_tampered_output() -> None:
     service = EvidenceService(repository)
 
     persisted = await service.calculate_and_persist(REFERENCE_REQUEST)
-    repository.tamper_result_landed_cost(persisted.proof.input_hash, '9999.99')
+    repository.tamper_result_landed_cost(persisted.integrity.input_hash, '9999.99')
+
+    verified = await service.verify_persisted(REFERENCE_REQUEST)
+    assert verified.verification.status == 'INVALID'
+
+
+@pytest.mark.asyncio
+async def test_verify_persisted_detects_tampered_proof_bundle() -> None:
+    repository = InMemoryEvidenceRepository()
+    service = EvidenceService(repository)
+
+    persisted = await service.calculate_and_persist(REFERENCE_REQUEST)
+    repository.tamper_proof_bundle(
+        persisted.integrity.input_hash,
+        {'trace_hash': '0' * 64},
+    )
 
     verified = await service.verify_persisted(REFERENCE_REQUEST)
     assert verified.verification.status == 'INVALID'

@@ -1,0 +1,78 @@
+{
+  "circuit_id": "general/api-hash-binding@1.0.0",
+  "spec_version": "vrl/circuit/1.0",
+  "circuit_hash": "a4b7c2d8e1f5a9c3f6b1d5e8a2f7c1d6a9b3e7f2c5d1a8e3f6c1d5a9e2f7b",
+  "domain": "general",
+  "name": "api-hash-binding",
+  "version": "1.0.0",
+  "description": "Binds API inputs and outputs cryptographically using HMAC-SHA256, for weak hash-chain proofs of computation.",
+  "long_description": "This circuit provides the weakest form of proof: HMAC-SHA256 cryptographic binding between API inputs and outputs. It is suitable for scenarios where full ZK proofs are not practical, but hash-chain integrity is desired. The circuit verifies that an API call was made with specific inputs and produced specific outputs, but does not prove the correctness of the computation itself.",
+  "input_schema": {
+    "private": [
+      {
+        "name": "api_request_body",
+        "type": "string",
+        "description": "Request body sent to the API (JSON string)"
+      },
+      {
+        "name": "api_secret_key",
+        "type": "string",
+        "description": "Secret key for HMAC computation"
+      }
+    ],
+    "public": [
+      {
+        "name": "api_endpoint",
+        "type": "string",
+        "description": "API endpoint URL"
+      },
+      {
+        "name": "request_timestamp",
+        "type": "integer",
+        "description": "Timestamp of the API request"
+      }
+    ]
+  },
+  "output_schema": {
+    "public": [
+      {
+        "name": "response_hash",
+        "type": "string",
+        "description": "SHA-256 hash of the API response"
+      },
+      {
+        "name": "binding_valid",
+        "type": "boolean",
+        "description": "Whether the input-output binding is valid"
+      }
+    ]
+  },
+  "proof_systems": ["api-hash-binding"],
+  "constraint_count": 2,
+  "instance_layout": [
+    "response_hash_commitment",
+    "binding_validity_commitment",
+    "public_inputs_hash_commitment"
+  ],
+  "dataset_dependencies": [],
+  "certification_tier": "REVIEWED",
+  "certified_by": "VRL Maintainers",
+  "certification_date": "2026-02-15T12:00:00Z",
+  "published_at": "2026-02-15T12:00:00Z",
+  "updated_at": "2026-02-15T12:00:00Z",
+  "author": "VRL Core Contributors",
+  "author_email": "core@vrl-protocol.org",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/vrl-protocol/circuits-general",
+  "tags": ["api", "hash-binding", "integrity", "lightweight", "audit-trail"],
+  "security_notes": "Provides hash-chain integrity only, not computational correctness. Weakest form of proof in the VRL ecosystem. Suitable for audit trails and non-critical applications. NOT suitable for regulated or safety-critical systems.",
+  "performance_notes": "Constraint count: 2 (minimal). Proof generation time: ~30ms. Proof size: ~1KB. Very lightweight, suitable for high-volume applications.",
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-15",
+      "changes": "Initial release with HMAC-SHA256 binding"
+    }
+  ],
+  "deprecated": false
+}

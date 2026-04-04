@@ -109,8 +109,8 @@ def test_zk_witness():
     req = ImportCalculationRequest.model_validate(REFERENCE_REQUEST)
     resp = calculate_import_landed_cost(req)
     w = extract_witness(req, resp)
-    assert w.input_hash == resp.proof.input_hash
-    assert w.output_hash == resp.proof.output_hash
+    assert w.input_hash == resp.integrity.input_hash
+    assert w.output_hash == resp.integrity.output_hash
     assert "hs_code" in w.public_inputs
     assert "landed_cost" in w.public_inputs
 
@@ -125,7 +125,7 @@ def test_zk_plonk_proof_is_valid():
     assert len(proof.proof_bytes) > 0
     assert len(proof.proof_bytes.hex()) % 2 == 0
     # PLONK proof must NOT equal the integrity_hash (different systems, different values)
-    assert proof.proof_bytes.hex() != resp.proof.integrity_hash
+    assert proof.proof_bytes.hex() != resp.integrity.integrity_hash
     # verification_key_id must indicate PLONK backend, not the old SHA256 stub
     assert proof.verification_key_id != 'sha256-stub-v1'
     # deterministic re-proof must verify

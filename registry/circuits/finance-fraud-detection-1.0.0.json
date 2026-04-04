@@ -1,0 +1,105 @@
+{
+  "circuit_id": "finance/fraud-detection@1.0.0",
+  "spec_version": "vrl/circuit/1.0",
+  "circuit_hash": "c9f2a1e5b8d3f7a2c6e1b5d9f2a8c3e7a1f4b8d1c5e9f2a6b3c7d1e5f8a2",
+  "domain": "finance",
+  "name": "fraud-detection",
+  "version": "1.0.0",
+  "description": "Detects fraudulent transactions using transaction patterns, merchant data, and behavioral anomaly detection.",
+  "long_description": "This circuit provides verifiable fraud detection for payment transactions. It analyzes transaction amount, merchant category, timestamp, and cardholder location against historical patterns to detect anomalies. The circuit produces a cryptographic proof of fraud risk assessment, enabling financial institutions to maintain transparent, auditable fraud prevention systems.",
+  "input_schema": {
+    "private": [
+      {
+        "name": "transaction_amount",
+        "type": "integer",
+        "description": "Transaction amount in USD cents"
+      },
+      {
+        "name": "merchant_category",
+        "type": "integer",
+        "description": "MCC (Merchant Category Code)"
+      },
+      {
+        "name": "timestamp",
+        "type": "integer",
+        "description": "Unix timestamp of transaction"
+      },
+      {
+        "name": "cardholder_location",
+        "type": "string",
+        "description": "Cardholder location (city, country)"
+      }
+    ],
+    "public": [
+      {
+        "name": "account_id",
+        "type": "string",
+        "description": "Account identifier (hashed)"
+      },
+      {
+        "name": "card_last4",
+        "type": "string",
+        "description": "Last 4 digits of card"
+      },
+      {
+        "name": "merchant_name",
+        "type": "string",
+        "description": "Merchant name"
+      }
+    ]
+  },
+  "output_schema": {
+    "public": [
+      {
+        "name": "fraud_risk_score",
+        "type": "integer",
+        "description": "Fraud risk score (0-100)"
+      },
+      {
+        "name": "flagged",
+        "type": "boolean",
+        "description": "Whether transaction is flagged for review"
+      },
+      {
+        "name": "anomaly_indicators",
+        "type": "array",
+        "description": "Array of detected anomalies (unusual_amount, unusual_location, unusual_time, etc.)"
+      }
+    ]
+  },
+  "proof_systems": ["plonk-halo2-bn254"],
+  "constraint_count": 7,
+  "instance_layout": [
+    "fraud_score_commitment",
+    "flag_status_commitment",
+    "anomaly_commitment",
+    "public_inputs_hash_commitment"
+  ],
+  "dataset_dependencies": [
+    {
+      "dataset_id": "iso/merchant-codes",
+      "min_version": "2026.1.0",
+      "description": "ISO Merchant Category Code definitions"
+    }
+  ],
+  "certification_tier": "REVIEWED",
+  "certified_by": "VRL Maintainers",
+  "certification_date": "2026-03-10T13:30:00Z",
+  "published_at": "2026-03-10T13:30:00Z",
+  "updated_at": "2026-03-10T13:30:00Z",
+  "author": "VRL Finance Working Group",
+  "author_email": "finance@vrl-protocol.org",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/vrl-protocol/circuits-finance",
+  "tags": ["finance", "fraud", "detection", "risk", "payment"],
+  "security_notes": "Uses pattern-based anomaly detection. Effectiveness depends on quality of historical transaction data. Designed for real-time processing.",
+  "performance_notes": "Constraint count: 7. Proof generation time: ~90ms. Proof size: ~2KB. Uses BN254 curve for efficiency.",
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-03-10",
+      "changes": "Initial release with anomaly-based fraud detection"
+    }
+  ],
+  "deprecated": false
+}

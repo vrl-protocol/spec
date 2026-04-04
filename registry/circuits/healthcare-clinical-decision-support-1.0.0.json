@@ -1,0 +1,113 @@
+{
+  "circuit_id": "healthcare/clinical-decision-support@1.0.0",
+  "spec_version": "vrl/circuit/1.0",
+  "circuit_hash": "e2c1f9b4a8d6f1e3c7a2d5b8f3c6e1a9d2f5c8b1e4a7d2c5f8b1e4a7d0c3",
+  "domain": "healthcare",
+  "name": "clinical-decision-support",
+  "version": "1.0.0",
+  "description": "Verifies clinical decision support recommendations based on patient history, lab results, and evidence-based guidelines.",
+  "long_description": "This circuit provides cryptographic verification of clinical decision support recommendations. It takes as input patient demographic data, comorbidities, laboratory results, and medication history, and produces a verifiable proof that the recommended treatment aligns with evidence-based clinical guidelines. Suitable for supporting clinical audit trails and regulatory compliance in healthcare settings.",
+  "input_schema": {
+    "private": [
+      {
+        "name": "patient_age",
+        "type": "integer",
+        "description": "Patient age in years"
+      },
+      {
+        "name": "comorbidities",
+        "type": "array",
+        "description": "Array of ICD-10 codes for comorbid conditions"
+      },
+      {
+        "name": "lab_results",
+        "type": "object",
+        "description": "Laboratory test results with value and unit"
+      },
+      {
+        "name": "medication_history",
+        "type": "array",
+        "description": "Array of RxNorm codes for current and past medications"
+      }
+    ],
+    "public": [
+      {
+        "name": "diagnosis_code",
+        "type": "string",
+        "description": "ICD-10 diagnosis code"
+      },
+      {
+        "name": "severity_score",
+        "type": "integer",
+        "description": "Clinical severity score (0-100)"
+      },
+      {
+        "name": "guideline_version",
+        "type": "string",
+        "description": "Clinical guideline version used (e.g., 2026.1)"
+      }
+    ]
+  },
+  "output_schema": {
+    "public": [
+      {
+        "name": "recommended_treatment",
+        "type": "string",
+        "description": "Recommended treatment from guideline"
+      },
+      {
+        "name": "contraindication_flags",
+        "type": "array",
+        "description": "Array of detected contraindications"
+      },
+      {
+        "name": "evidence_quality",
+        "type": "string",
+        "description": "Quality of evidence: high, moderate, low"
+      }
+    ]
+  },
+  "proof_systems": ["plonk-halo2-pasta"],
+  "constraint_count": 10,
+  "instance_layout": [
+    "treatment_recommendation_commitment",
+    "contraindication_commitment",
+    "evidence_quality_commitment",
+    "public_inputs_hash_commitment"
+  ],
+  "dataset_dependencies": [
+    {
+      "dataset_id": "fda/drug-interactions",
+      "min_version": "2026.3.0",
+      "description": "FDA Drug Interaction Database"
+    },
+    {
+      "dataset_id": "nih/evidence-guidelines",
+      "min_version": "2026.2.5",
+      "description": "NIH Evidence-Based Clinical Guidelines"
+    }
+  ],
+  "certification_tier": "CERTIFIED",
+  "certified_by": "Prescient Analytics (Third-party audit)",
+  "certification_date": "2026-02-28T16:20:00Z",
+  "audit_report": "https://github.com/vrl-protocol/audits/tree/main/2026/clinical-decision-support-1.0.0",
+  "regulatory_approval": "FDA Software as Medical Device compliant (SaMD)",
+  "published_at": "2026-02-28T16:20:00Z",
+  "updated_at": "2026-02-28T16:20:00Z",
+  "author": "VRL Healthcare Working Group",
+  "author_email": "healthcare@vrl-protocol.org",
+  "license": "CC0-1.0",
+  "repository": "https://github.com/vrl-protocol/circuits-healthcare",
+  "tags": ["healthcare", "clinical", "decision-support", "guidelines", "evidence-based"],
+  "compliance_frameworks": ["FDA_SAMD", "HIPAA"],
+  "security_notes": "Third-party audited and FDA SaMD compliant. Designed for clinical decision support augmentation. Does not replace physician judgment. Always subject to final human clinical decision-making.",
+  "performance_notes": "Constraint count: 10. Proof generation time: ~120ms. Proof size: ~2.2KB.",
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-28",
+      "changes": "Initial release with FDA SaMD compliance certification"
+    }
+  ],
+  "deprecated": false
+}

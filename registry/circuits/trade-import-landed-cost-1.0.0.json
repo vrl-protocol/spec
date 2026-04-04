@@ -1,0 +1,109 @@
+{
+  "circuit_id": "trade/import-landed-cost@1.0.0",
+  "spec_version": "vrl/circuit/1.0",
+  "circuit_hash": "2f1a5c8b3e7d9a4b6c2e1f8a5d9c3b7e8f1a5c2d9e3f4a7b1c8e5d2a9f6b3",
+  "domain": "trade",
+  "name": "import-landed-cost",
+  "version": "1.0.0",
+  "description": "Calculates the landed cost of imported goods including tariffs, freight, insurance, and compliance fees.",
+  "long_description": "This circuit verifies the calculation of landed cost for imported goods, a critical calculation in international trade. It takes customs values, freight costs, insurance, and quantity, along with tariff information from public datasets, and produces a verifiable proof that the landed cost, duty amount, and compliance fees were correctly calculated according to CBP regulations.",
+  "input_schema": {
+    "private": [
+      {
+        "name": "customs_value",
+        "type": "integer",
+        "description": "The declared customs value of the goods in USD cents"
+      },
+      {
+        "name": "freight",
+        "type": "integer",
+        "description": "Freight charges in USD cents"
+      },
+      {
+        "name": "insurance",
+        "type": "integer",
+        "description": "Insurance charges in USD cents"
+      },
+      {
+        "name": "quantity",
+        "type": "integer",
+        "description": "Quantity of items imported"
+      }
+    ],
+    "public": [
+      {
+        "name": "hs_code",
+        "type": "integer",
+        "description": "10-digit Harmonized System code"
+      },
+      {
+        "name": "country_of_origin",
+        "type": "string",
+        "description": "ISO 3166-1 alpha-2 country code"
+      },
+      {
+        "name": "shipping_mode",
+        "type": "string",
+        "description": "Shipping mode: sea, air, rail, or road"
+      }
+    ]
+  },
+  "output_schema": {
+    "public": [
+      {
+        "name": "landed_cost",
+        "type": "integer",
+        "description": "Total landed cost in USD cents"
+      },
+      {
+        "name": "duty_amount",
+        "type": "integer",
+        "description": "Customs duty amount in USD cents"
+      },
+      {
+        "name": "mpf_amount",
+        "type": "integer",
+        "description": "Merchandise Processing Fee in USD cents"
+      },
+      {
+        "name": "hmf_amount",
+        "type": "integer",
+        "description": "Harbor Maintenance Fee in USD cents"
+      }
+    ]
+  },
+  "proof_systems": ["plonk-halo2-pasta"],
+  "constraint_count": 8,
+  "instance_layout": [
+    "landed_cost_commitment",
+    "duty_amount_commitment",
+    "public_inputs_hash_commitment"
+  ],
+  "dataset_dependencies": [
+    {
+      "dataset_id": "cbp/hts-tariff-rules",
+      "min_version": "2026.1.0",
+      "description": "US Harmonized Tariff Schedule rates and rules"
+    }
+  ],
+  "certification_tier": "REVIEWED",
+  "certified_by": "VRL Maintainers",
+  "certification_date": "2026-03-15T10:30:00Z",
+  "published_at": "2026-03-15T10:30:00Z",
+  "updated_at": "2026-03-15T10:30:00Z",
+  "author": "VRL Trade Working Group",
+  "author_email": "trade@vrl-protocol.org",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/vrl-protocol/circuits-trade",
+  "tags": ["trade", "customs", "tariff", "import", "compliance"],
+  "security_notes": "This circuit assumes honest input values from the importing party. Verification depends on the integrity of CBP tariff dataset. Not recommended for adversarial settings.",
+  "performance_notes": "Constraint count: 8. Proof generation time: ~100ms. Proof size: ~2KB.",
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-03-15",
+      "changes": "Initial release"
+    }
+  ],
+  "deprecated": false
+}
