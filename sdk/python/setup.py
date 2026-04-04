@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name="vrl-sdk",
-        version="0.1.1",
+        version="0.1.2",
     author="Verifiable Reality Layer Contributors",
     author_email="info@vrl.io",
     description="Python SDK for the Verifiable Reality Layer (VRL) Proof Bundle Specification v1.0",
