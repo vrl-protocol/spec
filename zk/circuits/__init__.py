@@ -1,1 +1,3 @@
+from zk.circuits.aml_sanctions_screening import build_circuit_blueprint as build_aml_circuit_blueprint
+from zk.circuits.drug_dosage_verification import build_circuit_blueprint as build_drug_dosage_circuit_blueprint
 from zk.circuits.import_landed_cost_stub import build_circuit_blueprint as build_circuit_blueprint

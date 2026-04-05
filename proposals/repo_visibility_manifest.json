@@ -1,0 +1,64 @@
+{
+  "public_now": {
+    "spec": [
+      "SPEC.md",
+      "STRUCTURE.md",
+      "VRL_MASTER_PLAN.md",
+      "docs/TRUST_MODEL.md",
+      "docs/TLS_SETUP.md",
+      "registry/schema/circuit.schema.json",
+      "verifier/test_bundles/**"
+    ],
+    "sdk": [
+      "sdk/python/**",
+      "sdk/typescript/**",
+      "sdk/go/**",
+      "verifier/test_bundles/**"
+    ],
+    "registry": [
+      "registry/README.md",
+      "registry/SUBMISSION.md",
+      "registry/registry.json",
+      "registry/circuits/**",
+      "registry/schema/**",
+      "registry/tools/**"
+    ],
+    "verifier": [
+      "verifier/README.md",
+      "verifier/vrl_verify.py",
+      "verifier/test_bundles/**"
+    ]
+  },
+  "private_hold": [
+    "agents/**",
+    "api/**",
+    "app/**",
+    "backend/**",
+    "coordinator/**",
+    "infra/**",
+    "memory/**",
+    "security/**",
+    "zk/provers/**",
+    "zk/verifiers/plonk_verifier.py",
+    "zk/rust_bridge.py",
+    "zk/rust_backend/**",
+    "zk/keys/**",
+    "orchestrator.py"
+  ],
+  "open_later": [
+    "core/**",
+    "models/**",
+    "utils/**",
+    "ui/**",
+    "tests/**"
+  ],
+  "never_publish": [
+    "logs/**",
+    ".env",
+    ".env.*",
+    ".pytest_cache/**",
+    ".ruff_cache/**",
+    "zk/keys/**",
+    "zk/rust_backend/target/**"
+  ]
+}

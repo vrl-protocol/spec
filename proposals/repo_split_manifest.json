@@ -1,0 +1,72 @@
+{
+  "spec": {
+    "include": [
+      "README.md",
+      "SPEC.md",
+      "STRUCTURE.md",
+      "VRL_MASTER_PLAN.md",
+      "docs/TRUST_MODEL.md",
+      "docs/TLS_SETUP.md",
+      "registry/schema/circuit.schema.json",
+      "verifier/test_bundles/**"
+    ]
+  },
+  "sdk": {
+    "include": [
+      "sdk/python/**",
+      "sdk/typescript/**",
+      "sdk/go/**",
+      "verifier/test_bundles/**"
+    ]
+  },
+  "registry": {
+    "include": [
+      "registry/README.md",
+      "registry/SUBMISSION.md",
+      "registry/registry.json",
+      "registry/circuits/**",
+      "registry/schema/**",
+      "registry/tools/**",
+      ".github/scripts/validate_registry.py"
+    ]
+  },
+  "server": {
+    "include": [
+      "agents/**",
+      "api/**",
+      "app/**",
+      "backend/**",
+      "coordinator/**",
+      "core/**",
+      "infra/**",
+      "memory/**",
+      "migrations/**",
+      "models/**",
+      "scripts/**",
+      "security/**",
+      "src/**",
+      "tests/**",
+      "ui/**",
+      "utils/**",
+      "verifier/vrl_verify.py",
+      "zk/**",
+      "orchestrator.py",
+      "pytest.ini",
+      "requirements.txt"
+    ],
+    "exclude": [
+      "zk/keys/**",
+      "zk/rust_backend/target/**"
+    ]
+  },
+  "global_exclude": [
+    ".git/**",
+    ".pytest_cache/**",
+    ".ruff_cache/**",
+    "logs/**",
+    ".env",
+    ".env.*",
+    "**/__pycache__/**",
+    "**/*.pyc"
+  ]
+}
