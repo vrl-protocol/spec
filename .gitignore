@@ -23,3 +23,4 @@ zk/rust_backend/target/
 scripts/_probe*.py
 scripts/_probe*.txt
 scripts/_p*.txt
+sdk/python/examples/sdk_demo_bundle.json

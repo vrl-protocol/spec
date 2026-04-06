@@ -34,6 +34,7 @@ The VRL organization is split by responsibility:
 ## Start Here
 
 - Specification: [SPEC.md](./SPEC.md)
+- Proof path comparison: [PROOF_PATHS.md](./PROOF_PATHS.md)
 - Live docs and browser verifier: `https://vrl-protocol.github.io/spec/`
 - Python package: `pip install vrl-sdk`
 - SDK repo: `https://github.com/vrl-protocol/sdk`
@@ -79,6 +80,12 @@ Reference demo flow:
 - `https://github.com/vrl-protocol/server`
 - `python scripts/smoke_e2e.py`
 - `python scripts/verify_proof.py logs/smoke_proof_bundle.json`
+
+SDK demo flow:
+- `https://github.com/vrl-protocol/sdk`
+- `python examples/build_and_verify.py`
+
+For a direct comparison of what each path proves today, see [PROOF_PATHS.md](./PROOF_PATHS.md).
 
 ## License
 
