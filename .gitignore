@@ -9,7 +9,12 @@ venv/
 .env
 .env.*
 logs/
-zk/keys/
+zk/keys/*
+!zk/keys/__init__.py
+!zk/keys/lifecycle.py
+!zk/keys/manager.py
+zk/keys/proving_key/
+zk/keys/verification_key/
 zk/rust_backend/target/
 *.exe
 *.dll
@@ -18,4 +23,3 @@ zk/rust_backend/target/
 scripts/_probe*.py
 scripts/_probe*.txt
 scripts/_p*.txt
-

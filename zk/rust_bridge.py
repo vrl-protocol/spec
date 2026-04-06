@@ -69,11 +69,13 @@ def ensure_backend_binary() -> Path:
     if vcvars64 is not None:
       cargo_command = f'"{CARGO}" build --release --manifest-path "{manifest_path}"'
       result = subprocess.run(  # nosec B603
-        [str(CMD), '/c', f'"{vcvars64}" && {cargo_command}'],
+        f'call "{vcvars64}" && {cargo_command}',
         capture_output=True,
         text=True,
         env=env,
         cwd=str(RUST_BACKEND_DIR),
+        shell=True,
+        executable=str(CMD),
         check=False,
       )
     else:
