@@ -1,67 +1,70 @@
-# VRL Integration Workspace
+# VRL
 
-This repository is the local integration workspace for VRL.
+Open standard for cryptographically verifiable AI outputs.
 
-It is not the long-term public source of truth. The target public layout is:
+VRL defines a portable proof bundle format that lets any third party verify an AI output or deterministic computation offline, without trusting the issuer or any central server.
 
-1. `vrl-protocol/spec`
-2. `vrl-protocol/sdk`
-3. `vrl-protocol/registry`
-4. `vrl-protocol/server`
+Think of it as a standard receipt for AI:
+- which model or system ran
+- what it computed
+- what data commitments it depended on
+- what proof system attests to correctness
+- when the result was issued
 
-Use this workspace to:
+## Why This Exists
 
-- iterate across protocol, SDK, registry, and server changes together
-- run cross-cutting tests before splitting or publishing
-- generate clean per-repo exports from one local working tree
+Today, most AI outputs are plain text with no durable proof of provenance. In regulated settings like healthcare, finance, trade, and legal workflows, that is not enough.
 
-## Split Plan
+VRL is designed to make AI outputs:
+- verifiable
+- portable
+- tamper-evident
+- auditable
+- usable across organizations and jurisdictions
 
-The split plan lives at:
+## Repositories
 
-- [docs/REPO_SPLIT_PLAN.md](./docs/REPO_SPLIT_PLAN.md)
+The VRL organization is split by responsibility:
 
-The export manifest lives at:
+- `vrl-protocol/spec`: specification, schemas, and standards-facing docs
+- `vrl-protocol/sdk`: Python, TypeScript, and Go SDKs
+- `vrl-protocol/registry`: circuit catalog and submission flow
+- `vrl-protocol/server`: prover, attestation, and runtime components
 
-- [proposals/repo_split_manifest.json](./proposals/repo_split_manifest.json)
+## Start Here
 
-## Export The Split Repos
+- Specification: [SPEC.md](./SPEC.md)
+- Live docs and browser verifier: `https://vrl-protocol.github.io/spec/`
+- Python package: `pip install vrl-sdk`
+- SDK repo: `https://github.com/vrl-protocol/sdk`
+- Registry repo: `https://github.com/vrl-protocol/registry`
 
-Generate the four target repos under `C:\Users\13173\OneDrive\Documents\vrl-split`:
+## What A VRL Bundle Contains
 
-```powershell
-cd "C:\Users\13173\OneDrive\Documents\verifiable-reality-layer"
-python scripts/export_repo_split.py
-```
+A proof bundle can include:
+- AI identity metadata
+- computation hashes for inputs, outputs, and trace
+- a proof record for ZK, TEE, or hash-binding modes
+- dataset commitments
+- legal and compliance metadata
+- graph links to upstream or downstream proofs
 
-Or with the PowerShell wrapper:
+## Proof Systems
 
-```powershell
-cd "C:\Users\13173\OneDrive\Documents\verifiable-reality-layer"
-.\scripts\export_repo_split.ps1
-```
+VRL is proof-system agnostic. Current modes include:
+- `plonk-halo2-pasta`
+- `tee-intel-tdx`
+- `tee-amd-sev-snp`
+- `zk-ml`
+- `sha256-deterministic`
+- `api-hash-binding`
 
-## Generated Output
+## Quick Links
 
-The exporter creates:
+- Spec release history: `https://github.com/vrl-protocol/spec/releases`
+- SDK release history: `https://github.com/vrl-protocol/sdk/releases`
+- PyPI package: `https://pypi.org/project/vrl-sdk/`
 
-- `C:\Users\13173\OneDrive\Documents\vrl-split\spec`
-- `C:\Users\13173\OneDrive\Documents\vrl-split\sdk`
-- `C:\Users\13173\OneDrive\Documents\vrl-split\registry`
-- `C:\Users\13173\OneDrive\Documents\vrl-split\server`
+## License
 
-Each generated repo includes:
-
-- a repo-specific `README.md`
-- a repo-specific `.gitignore`
-- a `.vrl-export.json` summary file
-
-## Current Role Of This Repo
-
-Think of this repository as:
-
-- a local staging area
-- a cross-repo integration harness
-- a safe place to evolve boundaries before publishing
-
-Do not treat this repo as the canonical public `spec` repository.
+The specification is licensed under CC BY 4.0. SDK and implementation code use MIT unless stated otherwise.
