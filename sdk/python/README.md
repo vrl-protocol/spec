@@ -32,8 +32,8 @@ pip install vrl-sdk
 ### From source
 
 ```bash
-git clone https://github.com/vrl-protocol/sdk-python.git
-cd sdk-python
+git clone https://github.com/vrl-protocol/sdk.git
+cd sdk/sdk/python
 pip install -e .
 ```
 
@@ -336,6 +336,22 @@ pip install -e ".[dev]"
 pytest tests/
 pytest --cov=vrl tests/
 ```
+
+## End-To-End SDK Demo
+
+Build a VRL bundle with the public Python SDK and verify it locally:
+
+```bash
+cd sdk/python
+python examples/build_and_verify.py
+```
+
+This writes `examples/sdk_demo_bundle.json` and prints a summary containing:
+- `bundle_id`
+- `ai_id`
+- `integrity_hash`
+- `proof_hash`
+- verification status
 
 ### Code Style
 

@@ -4,7 +4,7 @@ import pytest
 from vrl import (
     ProofBundle, AIIdentity, Computation, Proof,
     ProofBundleBuilder, ComputationBuilder, ProofBuilder,
-    Verifier, VerificationStatus,
+    Verifier, VerificationStatus, CircuitRegistry,
     compute_proof_hash, compute_integrity_hash
 )
 
@@ -15,17 +15,21 @@ class TestVerifier:
     def _create_valid_bundle(self):
         """Create a valid test bundle for verification."""
         ai_identity = AIIdentity(
-            ai_id="a3f2c1d4e5b6a7f8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+            ai_id="a" * 64,
             model_name="gpt-4-turbo",
             model_version="2024-04-09",
             provider_id="com.openai",
             execution_environment="api-attested"
         )
 
+        circuit_hash = CircuitRegistry().resolve_circuit(
+            "trade/import-landed-cost@2.0.0", "2.0.0"
+        )["circuit_hash"]
+
         computation = (ComputationBuilder()
             .set_circuit_id("trade/import-landed-cost@2.0.0")
             .set_circuit_version("2.0.0")
-            .set_circuit_hash("3fa24c7763608b01b4c7e411655ebc75ff7a906c38bd79a4cc3be0f4479cdf23")
+            .set_circuit_hash(circuit_hash)
             .set_input_hash("ebf1f0aa67d10b8472fd7f1af22fc9370ecb813243f928b4f5528ab27457fea7")
             .set_output_hash("0c866369e1ab87b0d0b624c0fdeb490aa05fa2524e9368a023308a1437ec5b5b")
             .set_trace_hash("e14d0cb8d4a11cf1db1def3942fa7246b72cb6989463e8d379ade6e90a0405e6")
@@ -37,6 +41,7 @@ class TestVerifier:
             .set_proof_bytes("0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d")
             .set_public_inputs([])
             .set_verification_key_id("aadfa62983a64cb674b1b9b1c4379d8a01e02948fed731506de4bcf2950012a0")
+            .set_proof_hash("0" * 64)
             .build())
 
         proof.proof_hash = compute_proof_hash(
@@ -115,6 +120,8 @@ class TestVerifier:
         """Test that incorrect integrity_hash fails verification."""
         bundle = self._create_valid_bundle()
         bundle.computation.integrity_hash = "a" * 64
+        from vrl import compute_bundle_id_from_integrity
+        bundle.bundle_id = compute_bundle_id_from_integrity(bundle.computation.integrity_hash)
 
         verifier = Verifier()
         result = verifier.verify(bundle)
@@ -232,6 +239,13 @@ class TestVerifier:
 
         for system in proof_systems:
             bundle.proof.proof_system = system
+            bundle.proof.proof_hash = compute_proof_hash(
+                bundle.computation.circuit_hash,
+                bundle.proof.proof_bytes,
+                bundle.proof.public_inputs,
+                bundle.proof.proof_system,
+                bundle.computation.trace_hash
+            )
             result = verifier.verify(bundle)
             # Should not fail on proof_system validation
             assert result.status != VerificationStatus.PROOF_INVALID
@@ -250,10 +264,14 @@ class TestVerificationDetails:
             execution_environment="deterministic"
         )
 
+        circuit_hash = CircuitRegistry().resolve_circuit(
+            "test/circuit@1.0.0", "1.0.0"
+        )["circuit_hash"]
+
         computation = (ComputationBuilder()
             .set_circuit_id("test/circuit@1.0.0")
             .set_circuit_version("1.0.0")
-            .set_circuit_hash("b" * 64)
+            .set_circuit_hash(circuit_hash)
             .set_input_hash("c" * 64)
             .set_output_hash("d" * 64)
             .set_trace_hash("e" * 64)
@@ -265,6 +283,7 @@ class TestVerificationDetails:
             .set_proof_bytes("f" * 32)
             .set_public_inputs([])
             .set_verification_key_id("a" * 64)
+            .set_proof_hash("0" * 64)
             .build())
 
         proof.proof_hash = compute_proof_hash(
@@ -329,9 +348,8 @@ class TestVerificationDetails:
             .set_proof_bytes("f" * 32)
             .set_public_inputs([])
             .set_verification_key_id("a" * 64)
+            .set_proof_hash("bad" * 20)
             .build())
-
-        proof.proof_hash = "bad" * 20  # Invalid hash
 
         return (ProofBundleBuilder()
             .set_ai_identity(ai_identity)

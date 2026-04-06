@@ -15,7 +15,7 @@ class TestBundleCreation:
     def test_create_bundle_with_builders(self):
         """Test creating a complete bundle with builder APIs."""
         ai_identity = AIIdentity(
-            ai_id="a3f2c1d4e5b6a7f8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+            ai_id="a" * 64,
             model_name="gpt-4-turbo",
             model_version="2024-04-09",
             provider_id="com.openai",
@@ -37,6 +37,7 @@ class TestBundleCreation:
             .set_proof_bytes("0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d")
             .set_public_inputs([])
             .set_verification_key_id("aadfa62983a64cb674b1b9b1c4379d8a01e02948fed731506de4bcf2950012a0")
+            .set_proof_hash("0" * 64)
             .build())
 
         proof.proof_hash = compute_proof_hash(
@@ -78,6 +79,7 @@ class TestBundleCreation:
             .set_proof_bytes("e" * 32)
             .set_public_inputs([])
             .set_verification_key_id("f" * 64)
+            .set_proof_hash("0" * 64)
             .build())
         proof.proof_hash = compute_proof_hash(
             computation.circuit_hash, proof.proof_bytes,
@@ -107,8 +109,8 @@ class TestBundleCreation:
             .set_proof_bytes("b" * 32)
             .set_public_inputs([])
             .set_verification_key_id("c" * 64)
+            .set_proof_hash("d" * 64)
             .build())
-        proof.proof_hash = "d" * 64
 
         builder = (ProofBundleBuilder()
             .set_ai_identity(ai_identity)
@@ -153,7 +155,7 @@ class TestBundleSerialization:
     def _create_test_bundle(self):
         """Create a test bundle for serialization tests."""
         ai_identity = AIIdentity(
-            ai_id="a3f2c1d4e5b6a7f8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+            ai_id="a" * 64,
             model_name="gpt-4-turbo",
             model_version="2024-04-09",
             provider_id="com.openai",
@@ -175,6 +177,7 @@ class TestBundleSerialization:
             .set_proof_bytes("0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d")
             .set_public_inputs([])
             .set_verification_key_id("aadfa62983a64cb674b1b9b1c4379d8a01e02948fed731506de4bcf2950012a0")
+            .set_proof_hash("0" * 64)
             .build())
 
         proof.proof_hash = compute_proof_hash(
