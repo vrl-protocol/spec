@@ -65,6 +65,16 @@ VRL is proof-system agnostic. Current modes include:
 - SDK release history: `https://github.com/vrl-protocol/sdk/releases`
 - PyPI package: `https://pypi.org/project/vrl-sdk/`
 
+## Proof Of Concept Status
+
+Current implementation surfaces that have been exercised end to end:
+- Python SDK test suite: 31 passing tests
+- TypeScript SDK test suite: 6 passing tests
+- Standalone server/reference implementation: 97 passing tests
+- Published Python package: `vrl-sdk==0.2.1`
+
+These cover bundle construction, offline verification, proof export, deterministic reference flows, and the reference server proof pipeline.
+
 ## License
 
 The specification is licensed under CC BY 4.0. SDK and implementation code use MIT unless stated otherwise.
