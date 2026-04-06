@@ -75,6 +75,11 @@ Current implementation surfaces that have been exercised end to end:
 
 These cover bundle construction, offline verification, proof export, deterministic reference flows, and the reference server proof pipeline.
 
+Reference demo flow:
+- `https://github.com/vrl-protocol/server`
+- `python scripts/smoke_e2e.py`
+- `python scripts/verify_proof.py logs/smoke_proof_bundle.json`
+
 ## License
 
 The specification is licensed under CC BY 4.0. SDK and implementation code use MIT unless stated otherwise.
