@@ -432,6 +432,8 @@ This takes courage — you're publishing your idea before you've fully built it.
 
 **Week 3-4: Build vrl-sdk (Python + TypeScript)**
 
+Canonical SDK repository: `https://github.com/vrl-protocol/sdk`
+
 ```python
 pip install vrl-sdk
 ```
